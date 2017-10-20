@@ -1,0 +1,4 @@
+#!/bin/sh
+
+git config --global user.email "james-github@burleyarch.com"
+git config --global user.name "James Craig Burley"
