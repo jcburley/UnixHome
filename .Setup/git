@@ -6,4 +6,4 @@ git config --global user.email "james-github@burleyarch.com"
 git config --global user.name "James Craig Burley"
 git config --global push.default simple
 
-alias git remote set-url origin $GITBASE/$1
+ln -sv ~/github/UnixHome/.emacs.d/init.el ~/.emacs.d/init.el
