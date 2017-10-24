@@ -1,5 +1,9 @@
-#!/bin/sh
+# sh, source via "."
+
+export GITBASE=git@github.com:jcburley
 
 git config --global user.email "james-github@burleyarch.com"
 git config --global user.name "James Craig Burley"
 git config --global push.default simple
+
+alias git remote set-url origin $GITBASE/$1
