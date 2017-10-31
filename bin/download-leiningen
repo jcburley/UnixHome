@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd ~/bin
+wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
