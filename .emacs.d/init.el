@@ -33,7 +33,9 @@
     'vc-revert))
 
 ; Display Clojure function signatures in minibuffer while typing in REPL:
-(add-hook 'cider-repl-mode #'eldoc-mode)
+(add-hook 'clojure-mode-hook #'eldoc-mode)
+; Display Clojure function signatures in minibuffer while typing in REPL:
+(add-hook 'cider-repl-mode-hook #'eldoc-mode)
 
 (put 'narrow-to-region 'disabled nil)
 
