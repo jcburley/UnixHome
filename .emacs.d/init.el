@@ -44,6 +44,9 @@
 (global-company-mode t)
 ; Try new-ish feature that supports TAB completion or manual indent:
 (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+; Enable fuzzy candidate matching for company-mode:
+(add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
+(add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
 
 ; End Clojure stuff.
 
