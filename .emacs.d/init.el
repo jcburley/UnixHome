@@ -32,6 +32,9 @@
     '("Push to upstream" . vc-push)
     'vc-revert))
 
+; Display Clojure function signatures in minibuffer while typing in REPL:
+(add-hook 'cider-repl-mode #'eldoc-mode)
+
 (put 'narrow-to-region 'disabled nil)
 
 (global-set-key (kbd "C-M-x") 'compile)
