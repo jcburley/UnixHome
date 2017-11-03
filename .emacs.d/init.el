@@ -42,6 +42,8 @@
 (setq cider-repl-result-prefix ";; => ")
 ; Use company-mode for completion (very nice!):
 (global-company-mode t)
+; Try new-ish feature that supports TAB completion or manual indent:
+(global-set-key (kbd "TAB") #'company-indent-or-complete-common)
 
 ; End Clojure stuff.
 
