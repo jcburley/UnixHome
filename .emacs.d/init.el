@@ -40,6 +40,8 @@
 (add-hook 'cider-repl-mode-hook #'eldoc-mode)
 ; Set result prefix for REPL:
 (setq cider-repl-result-prefix ";; => ")
+; Use company-mode for completion (very nice!):
+(global-company-mode t)
 
 ; End Clojure stuff.
 
