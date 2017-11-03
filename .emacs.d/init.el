@@ -17,6 +17,12 @@
 
 (global-set-key (kbd "C-c w") 'compare-windows)
 
+(global-set-key (kbd "C-x v P") 'vc-push)
+(defun vc-push ()
+  "Do a git push"
+  (interactive)
+  (async-shell-command "git push"))
+
 (put 'narrow-to-region 'disabled nil)
 
 (global-set-key (kbd "C-M-x") 'compile)
