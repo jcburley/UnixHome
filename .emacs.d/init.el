@@ -125,7 +125,8 @@
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
 ;; provides minibuffer documentation for the code you're typing into the repl
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+; See for why not 'cider-turn-on-eldoc-mode: https://github.com/clojure-emacs/cider/issues/934
+(add-hook 'cider-mode-hook 'eldoc-mode)
 
 ;Use these only when working on clojure-mode itself:
 ;(load-file "~/clojure/clojure-mode/clojure-mode.el")
