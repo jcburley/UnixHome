@@ -51,6 +51,9 @@
 
     ;; colorful parenthesis matching
     rainbow-delimiters
+
+    ;; company-mode
+    company
 ))
 
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
@@ -93,6 +96,8 @@
 (eval-when-compile
   (require 'use-package))
 
+(package-initialize)
+
 ; Stuff I've always done in the past:
 
 (setq visible-bell t)
@@ -124,7 +129,8 @@
 ; Set result prefix for REPL:
 (setq cider-repl-result-prefix ";; => ")
 ; Use company-mode for completion (very nice!):
-(global-company-mode t)
+(if (boundp 'global-company-mode)
+    (global-company-mode t))
 ; Try new-ish feature that supports TAB completion or manual indent:
 (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
 ; Enable fuzzy candidate matching for company-mode:
