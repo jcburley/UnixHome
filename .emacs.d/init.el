@@ -123,8 +123,6 @@
 ; Clojure stuff:
 
 ; Display Clojure function signatures in minibuffer while typing in REPL:
-(add-hook 'clojure-mode-hook #'eldoc-mode)
-; Display Clojure function signatures in minibuffer while typing in REPL:
 (add-hook 'cider-repl-mode-hook #'eldoc-mode)
 ; Set result prefix for REPL:
 (setq cider-repl-result-prefix ";; => ")
