@@ -15,3 +15,5 @@ PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
 GIT_PS1_SHOWDIRTYSTATE=t
 GIT_PS1_SHOWSTASHSTATE=t
 GIT_PS1_SHOWUPSTREAM="verbose"
+
+export GITBASE=git@github.com:jcburley

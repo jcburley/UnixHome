@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ln -sv ~/GitHub/UnixHome/etc/bashrc ~/.bashrc
+ln -sv ~/GitHub/UnixHome/etc/bash_profile ~/.bash_profile
