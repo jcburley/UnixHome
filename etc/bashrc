@@ -1,0 +1,9 @@
+# Load all autocompletions if any are installed
+COMPDIR=~/GitHub/UnixHome/etc/bash_completion.d/
+if [ -d "${COMPDIR}" ]; then
+    for F in "${COMPDIR}"*; do
+        if [ -f "${F}" ]; then
+            source "${F}";
+        fi
+    done
+fi
