@@ -1,4 +1,6 @@
-# sh, source via "."
+#!/bin/bash
+
+# This export suggests the script should be sourced, not directly invoked:
 
 export GITBASE=git@github.com:jcburley
 
