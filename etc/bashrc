@@ -7,3 +7,11 @@ if [ -d "${COMPDIR}" ]; then
         fi
     done
 fi
+
+# Get git goodness in prompts.
+source ~/GitHub/UnixHome/etc/git-prompt.sh
+PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
+GIT_PS1_SHOWDIRTYSTATE=t
+GIT_PS1_SHOWSTASHSTATE=t
+GIT_PS1_SHOWUPSTREAM="verbose"
