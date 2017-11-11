@@ -1,0 +1,15 @@
+#!/bin/sh
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias lt='ls -lt'
+alias ll='ls -l'
+alias lta='ls -ltA'
+alias lla='ls -lA'
+alias l1='ls -1'
+alias l1a='ls -1A'
+
+alias gitdown='git pull; git fetch -p'
+alias gitstat='git status -unormal'
+alias gitnbr='git checkout -b'
