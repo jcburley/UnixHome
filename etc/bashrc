@@ -1,5 +1,12 @@
+#!/bin/bash
+
+UNIXHOME=~/GitHub/UnixHome
+
+ALIASFILE=${UNIXHOME}/etc/aliases
+[[ -r ${ALIASFILE} ]] && source ${ALIASFILE}
+
 # Load all autocompletions if any are installed
-COMPDIR=~/GitHub/UnixHome/etc/bash_completion.d/
+COMPDIR=${UNIXHOME}/etc/bash_completion.d/
 if [ -d "${COMPDIR}" ]; then
     for F in "${COMPDIR}"*; do
         if [ -f "${F}" ]; then
@@ -9,7 +16,7 @@ if [ -d "${COMPDIR}" ]; then
 fi
 
 # Get git goodness in prompts.
-source ~/GitHub/UnixHome/etc/git-prompt.sh
+source ${UNIXHOME}/etc/git-prompt.sh
 PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
 PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
 GIT_PS1_SHOWDIRTYSTATE=t
