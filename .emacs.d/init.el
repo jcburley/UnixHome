@@ -134,6 +134,8 @@
 ; Enable fuzzy candidate matching for company-mode:
 (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
 (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
+; Don't auto-select *cider-error* on error:
+(setq cider-auto-select-error-buffer nil)
 
 ;; Enable paredit for Clojure
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
