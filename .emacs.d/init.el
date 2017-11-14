@@ -120,6 +120,11 @@
     '("Push to upstream" . vc-push)
     'vc-revert))
 
+; Find git and git bash.
+(when (memq system-type '(windows-nt ms-dos))
+  (add-to-list 'exec-path "/Program Files/git/bin")
+  (setenv "PATH" (mapconcat #'identity exec-path path-separator)))
+
 ; Clojure stuff:
 
 ; Display Clojure function signatures in minibuffer while typing in REPL:
