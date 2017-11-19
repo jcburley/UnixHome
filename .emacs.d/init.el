@@ -102,6 +102,7 @@
 
 (setq visible-bell t)
 (setq version-control t)
+(setq-default indent-tabs-mode nil)
 
 (global-set-key (kbd "C-c w") 'compare-windows)
 
