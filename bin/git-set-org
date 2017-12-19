@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-if [[ -z "$GITBASE" -o -z "$1" ]]
+if [[ -z "$GITBASE" || -z "$1" ]]
 then
     echo "Need \$GITBASE (=$GITBASE) and arg (=$1) both set"
     exit 1
