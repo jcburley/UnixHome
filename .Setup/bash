@@ -1,4 +1,16 @@
 #!/bin/bash
 
-ln -sv ~/GitHub/UnixHome/etc/bashrc ~/.bashrc
-ln -sv ~/GitHub/UnixHome/etc/bash_profile ~/.bash_profile
+UNIXHOME=~/GitHub/UnixHome
+if [[ ! -d ${UNIXHOME} ]]; then
+    UNIXHOME=~/github/UnixHome
+fi
+
+if [[ -f ~/.bashrc ]]; then
+    if ! grep -qi unixhome ~/.bashrc; then
+	cat ${UNIXHOME}/etc/my-bashrc >> ~/.bashrc
+    fi
+else
+    ln -sv ${UNIXHOME}/etc/bashrc ~/.bashrc
+fi
+
+ln -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile
