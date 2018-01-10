@@ -1,0 +1,4 @@
+
+if [[ -x ~/github/UnixHome/etc/bashrc ]]; then
+    source ~/github/UnixHome/etc/bashrc
+fi

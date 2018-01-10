@@ -1,6 +1,9 @@
 #!/bin/bash
 
 UNIXHOME=~/GitHub/UnixHome
+if [[ ! -d ${UNIXHOME} ]]; then
+    UNIXHOME=~/github/UnixHome
+fi
 
 ALIASFILE=${UNIXHOME}/etc/aliases
 [[ -r ${ALIASFILE} ]] && source ${ALIASFILE}
@@ -10,7 +13,7 @@ COMPDIR=${UNIXHOME}/etc/bash_completion.d/
 if [ -d "${COMPDIR}" ]; then
     for F in "${COMPDIR}"*; do
         if [ -f "${F}" ]; then
-            source "${F}";
+            source "${F}"
         fi
     done
 fi
