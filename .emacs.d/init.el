@@ -156,6 +156,13 @@
 ; See for why not 'cider-turn-on-eldoc-mode: https://github.com/clojure-emacs/cider/issues/934
 (add-hook 'cider-mode-hook 'eldoc-mode)
 
+;; I've been typing this accidentally too often, and it typically
+;; wedges my session (it's bound to cider-eval-region, and the region
+;; is typically quite large and includes many expressions).
+(add-hook 'cider-repl-mode-hook
+          (lambda()
+            (local-unset-key (kbd "C-c C-r"))))
+
 ;Use these only when working on clojure-mode itself:
 ;(load-file "~/clojure/clojure-mode/clojure-mode.el")
 ;(load-file "~/clojure/clojure-mode/clojure-mode-extra-font-locking.el")
@@ -170,3 +177,7 @@
 (global-set-key (kbd "C-x p") (lambda ()
 				(interactive)  ; previous window
 				(other-window -1)))
+
+
+;; End of my file -- custom-set-variables and such typically follows
+;; on a given system.
