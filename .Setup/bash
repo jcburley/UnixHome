@@ -13,4 +13,4 @@ else
     ln -sv ${UNIXHOME}/etc/bashrc ~/.bashrc
 fi
 
-ln -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile
+ln --backup=t -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile
