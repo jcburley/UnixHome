@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Get the aliases and functions
 if [ -f $HOME/.bashrc ]; then
         source $HOME/.bashrc
 fi
+
+PATHDIRS="$HOME/bin $HOME/googlsource/chromium/depot_tools"
+
+for pd in $PATHDIRS; do
+    [ -d $pd ] && PATH=$PATH:$pd
+done
+
+export PATH
