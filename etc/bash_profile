@@ -20,7 +20,7 @@ done
 export PATH
 
 # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
-# definitions including $SHLVL.
+# definitions including $SHLVL. NOTE: __git_ps1 rewrites $PS1!!
 export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
 export PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
 
