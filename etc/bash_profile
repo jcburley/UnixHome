@@ -5,7 +5,7 @@ if [ -f $HOME/.bashrc ]; then
         source $HOME/.bashrc
 fi
 
-PATHDIRS="$HOME/bin $HOME/googlsource/chromium/depot_tools"
+PATHDIRS="$HOME/bin $HOME/googlesource/chromium/depot_tools"
 
 for pd in $PATHDIRS; do
     [ -d $pd ] && PATH=$PATH:$pd
