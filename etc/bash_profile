@@ -1,8 +1,14 @@
 #!/bin/bash
 
+# Where do my worldwide Unix setup files live?
+export UNIXHOME=~/GitHub/UnixHome
+if [ ! -d ${UNIXHOME} ]; then
+    UNIXHOME=~/github/UnixHome
+fi
+
 # Get the aliases and functions
 if [ -f $HOME/.bashrc ]; then
-        source $HOME/.bashrc
+    source $HOME/.bashrc
 fi
 
 PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"
@@ -12,3 +18,14 @@ for pd in $PATHDIRS; do
 done
 
 export PATH
+
+# Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
+# definitions including $SHLVL.
+export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+export PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
+
+export GIT_PS1_SHOWDIRTYSTATE=t
+export GIT_PS1_SHOWSTASHSTATE=t
+export GIT_PS1_SHOWUPSTREAM="verbose"
+
+export GITBASE=git@github.com:jcburley
