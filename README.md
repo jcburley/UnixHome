@@ -14,6 +14,10 @@ My $HOME directory for Unixy OSes
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
 - Edit ~/.profile to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs
+- Make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
+  - `sudo scutil --set HostName xxx`
+  - `sudo scutil --set LocalHostName xxx`
+  - `sudo scutil --set ComputerName xxx`
 
 ## All OSes
 ```
