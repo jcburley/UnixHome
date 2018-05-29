@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
+[ -x ~/.profile ] && . ~/.profile
+
 # Where do my worldwide Unix setup files live?
 export UNIXHOME=~/GitHub/UnixHome
 if [ ! -d ${UNIXHOME} ]; then
@@ -7,7 +10,7 @@ if [ ! -d ${UNIXHOME} ]; then
 fi
 
 # Get the aliases and functions
-if [ -f $HOME/.bashrc ]; then
+if [ -x $HOME/.bashrc ]; then
     source $HOME/.bashrc
 fi
 
