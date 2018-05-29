@@ -3,10 +3,22 @@
 ;;  2017-10-19 jcburley copied some stuff from github.com/vidjuheffex/dotemacs/
 ;;; Code:
 
-(message "Craig's init.el loading!")
+(message (concat load-file-name " loading!"))
+
+;; Put customizations in per-hostname files.
+(defvar system-specific-init-dir
+ (concat "~/github/UnixHome/.emacs.d/systems/" (downcase (system-name)))
+ "System-specific customization and other files are stored here.")
+(make-directory system-specific-init-dir t)
+(setq custom-file (concat system-specific-init-dir "/customizations.el"))
+
+;; Confirm whether it's okay to exist without saving customizations.
+(add-hook 'kill-emacs-query-functions
+          'custom-prompt-customize-unsaved-options)
 
 (setq user-full-name "James Craig Burley")
 (setq user-mail-address "james@burleyarch.com")
+(setq global-mark-ring-max 200)
 
 ; Try a buncha stuff from https://github.com/flyingmachine/emacs-for-clojure/blob/master/init.el:
 
@@ -103,6 +115,7 @@
 (setq visible-bell t)
 (setq version-control t)
 (setq-default indent-tabs-mode nil)
+(put 'upcase-region 'disabled nil)
 
 (global-set-key (kbd "C-c w") 'compare-windows)
 
@@ -178,6 +191,6 @@
 				(interactive)  ; previous window
 				(other-window -1)))
 
+(load custom-file t)  ; No error if file doesn't exist.
 
-;; End of my file -- custom-set-variables and such typically follows
-;; on a given system.
+;; End of my file.
