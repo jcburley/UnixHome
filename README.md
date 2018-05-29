@@ -3,7 +3,8 @@ My $HOME directory for Unixy OSes
 
 # Before Cloning Me
 
-## Mac OS X:
+## Per-OS Preparation
+### Mac OS X
 - Install MacPorts via: www.macports.org/install.php
   - This will create `~/.profile`
 - Install GitHub Desktop and login
@@ -14,6 +15,7 @@ My $HOME directory for Unixy OSes
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
 - Edit ~/.profile to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs
 
+## All OSes
 ```
 $ ./.Setup/git  # might be needed before cloning me (UnixHome).
 $ mkdir -p ~/github
@@ -34,9 +36,10 @@ $ ./bash
 $ ./emacs
 ```
 
-# To keep installation up to date:
+# To Keep Installation Up To Date
 
-## Mac OS X:
+## Per-OS Maintenance
+### Mac OS X
 ```
 $ port selfupdate
 ```
