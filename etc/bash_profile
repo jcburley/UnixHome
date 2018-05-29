@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
-[ -x ~/.profile ] && . ~/.profile
+[ -f ~/.profile ] && . ~/.profile
 
 # Where do my worldwide Unix setup files live?
 export UNIXHOME=~/GitHub/UnixHome
