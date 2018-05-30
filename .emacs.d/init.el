@@ -37,11 +37,38 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
+(defun package-stamp-write-file (s f)
+  "Write given package stamp to a specified file."
+  (write-region s nil f))
+
+(defvar package-stamp
+      (concat
+       (format-time-string "%Y-%m-%d\n")
+       (prin1-to-string package-archives))
+      "String containing today's date on first line followed by stringized var package-archives.")
+
+(defvar package-stamp-file
+  "~/.emacs.d/package-refresh.STAMP"
+  "Name of file in which package stamp is written -- local to each machine.")
+
+(defun read-file-contents (f)
+  "Read contents of a file and return the result as a string."
+  (with-temp-buffer
+    (insert-file-contents f)
+    (buffer-string)))
+
+(defun package-stamp-check-file (s f)
+  "Return t if file exists and contains the stamp, nil otherwise."
+  (and (file-exists-p f)
+       (string= s (read-file-contents f))))
+
 ;; Download the ELPA archive description if needed.
 ;; This informs Emacs about the latest versions of all packages, and
 ;; makes them available for download.
-(when (not package-archive-contents)
-  (package-refresh-contents))
+(unless (or package-archive-contents
+            (package-stamp-check-file package-stamp package-stamp-file))
+  (package-refresh-contents)
+  (package-stamp-write-file package-stamp package-stamp-file))
 
 (package-initialize)
 
@@ -102,7 +129,6 @@
 ; Bring in use-package:
 
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
   (package-install 'use-package))
 
 (eval-when-compile
