@@ -15,6 +15,13 @@ if [ -f $HOME/.bashrc ]; then
     source $HOME/.bashrc
 fi
 
+# Use Emacs if installed. (Git bash which does not support -s.)
+if which emacs >/dev/null 2>&1; then
+    export EDITOR=emacs
+    export GIT_EDITOR=emacs
+    export VISUAL=emacs
+fi
+
 PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"
 
 for pd in $PATHDIRS; do
