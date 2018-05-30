@@ -3,7 +3,10 @@
 ;;  2017-10-19 jcburley copied some stuff from github.com/vidjuheffex/dotemacs/
 ;;; Code:
 
-(message (concat load-file-name " loading!"))
+(defvar system-specific-scratch-dir
+ (concat "~/.emacs.d/systems/" (downcase (system-name)))
+ "System-specific scratch, cache, and other temporary files are stored here.")
+(make-directory system-specific-scratch-dir t)
 
 ;; Put customizations in per-hostname files.
 (defvar system-specific-init-dir
@@ -48,7 +51,7 @@
       "String containing today's date on first line followed by stringized var package-archives.")
 
 (defvar package-stamp-file
-  "~/.emacs.d/package-refresh.STAMP"
+  (concat system-specific-scratch-dir "/package-refresh.STAMP")
   "Name of file in which package stamp is written -- local to each machine.")
 
 (defun read-file-contents (f)
