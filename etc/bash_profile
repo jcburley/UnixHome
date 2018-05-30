@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
+export WILL_RUN_BASHRC=true  # Hold off running it, to run it after UNIXHOME set.
 [ -f ~/.profile ] && . ~/.profile
 
 # Where do my worldwide Unix setup files live?
@@ -10,7 +11,7 @@ if [ ! -d ${UNIXHOME} ]; then
 fi
 
 # Get the aliases and functions
-if [ -x $HOME/.bashrc ]; then
+if [ -f $HOME/.bashrc ]; then
     source $HOME/.bashrc
 fi
 
