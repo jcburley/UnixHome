@@ -8,14 +8,17 @@
  "System-specific scratch, cache, and other temporary files are stored here.")
 (make-directory system-specific-scratch-dir t)
 
-;; Put customizations in per-hostname files.
 (defvar system-specific-init-dir
  (concat "~/github/UnixHome/.emacs.d/systems/" (downcase (system-name)))
  "System-specific customization and other files are stored here.")
 (make-directory system-specific-init-dir t)
+
+;; Put customizations in per-hostname files.
 (setq custom-file (concat system-specific-init-dir "/customizations.el"))
 
-;; Confirm whether it's okay to exist without saving customizations.
+;; Confirm whether it's okay to exit without saving customizations.
+;; (If running a version of Emacs that does not support this, you
+;; might have to use ESC-x kill-emacs to exit.)
 (add-hook 'kill-emacs-query-functions
           'custom-prompt-customize-unsaved-options)
 
@@ -40,10 +43,6 @@
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 
-(defun package-stamp-write-file (s f)
-  "Write given package stamp to a specified file."
-  (write-region s nil f))
-
 (defvar package-stamp
       (concat
        (format-time-string "%Y-%m-%d\n")
@@ -60,8 +59,12 @@
     (insert-file-contents f)
     (buffer-string)))
 
-(defun package-stamp-check-file (s f)
-  "Return t if file exists and contains the stamp, nil otherwise."
+(defun write-file-contents (s f)
+  "Write given string to a specified file."
+  (write-region s nil f))
+
+(defun file-contents-= (s f)
+  "Return t if file exists and contains exactly the string, nil otherwise."
   (and (file-exists-p f)
        (string= s (read-file-contents f))))
 
@@ -69,9 +72,9 @@
 ;; This informs Emacs about the latest versions of all packages, and
 ;; makes them available for download.
 (unless (or package-archive-contents
-            (package-stamp-check-file package-stamp package-stamp-file))
+            (file-contents-= package-stamp package-stamp-file))
   (package-refresh-contents)
-  (package-stamp-write-file package-stamp package-stamp-file))
+  (write-file-contents package-stamp package-stamp-file))
 
 (package-initialize)
 
