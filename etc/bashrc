@@ -1,24 +1,29 @@
 #!/bin/bash
 
-# First arg is "true" if being run from .bash_profile.
+# 'ssh craig@bear <command>' runs ~/.bashrc, not ~/.bash_profile, so
+# $UNIXHOME will not be defined. 'ssh craig@bear' (no <command>)
+# creates a login session, so ~/.bash_profile is read. (This was
+# tested from doe, in case that matters.)
 
-ALIASFILE=${UNIXHOME}/etc/aliases
-[[ -r ${ALIASFILE} ]] && source ${ALIASFILE}
+if [ -n "${UNIXHOME}" ]; then
+    ALIASFILE=${UNIXHOME}/etc/aliases
+    [[ -r ${ALIASFILE} ]] && echo "Running ${ALIASFILE}..." && source ${ALIASFILE}
 
-# Load all autocompletions if any are installed
-AUTOCOMPDIR=${UNIXHOME}/etc/bash_completion.d/
-if [ -d "${AUTOCOMPDIR}" ]; then
-    for F in "${AUTOCOMPDIR}"*; do
-        if [ -f "${F}" ]; then
-            source "${F}"
-        fi
-    done
+    # Load all autocompletions if any are installed
+    AUTOCOMPDIR=${UNIXHOME}/etc/bash_completion.d/
+    if [ -d "${AUTOCOMPDIR}" ]; then
+        for F in "${AUTOCOMPDIR}"*; do
+            if [ -f "${F}" ]; then
+                source "${F}"
+            fi
+        done
+    fi
+
+    # Get git goodness in prompts by first defining __git_ps1.
+    [ -f ${UNIXHOME}/etc/git-prompt.sh ] && source ${UNIXHOME}/etc/git-prompt.sh
+
+    # If .bash_profile is calling this script, it'll afterwards overwrite
+    # these two vars, so the "bash" shell doesn't display $SHLVL.
+    export PS1='[${SHLVL}] [\u@\h \W$(__git_ps1 " (%s)")]\$ '
+    export PROMPT_COMMAND='__git_ps1 "[\${SHLVL}] \u@\h:\w" "\\\$ "'
 fi
-
-# Get git goodness in prompts by first defining __git_ps1.
-[ -f ${UNIXHOME}/etc/git-prompt.sh ] && source ${UNIXHOME}/etc/git-prompt.sh
-
-# If .bash_profile is calling this script, it'll afterwards overwrite
-# these two vars, so the "bash" shell doesn't display $SHLVL.
-export PS1='[${SHLVL}] [\u@\h \W$(__git_ps1 " (%s)")]\$ '
-export PROMPT_COMMAND='__git_ps1 "[\${SHLVL}] \u@\h:\w" "\\\$ "'
