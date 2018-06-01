@@ -5,7 +5,11 @@
 # creates a login session, so ~/.bash_profile is read. (This was
 # tested from doe, in case that matters.)
 
-if [ -n "${UNIXHOME}" ]; then
+if [ -z "${UNIXHOME}" ]; then
+    case "$-" in *i*) export UNIXHOME=~/github/UnixHome ;; esac
+fi
+
+if [ -n "${UNIXHOME}" ] && [ -d "${UNIXHOME}" ]; then
     ALIASFILE=${UNIXHOME}/etc/aliases
     [[ -r ${ALIASFILE} ]] && echo "Running ${ALIASFILE}..." && source ${ALIASFILE}
 
