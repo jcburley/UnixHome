@@ -27,6 +27,20 @@
 (setq user-mail-address "james@burleyarch.com")
 (setq global-mark-ring-max 200)
 
+; Stuff I've always done in the past:
+
+(setq visible-bell t)
+(setq version-control t)
+(setq make-backup-files t)
+(setq backup-by-copying-when-mismatch t)
+(setq kept-new-versions 30000)
+(setq kept-old-versions 30000)
+
+(setq-default indent-tabs-mode nil)
+(put 'upcase-region 'disabled nil)
+
+(global-set-key (kbd "C-c w") 'compare-windows)
+
 ; Try a buncha stuff from https://github.com/flyingmachine/emacs-for-clojure/blob/master/init.el:
 
 (require 'package)
@@ -143,20 +157,6 @@
   (require 'use-package))
 
 (package-initialize)
-
-; Stuff I've always done in the past:
-
-(setq visible-bell t)
-(setq version-control t)
-(setq make-backup-files t)
-(setq backup-by-copying-when-mismatch t)
-(setq kept-new-versions 30000)
-(setq kept-old-versions 30000)
-
-(setq-default indent-tabs-mode nil)
-(put 'upcase-region 'disabled nil)
-
-(global-set-key (kbd "C-c w") 'compare-windows)
 
 ; If not already in keymap and/or bound, add ability to "git push" to
 ; keymap, bound to 'vc-push, and to "Tools | Version Control" menu.
