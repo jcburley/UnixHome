@@ -19,8 +19,9 @@
 ;; Confirm whether it's okay to exit without saving customizations.
 ;; (If running a version of Emacs that does not support this, you
 ;; might have to use ESC-x kill-emacs to exit.)
-(add-hook 'kill-emacs-query-functions
-          'custom-prompt-customize-unsaved-options)
+(unless (< emacs-major-version 25)
+  (add-hook 'kill-emacs-query-functions
+	    'custom-prompt-customize-unsaved-options))
 
 (setq user-full-name "James Craig Burley")
 (setq user-mail-address "james@burleyarch.com")
@@ -129,7 +130,8 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
-(when (memq window-system '(mac ns x))
+(when (and (fboundp 'exec-path-from-shell-initialized)
+	   (memq window-system '(mac ns x)))
   (exec-path-from-shell-initialize))
 
 ; Bring in use-package:
@@ -146,6 +148,11 @@
 
 (setq visible-bell t)
 (setq version-control t)
+(setq make-backup-files t)
+(setq backup-by-copying-when-mismatch t)
+(setq kept-new-versions 30000)
+(setq kept-old-versions 30000)
+
 (setq-default indent-tabs-mode nil)
 (put 'upcase-region 'disabled nil)
 
