@@ -1,6 +1,6 @@
 #!/bin/bash
 
-UNIXHOME=$(unixhome "" "interactive")  # pretend $PS1 = "interactive"
+UNIXHOME=$(../etc/unixhome "" "interactive")  # pretend $PS1 = "interactive"
 
 if [[ -f ~/.bashrc ]]; then
     if ! grep -qi unixhome ~/.bashrc; then
@@ -12,4 +12,4 @@ fi
 
 ln --backup=t -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile
 
-cp -pf ${UNIXHOME}/etc/unixhome ~/.unixhome
+cp -pfv ${UNIXHOME}/etc/unixhome ~/.unixhome
