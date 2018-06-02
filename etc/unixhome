@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Pass current "$UNIXHOME" and "$PS1" as the only two
+# arguments. Returns $1 if non-empty ($UNIXHOME already set), empty
+# string if non-interactive ($PS1 is empty) or no (presumably
+# source-controlled) "unix home" found, or that unix home.
+
+if [ -z "$1" ] && [ -n "$2" ]; then
+    for c in ~/github/UnixHome ~/GitHub/UnixHome; do
+        if [ -d "$c" ]; then
+            echo "$c"
+            exit 0
+        fi
+    done
+    echo 1>&2 "No \$UNIXHOME found!"
+else
+    echo "$1"
+fi

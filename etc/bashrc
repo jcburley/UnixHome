@@ -5,13 +5,20 @@
 # creates a login session, so ~/.bash_profile is read. (This was
 # tested from doe, in case that matters.)
 
-if [ -z "${UNIXHOME}" ]; then
-    case "$-" in *i*) export UNIXHOME=~/github/UnixHome ;; esac
-fi
+# Ubuntu 16.04 provides a .profile that (besides exiting immediately
+# if $PS1 is not defined, as that apparently indicates a
+# non-interactive shell) runs .bashrc, and .profile (if it exists) is
+# run by my .bash_profile, because MacPorts creates one (to set up
+# $PATH) that does not run .bashrc.  So, defend against being run
+# a second time by .bash_profile.
 
-if [ -n "${UNIXHOME}" ] && [ -d "${UNIXHOME}" ]; then
+export BASHRC_HAS_RUN=true
+
+export UNIXHOME=$(~/.unixhome "$UNIXHOME" "$PS1")
+
+if [ -n "${UNIXHOME}" ]; then
     ALIASFILE=${UNIXHOME}/etc/aliases
-    [[ -r ${ALIASFILE} ]] && echo "Running ${ALIASFILE}..." && source ${ALIASFILE}
+    [ -r ${ALIASFILE} ] && source ${ALIASFILE}
 
     # Load all autocompletions if any are installed
     AUTOCOMPDIR=${UNIXHOME}/etc/bash_completion.d/

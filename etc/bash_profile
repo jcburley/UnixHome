@@ -1,17 +1,12 @@
 #!/bin/bash
 
+export UNIXHOME=$(~/.unixhome "$UNIXHOME" "$PS1")
+
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
-export WILL_RUN_BASHRC=true  # Hold off running it, to run it after UNIXHOME set.
 [ -f ~/.profile ] && . ~/.profile
 
-# Where do my worldwide Unix setup files live?
-export UNIXHOME=~/GitHub/UnixHome
-if [ ! -d ${UNIXHOME} ]; then
-    UNIXHOME=~/github/UnixHome
-fi
-
 # Get the aliases and functions
-if [ -f $HOME/.bashrc ]; then
+if [ -z "$BASHRC_HAS_RUN" ] && [ -f $HOME/.bashrc ]; then
     source $HOME/.bashrc
 fi
 

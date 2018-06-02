@@ -1,5 +1,7 @@
 #!/bin/sh
 
+alias newaliases="source ${UNIXHOME}/etc/aliases"
+
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
