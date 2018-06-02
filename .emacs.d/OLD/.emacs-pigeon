@@ -1,6 +1,0 @@
-(setq visible-bell t)
-(setq version-control t)
-
-(global-set-key "\C-cw" 'compare-windows)
-
-(put 'narrow-to-region 'disabled nil)
