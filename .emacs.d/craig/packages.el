@@ -20,7 +20,7 @@
   "String containing today's date on first line followed by stringized var package-archives.")
 
 (defvar package-stamp-file
-  (concat system-specific-scratch-dir "/package-refresh.STAMP")
+  (concat session-specific-scratch-dir "/package-refresh.STAMP")
   "Name of file in which package stamp is written -- local to each machine.")
 
 (defun read-file-contents (f)

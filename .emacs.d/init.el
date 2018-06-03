@@ -10,18 +10,22 @@
 ;; You may delete these explanatory comments.
 ;(package-initialize)
 
-(defvar system-specific-scratch-dir
- (concat "~/.emacs.d/systems/" (downcase (system-name)))
- "System-specific scratch, cache, and other temporary files are stored here.")
-(make-directory system-specific-scratch-dir t)
+(defvar username-at-systemname
+  (concat (user-login-name) "@" (downcase (system-name)))
+  "User login name and system name, separated by an atsign. E.g.: craig@doe")
 
-(defvar system-specific-init-dir
- (concat "~/github/UnixHome/.emacs.d/systems/" (downcase (system-name)))
- "System-specific customization and other files are stored here.")
-(make-directory system-specific-init-dir t)
+(defvar session-specific-scratch-dir
+ (concat "~/.emacs.d/sessions/" username-at-systemname)
+ "session-specific scratch, cache, and other temporary files are stored here.")
+(make-directory session-specific-scratch-dir t)
+
+(defvar session-specific-init-dir
+ (concat "~/github/UnixHome/.emacs.d/sessions/" username-at-systemname)
+ "Session-specific customization and other files are stored here.")
+(make-directory session-specific-init-dir t)
 
 ;; Put customizations in per-hostname files.
-(setq custom-file (concat system-specific-init-dir "/customizations.el"))
+(setq custom-file (concat session-specific-init-dir "/customizations.el"))
 
 ;; Confirm whether it's okay to exit without saving customizations.
 ;; (If running a version of Emacs that does not support this, you
