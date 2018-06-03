@@ -3,6 +3,7 @@
 # Note that AquaMacs does not read ~/.emacs.d/init.el, so maybe make a
 # symlink to that from ~/.emacs.
 
+mkdir -p ~/.emacs.d
 for f in init.el; do
     ln --backup=t -sv ~/github/UnixHome/.emacs.d/$f ~/.emacs.d/$f
 done
