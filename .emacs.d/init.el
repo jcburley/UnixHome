@@ -34,26 +34,6 @@
 (setq user-mail-address "james@burleyarch.com")
 (setq global-mark-ring-max 200)
 
-; If not already in keymap and/or bound, add ability to "git push" to
-; keymap, bound to 'vc-push, and to "Tools | Version Control" menu.
-(if (not (fboundp 'vc-push))
-    (defun vc-push ()
-      "Do a git push"
-      (interactive)
-      (async-shell-command "git push")))
-(when (not (fboundp (global-key-binding (kbd "C-x v P"))))
-  (global-set-key (kbd "C-x v P") 'vc-push)
-  (define-key-after
-    (lookup-key global-map [menu-bar tools vc])
-    [vc-push]
-    '("Push to upstream" . vc-push)
-    'vc-revert))
-
-; Find git and git bash.
-(when (memq system-type '(windows-nt ms-dos))
-  (add-to-list 'exec-path "/Program Files/git/bin")
-  (setenv "PATH" (mapconcat #'identity exec-path path-separator)))
-
 ; Stuff I've always done in the past:
 
 (setq visible-bell t)
@@ -65,12 +45,20 @@
 
 (setq-default indent-tabs-mode nil)
 (put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
 (global-set-key (kbd "C-c w") 'compare-windows)
 
+(global-set-key (kbd "C-M-x") 'compile)
+
+(global-set-key (kbd "C-x p") (lambda ()
+				(interactive)  ; previous window
+				(other-window -1)))
+
 ; Try a buncha stuff from https://github.com/flyingmachine/emacs-for-clojure/blob/master/init.el:
 
-(unless (< emacs-major-version 24)
+(unless (or (not (getenv "UNIXHOME"))  ; Perhaps running under sudo?
+            (< emacs-major-version 24))
   (load (concat (getenv "UNIXHOME") "/.emacs.d/craig/packages.el")))
 
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
@@ -86,57 +74,11 @@
 ;; a .yml file
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
-; Clojure stuff:
-
-; Display Clojure function signatures in minibuffer while typing in REPL:
-(add-hook 'cider-repl-mode-hook #'eldoc-mode)
-; Set result prefix for REPL:
-(setq cider-repl-result-prefix ";; => ")
-; Use company-mode for completion (very nice!):
-(if (boundp 'global-company-mode)
-    (global-company-mode t))
-; Try new-ish feature that supports TAB completion or manual indent:
-(global-set-key (kbd "TAB") #'company-indent-or-complete-common)
-; Enable fuzzy candidate matching for company-mode:
-(add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
-(add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
-; Don't auto-select *cider-error* on error:
-(setq cider-auto-select-error-buffer nil)
-
-;; Enable paredit for Clojure
-(add-hook 'clojure-mode-hook 'enable-paredit-mode)
-
-;; Where to store the cider history.
-(setq cider-repl-history-file "~/.emacs.d/cider-history")
-
-;; enable paredit in your REPL
-(add-hook 'cider-repl-mode-hook 'paredit-mode)
-
-;; provides minibuffer documentation for the code you're typing into the repl
-; See for why not 'cider-turn-on-eldoc-mode: https://github.com/clojure-emacs/cider/issues/934
-(add-hook 'cider-mode-hook 'eldoc-mode)
-
-;; I've been typing this accidentally too often, and it typically
-;; wedges my session (it's bound to cider-eval-region, and the region
-;; is typically quite large and includes many expressions).
-(add-hook 'cider-repl-mode-hook
-          (lambda()
-            (local-unset-key (kbd "C-c C-r"))))
-
-;Use these only when working on clojure-mode itself:
-;(load-file "~/clojure/clojure-mode/clojure-mode.el")
-;(load-file "~/clojure/clojure-mode/clojure-mode-extra-font-locking.el")
-
-; End Clojure stuff.
-
-
-(put 'narrow-to-region 'disabled nil)
-
-(global-set-key (kbd "C-M-x") 'compile)
-
-(global-set-key (kbd "C-x p") (lambda ()
-				(interactive)  ; previous window
-				(other-window -1)))
+;; Other stuff for use only when logged-in as 'craig' (or any account
+;; that defines $UNIXHOME):
+(when (getenv "UNIXHOME")
+  (load (concat (getenv "UNIXHOME") "/.emacs.d/craig/clojure.el"))
+  (load (concat (getenv "UNIXHOME") "/.emacs.d/craig/git.el")))
 
 (load custom-file t)  ; No error if file doesn't exist.
 
