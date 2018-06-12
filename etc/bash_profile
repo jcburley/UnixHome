@@ -25,6 +25,10 @@ done
 
 export PATH
 
+if [ -d /var/qmail/man ]; then
+    export MANPATH="$MANPATH:/var/qmail/man"  # Empty before ':' means use config, so this is okay.
+fi
+
 # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
 # definitions including $SHLVL. NOTE: __git_ps1 rewrites $PS1!!
 export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
