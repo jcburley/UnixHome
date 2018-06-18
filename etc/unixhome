@@ -6,7 +6,7 @@
 # source-controlled) "unix home" found, or that unix home.
 
 if [ -z "$1" ] && [ -n "$2" ]; then
-    for c in ~/github/UnixHome ~/GitHub/UnixHome; do
+    for c in ~/github/UnixHome; do
         if [ -d "$c" ]; then
             echo "$c"
             exit 0
