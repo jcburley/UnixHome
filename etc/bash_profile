@@ -41,3 +41,9 @@ export GIT_PS1_SHOWSTASHSTATE=t
 export GIT_PS1_SHOWUPSTREAM="verbose"
 
 export GITBASE=git@github.com:jcburley
+
+if [ -d /usr/local/go -a -d "$HOME/.go" ]; then
+    export GOROOT=/usr/local/go
+    export GOPATH=$HOME/.go
+    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+fi
