@@ -4,7 +4,7 @@ export BASH_PROFILE_HAS_RUN=true
 
 export UNIXHOME=$(~/.unixhome "$UNIXHOME" "$PS1")
 
-[ -d "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
+[ -f "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
 
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
 [ -f ~/.profile ] && . ~/.profile
