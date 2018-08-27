@@ -1,0 +1,4 @@
+function not_in_path()
+{
+    ! echo "$2" | tr ":" "\n" | grep -qxF "$1"
+}
