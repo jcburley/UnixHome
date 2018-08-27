@@ -4,6 +4,8 @@ export BASH_PROFILE_HAS_RUN=true
 
 export UNIXHOME=$(~/.unixhome "$UNIXHOME" "$PS1")
 
+[ -d "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
+
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
 [ -f ~/.profile ] && . ~/.profile
 
@@ -22,7 +24,7 @@ fi
 PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"
 
 for pd in $PATHDIRS; do
-    [ -d $pd ] && PATH=$PATH:$pd
+    [ -d "$pd" ] && not_in_path "$pd" "$PATH" && PATH=$PATH:$pd
 done
 
 export PATH
@@ -42,8 +44,12 @@ export GIT_PS1_SHOWUPSTREAM="verbose"
 
 export GITBASE=git@github.com:jcburley
 
-if [ -d /usr/local/go -a -d "$HOME/.go" ]; then
+# GoLang
+if [ -d /usr/local/go ]; then
     export GOROOT=/usr/local/go
+    not_in_path "$GOROOT/bin" "$PATH" && export PATH=$PATH:$GOROOT/bin
+fi
+if [ -d "$HOME/.go" ]; then
     export GOPATH=$HOME/.go
-    export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+    not_in_path "$GOPATH/bin" "$PATH" && export PATH=$PATH:$GOPATH/bin
 fi
