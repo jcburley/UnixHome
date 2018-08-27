@@ -29,7 +29,7 @@ done
 
 export PATH
 
-if [ -d /var/qmail/man ]; then
+if [ -d /var/qmail/man ] && not_in_path "/var/qmail/man" "$MANPATH"; then
     export MANPATH="$MANPATH:/var/qmail/man"  # Empty before ':' means use config, so this is okay.
 fi
 
