@@ -36,3 +36,5 @@
 ;Use these only when working on clojure-mode itself:
 ;(load-file "~/clojure/clojure-mode/clojure-mode.el")
 ;(load-file "~/clojure/clojure-mode/clojure-mode-extra-font-locking.el")
+
+(add-to-list 'auto-mode-alist '("\\.joker\\'" . clojure-mode))
