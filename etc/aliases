@@ -23,3 +23,5 @@ alias gitstat='git status -unormal'
 alias gitnbr='git checkout -b'
 alias gitmast='git checkout master'
 alias gitdiff='git diff'
+
+alias path='echo $PATH | tr ":" "\n"'
