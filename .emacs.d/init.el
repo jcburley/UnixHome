@@ -34,6 +34,14 @@
   (add-hook 'kill-emacs-query-functions
 	    'custom-prompt-customize-unsaved-options))
 
+;; Even if no file-backed buffers have unsaved modifications, no
+;; running shells exist, etc., prompt anyway, in case a 'git commit'
+;; (or similar) is in progress, as these aren't necessarily
+;; file-backed. (On Macs, I've accidentally done Cmd-Q instead of
+;; Alt-Q, in the middle of writing such commit messages, several
+;; times.)
+(setq confirm-kill-emacs (quote yes-or-no-p))
+
 (setq user-full-name "James Craig Burley")
 (setq user-mail-address "james@burleyarch.com")
 (setq global-mark-ring-max 200)
