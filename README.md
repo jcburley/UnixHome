@@ -37,7 +37,7 @@ Either of these:
 
 # After Cloning Me
 ```
-$ cd ~/github/UnixHome/.Setup
+$ cd ~/github/UnixHome/Setup
 $ ./git
 $ ./bash
 $ ./emacs
