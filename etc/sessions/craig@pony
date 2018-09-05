@@ -1,0 +1,2 @@
+PATH=$(path --prepend /usr/local/opt/coreutils/libexec/gnubin)
+MANPATH=$(path "$MANPATH" --prepend /usr/local/opt/coreutils/libexec/gnuman)

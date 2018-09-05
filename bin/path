@@ -2,11 +2,33 @@
 
 if [ "$1" = "--help" -o "$1" = "-h" ]
 then
-    echo >&2 "Usage: path [<pathlist>] [--has <element>]"
-    echo >&2 "  Where <pathlist> is e.g. \$MANPATH (default is \$PATH), and"
-    echo >&2 "  --has <element> means to return success only if <element>"
-    echo >&2 "  appears in <pathlist> (default is to print all elements, one"
-    echo >&2 "  per line)."
+    cat <<EOF
+Usage: path [<pathlist>] [<directive>]
+  Where <pathlist> is e.g. \$MANPATH (default is \$PATH), and
+  <directive> is one of:
+
+    --has <element>
+      return success only if <element> appears in <pathlist>
+
+    --prepend <element>
+      prints <pathlist> with <element> prepended, if it's not
+      already there; otherwise prints it unmodified
+
+    --append <element>
+      prints <pathlist> with <element> appended, if it's not
+      already there; otherwise prints it unmodified
+
+    --remove <element>
+      prints <pathlist> with <element> removed, if it's there;
+      otherwise prints it unmodified
+
+  The default is to print all elements, one per line.
+
+  Sample usage, to ensure ~/bin is at the front of \$PATH
+  without duplicating it:
+
+   export PATH=\$(path \$(path --remove ~/bin) --prepend ~/bin)
+EOF
     exit 99
 fi
 
@@ -18,7 +40,25 @@ else
     shift
 fi
 
-if [ "$1" = "--has" -a -n "$2" ]
+if [ "$1" = "--prepend" -a -n "$2" ]
+then
+    SENDTO=prepend
+    E="$2"
+    shift
+    shift
+elif [ "$1" = "--append" -a -n "$2" ]
+then
+    SENDTO=append
+    E="$2"
+    shift
+    shift
+elif [ "$1" = "--remove" -a -n "$2" ]
+then
+    SENDTO=remove
+    E="$2"
+    shift
+    shift
+elif [ "$1" = "--has" -a -n "$2" ]
 then
     SENDTO="grep -qxF $2"
     shift
@@ -32,5 +72,32 @@ then
     echo >&2 "Excess arguments beginning with: $1"
     exit 98
 fi
+
+case "$SENDTO" in
+    prepend)
+        if echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
+        then
+            echo "$P"
+        else
+            echo "${E}${P:+:${P}}"
+        fi
+        exit 0
+    ;;
+    append)
+        if echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
+        then
+            echo "$P"
+        else
+            echo "${P:+${P}:}${E}"
+        fi
+        exit 0
+    ;;
+    remove)
+        echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -v ":${E}:" | sed -e 's@:@@g' | tr "\n" : | sed -e 's@:$@@'
+        exit 0
+    ;;
+    *)
+    ;;
+esac
 
 echo "$P" | tr : "\n" | $SENDTO

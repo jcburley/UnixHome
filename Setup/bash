@@ -2,14 +2,24 @@
 
 UNIXHOME=~/.unixhome
 
-[ "$(readlink ${UNIXHOME})" = "$(dirname $(pwd))" ] || ln --backup=t --no-target-directory -sfv "$(dirname $(pwd))" ${UNIXHOME}
+if ln --help > /dev/null 2>&1; then
+    LN=ln
+else
+    LN=gln
+    if ! $LN --help > /dev/null 2>&1; then
+        echo >&2 "ERROR: please install GNU coreutils first, so 'gln' invokes GNU 'ln'."
+        exit 99
+    fi
+fi
+
+[ "$(readlink ${UNIXHOME})" = "$(dirname $(pwd))" ] || $LN --backup=t --no-target-directory -sfv "$(dirname $(pwd))" ${UNIXHOME}
 
 if [ -f ~/.bashrc ]; then
     if ! grep -qi unixhome ~/.bashrc; then
 	cat ${UNIXHOME}/etc/my-bashrc >> ~/.bashrc
     fi
 else
-    ln -sv ${UNIXHOME}/etc/bashrc ~/.bashrc
+    $LN -sv ${UNIXHOME}/etc/bashrc ~/.bashrc
 fi
 
 if [ -f ~/.profile ]; then
@@ -17,7 +27,7 @@ if [ -f ~/.profile ]; then
         cat ${UNIXHOME}/etc/my-profile >> ~/.profile
     fi
 else
-    ln -sv ${UNIXHOME}/etc/profile ~/.profile
+    $LN -sv ${UNIXHOME}/etc/profile ~/.profile
 fi
 
-cmp -s ${UNIXHOME}/etc/bash_profile ~/.bash_profile || ln --backup=t -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile
+cmp -s ${UNIXHOME}/etc/bash_profile ~/.bash_profile || $LN --backup=t -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile

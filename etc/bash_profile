@@ -14,13 +14,6 @@ if [ -z "$BASHRC_HAS_RUN" ] && [ -f $HOME/.bashrc ]; then
     source $HOME/.bashrc
 fi
 
-# Use Emacs if installed. (Git bash which does not support -s.)
-if which emacs >/dev/null 2>&1; then
-    export EDITOR=emacs
-    export GIT_EDITOR=emacs
-    export VISUAL=emacs
-fi
-
 PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"
 
 for pd in $PATHDIRS; do
@@ -33,14 +26,23 @@ if [ -d /var/qmail/man ] && ! path "$MANPATH" --has /var/qmail/man; then
     export MANPATH="$MANPATH:/var/qmail/man"  # Empty before ':' means use config, so this is okay.
 fi
 
-# Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
-# definitions including $SHLVL. NOTE: __git_ps1 rewrites $PS1!!
-export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
-export PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
+if [ -n "$PS1" ]; then
+    # Use Emacs if installed. (Git bash which does not support -s.)
+    if which emacs >/dev/null 2>&1; then
+        export EDITOR=emacs
+        export GIT_EDITOR=emacs
+        export VISUAL=emacs
+    fi
 
-export GIT_PS1_SHOWDIRTYSTATE=t
-export GIT_PS1_SHOWSTASHSTATE=t
-export GIT_PS1_SHOWUPSTREAM="verbose"
+    # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
+    # definitions including $SHLVL. NOTE: __git_ps1 rewrites $PS1!!
+    export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+    export PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
+
+    export GIT_PS1_SHOWDIRTYSTATE=t
+    export GIT_PS1_SHOWSTASHSTATE=t
+    export GIT_PS1_SHOWUPSTREAM="verbose"
+fi
 
 export GITBASE=git@github.com:jcburley
 
@@ -53,3 +55,7 @@ if [ -d "$HOME/.go" ]; then
     export GOPATH=$HOME/.go
     path --has "$GOPATH/bin" || export PATH=$PATH:$GOPATH/bin
 fi
+
+# Pull in per-session profile, if any:
+PSP=~/.unixhome/sessions/${USER}@$(hostname)
+[ -f $PSP/profile ] && . $PSP/profile
