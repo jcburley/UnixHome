@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ "$1" = "--help" -o "$1" = "-h" ]
+then
+    echo >&2 "Usage: path [<pathlist>] [--has <element>]"
+    echo >&2 "  Where <pathlist> is e.g. \$MANPATH (default is \$PATH), and"
+    echo >&2 "  --has <element> means to return success only if <element>"
+    echo >&2 "  appears in <pathlist> (default is to print all elements, one"
+    echo >&2 "  per line)."
+    exit 99
+fi
+
+if [[ $# -eq 0 || "$1" = -* ]]
+then
+    P="$PATH"
+else
+    P="$1"
+    shift
+fi
+
+if [ "$1" = "--has" -a -n "$2" ]
+then
+    SENDTO="grep -qxF $2"
+    shift
+    shift
+else
+    SENDTO=cat
+fi
+
+if [ $# -gt 0 ]
+then
+    echo >&2 "Excess arguments beginning with: $1"
+    exit 98
+fi
+
+echo "$P" | tr : "\n" | $SENDTO

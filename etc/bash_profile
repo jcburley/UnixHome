@@ -24,12 +24,12 @@ fi
 PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"
 
 for pd in $PATHDIRS; do
-    [ -d "$pd" ] && not_in_path "$pd" "$PATH" && PATH=$PATH:$pd
+    [ -d "$pd" ] && ! path --has "$pd" && PATH=$PATH:$pd
 done
 
 export PATH
 
-if [ -d /var/qmail/man ] && not_in_path "/var/qmail/man" "$MANPATH"; then
+if [ -d /var/qmail/man ] && ! path "$MANPATH" --has /var/qmail/man; then
     export MANPATH="$MANPATH:/var/qmail/man"  # Empty before ':' means use config, so this is okay.
 fi
 
@@ -47,9 +47,9 @@ export GITBASE=git@github.com:jcburley
 # GoLang
 if [ -d /usr/local/go ]; then
     export GOROOT=/usr/local/go
-    not_in_path "$GOROOT/bin" "$PATH" && export PATH=$PATH:$GOROOT/bin
+    path --has "$GOROOT/bin" || export PATH=$PATH:$GOROOT/bin
 fi
 if [ -d "$HOME/.go" ]; then
     export GOPATH=$HOME/.go
-    not_in_path "$GOPATH/bin" "$PATH" && export PATH=$PATH:$GOPATH/bin
+    path --has "$GOPATH/bin" || export PATH=$PATH:$GOPATH/bin
 fi

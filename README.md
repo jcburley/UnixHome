@@ -41,6 +41,9 @@ $ cd ~/github/UnixHome/Setup
 $ ./git
 $ ./bash
 $ ./emacs
+$ cd ../bin
+$ sudo make install
+$
 ```
 
 # Sanity-check
