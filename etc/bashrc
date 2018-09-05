@@ -16,28 +16,29 @@ export BASHRC_HAS_RUN=true
 
 # Set up environment variables, if not already done.
 if [ -z "$BASH_PROFILE_HAS_RUN" ] && [ -f $HOME/.bash_profile ]; then
-    source $HOME/.bash_profile
+    . $HOME/.bash_profile
     export BASH_PROFILE_HAS_RUN=true  # Just in case it isn't our .bash_profile.
 fi
 
-export UNIXHOME=$(~/.unixhome "$UNIXHOME" "$PS1")
+export UNIXHOME=~/.unixhome
 
-if [ -n "${UNIXHOME}" ]; then
+# Set up interactive capabilities.
+if [ -n "$PS1" ]; then
     ALIASFILE=${UNIXHOME}/etc/aliases
-    [ -r ${ALIASFILE} ] && source ${ALIASFILE}
+    [ -r ${ALIASFILE} ] && . ${ALIASFILE}
 
     # Load all autocompletions if any are installed
     AUTOCOMPDIR=${UNIXHOME}/etc/bash_completion.d/
     if [ -d "${AUTOCOMPDIR}" ]; then
         for F in "${AUTOCOMPDIR}"*; do
             if [ -f "${F}" ]; then
-                source "${F}"
+                . "${F}"
             fi
         done
     fi
 
     # Get git goodness in prompts by first defining __git_ps1.
-    [ -f ${UNIXHOME}/etc/git-prompt.sh ] && source ${UNIXHOME}/etc/git-prompt.sh
+    [ -f ${UNIXHOME}/etc/git-prompt.sh ] && . ${UNIXHOME}/etc/git-prompt.sh
 
     # If .bash_profile is calling this script, it'll afterwards overwrite
     # these two vars, so the "bash" shell doesn't display $SHLVL.

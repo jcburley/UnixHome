@@ -1,0 +1,9 @@
+# set PATH so it includes user's private bin if it exists
+
+UNIXHOME=~/.unixhome
+
+[ -r "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
+
+if [ -d "$HOME/bin" ] && not_in_path "$HOME/bin" "$PATH"; then
+    PATH="$HOME/bin:$PATH"
+fi

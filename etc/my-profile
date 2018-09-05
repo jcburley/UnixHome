@@ -1,0 +1,4 @@
+
+# Pull in per-session profile, if any:
+PSP=~/.unixhome/sessions/${USER}@$(hostname)
+[ -f $PSP/profile ] && . $PSP/profile

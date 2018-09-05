@@ -1,0 +1,23 @@
+#!/bin/bash
+
+UNIXHOME=~/.unixhome
+
+[ "$(readlink ${UNIXHOME})" = "$(dirname $(pwd))" ] || ln --backup=t --no-target-directory -sfv "$(dirname $(pwd))" ${UNIXHOME}
+
+if [ -f ~/.bashrc ]; then
+    if ! grep -qi unixhome ~/.bashrc; then
+	cat ${UNIXHOME}/etc/my-bashrc >> ~/.bashrc
+    fi
+else
+    ln -sv ${UNIXHOME}/etc/bashrc ~/.bashrc
+fi
+
+if [ -f ~/.profile ]; then
+    if ! grep -qi unixhome ~/.profile; then
+        cat ${UNIXHOME}/etc/my-profile >> ~/.profile
+    fi
+else
+    ln -sv ${UNIXHOME}/etc/profile ~/.profile
+fi
+
+cmp -s ${UNIXHOME}/etc/bash_profile ~/.bash_profile || ln --backup=t -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile

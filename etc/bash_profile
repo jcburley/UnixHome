@@ -2,7 +2,7 @@
 
 export BASH_PROFILE_HAS_RUN=true
 
-export UNIXHOME=$(~/.unixhome "$UNIXHOME" "$PS1")
+export UNIXHOME=~/.unixhome
 
 [ -f "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
 
