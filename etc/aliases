@@ -29,5 +29,3 @@ alias gitpend='git diff origin'
 alias gitup='git push'
 alias gitmast='git checkout master'
 function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; git branch -D "$1"; git push origin --delete "$1"; }
-
-alias path='echo "$PATH" | tr ":" "\n"'
