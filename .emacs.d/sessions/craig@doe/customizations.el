@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (go-mode use-package rainbow-delimiters paredit company clojure-mode-extra-font-locking cider))))
+    (markdown-mode go-mode use-package rainbow-delimiters paredit company clojure-mode-extra-font-locking cider))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
