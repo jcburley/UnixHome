@@ -27,15 +27,15 @@ export PATH
 # it has certain canonical directories.
 
 if [ -r /etc/man.conf -o -r /etc/manpath.config ]; then
-    MANPATH="$(path \"$MANPATH\" --prepend '')"
+    MANPATH="$(eval path \"$MANPATH\" --prepend \"\")"
 else
     for d in /usr/man /usr/local/man /usr/share/man /usr/local/share/man /usr/X11/man /usr/X11R6/man /opt/man; do
-        [ -d "$d" ] && MANPATH="$(path \"$MANPATH\" --append \"$d\")"
+        [ -d "$d" ] && MANPATH="$(eval path \"$MANPATH\" --append \"$d\")"
     done
 fi
 
 if [ -d /var/qmail/man ]; then
-    MANPATH="$(path \"$MANPATH\" --append /var/qmail/man)"
+    MANPATH="$(eval path \"$MANPATH\" --append /var/qmail/man)"
 fi
 
 export MANPATH
