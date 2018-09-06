@@ -13,7 +13,7 @@ My $HOME directory for Unixy OSes
     `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep emacs`
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
-- Edit `~/.profile` to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs
+- Edit `~/.profile` to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs (see $UNIXHOME/etc/sessions/craig@pony for an example)
 - Make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
   - `sudo scutil --set HostName xxx`
   - `sudo scutil --set LocalHostName xxx`
