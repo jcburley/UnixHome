@@ -1,8 +1,21 @@
 #!/bin/bash
 
+[ -r ~/.debug-profiles ] && echo "$0: bash_profile: running" && env
+
 export BASH_PROFILE_HAS_RUN=true
 
 export UNIXHOME=~/.unixhome
+
+# Ensure 'path' utility is in $PATH.
+if ! which path >/dev/null; then
+    for d in /usr/local/bin; do
+        [ -x "$d/path" ] && PATH="${d}${PATH:+:${PATH}}"
+    done
+    if ! which path >/dev/null; then
+        echo >&2 "$0: $UNIXHOME/etc/bash_profile: ERROR: 'path' utility not in \$PATH"
+        exit 99
+    fi
+fi
 
 [ -f "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
 
@@ -71,5 +84,5 @@ if [ -d "$HOME/.go" ]; then
 fi
 
 # Pull in per-session profile, if any:
-PSP=~/.unixhome/sessions/${USER}@$(hostname)
+PSP=~/.unixhome/etc/sessions/${USER}@$(hostname)
 [ -f $PSP/profile ] && . $PSP/profile
