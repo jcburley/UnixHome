@@ -3,7 +3,17 @@
 # Note that AquaMacs does not read ~/.emacs.d/init.el, so maybe make a
 # symlink to that from ~/.emacs.
 
+if ln --help > /dev/null 2>&1; then
+    LN=ln
+else
+    LN=gln
+    if ! $LN --help > /dev/null 2>&1; then
+        echo >&2 "ERROR: please install GNU coreutils first, so 'gln' invokes GNU 'ln'."
+        exit 99
+    fi
+fi
+
 mkdir -p ~/.emacs.d
 for f in init.el; do
-    ln --backup=t -sv ~/github/UnixHome/.emacs.d/$f ~/.emacs.d/$f
+    $LN --backup=t -sv ~/github/UnixHome/.emacs.d/$f ~/.emacs.d/$f
 done

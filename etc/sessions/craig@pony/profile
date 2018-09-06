@@ -1,0 +1,6 @@
+#!/bin/sh
+
+[ -r ~/.debug-profiles ] && echo "$0: craig@pony/profile: running" && env
+
+PATH=$(path --prepend /usr/local/opt/coreutils/libexec/gnubin)
+MANPATH=$(path "$MANPATH" --prepend /usr/local/opt/coreutils/libexec/gnuman)

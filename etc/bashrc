@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -r ~/.debug-profiles ] && echo "$0: bashrc: running" && env
+
 # 'ssh craig@bear <command>' runs ~/.bashrc, not ~/.bash_profile, so
 # $UNIXHOME will not be defined. 'ssh craig@bear' (no <command>)
 # creates a login session, so ~/.bash_profile is read. (This was
@@ -15,7 +17,7 @@
 export BASHRC_HAS_RUN=true
 
 # Set up environment variables, if not already done.
-if [ -z "$BASH_PROFILE_HAS_RUN" ] && [ -f $HOME/.bash_profile ]; then
+if [ -z "$BASH_PROFILE_HAS_RUN" -a -f $HOME/.bash_profile -a -n "$BASH_VERSION" ]; then
     . $HOME/.bash_profile
     export BASH_PROFILE_HAS_RUN=true  # Just in case it isn't our .bash_profile.
 fi

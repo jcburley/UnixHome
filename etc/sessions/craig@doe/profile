@@ -4,6 +4,6 @@ UNIXHOME=~/.unixhome
 
 [ -r "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
 
-if [ -d "$HOME/bin" ] && not_in_path "$HOME/bin" "$PATH"; then
+if [ -d "$HOME/bin" ] && ! path --has "$HOME/bin"; then
     PATH="$HOME/bin:$PATH"
 fi

@@ -1,0 +1,102 @@
+#!/bin/bash
+
+if [ "$1" = "--help" -o "$1" = "-h" ]
+then
+    cat <<EOF
+Usage: path [<pathlist>] [<directive>]
+  Where <pathlist> is e.g. \$MANPATH (default is \$PATH), and
+  <directive> is one of:
+
+    --has <element>
+      return success only if <element> appears in <pathlist>
+
+    --prepend <element>
+      prints <pathlist> with <element> prepended, if it's not
+      already there; otherwise prints it unmodified
+
+    --append <element>
+      prints <pathlist> with <element> appended, if it's not
+      already there; otherwise prints it unmodified
+
+    --remove <element>
+      prints <pathlist> with <element> removed, if it's there;
+      otherwise prints it unmodified
+
+  The default is to print all elements, one per line.
+
+  Sample usage, to ensure ~/bin is at the front of \$PATH
+  without duplicating it:
+
+   export PATH=\$(path \$(path --remove ~/bin) --prepend ~/bin)
+EOF
+    exit 99
+fi
+
+if [[ $# -eq 0 || "$1" = -* ]]
+then
+    P="$PATH"
+else
+    P="$1"
+    shift
+fi
+
+if [ "$1" = "--prepend" -a $# -ge 2 ]
+then
+    SENDTO=prepend
+    E="$2"
+    shift 2
+elif [ "$1" = "--append" -a $# -ge 2 ]
+then
+    SENDTO=append
+    E="$2"
+    shift 2
+elif [ "$1" = "--remove" -a $# -ge 2 ]
+then
+    SENDTO=remove
+    E="$2"
+    shift 2
+elif [ "$1" = "--has" -a $# -ge 2 ]
+then
+    SENDTO="grep -qxF $2"
+    shift 2
+else
+    SENDTO=cat
+fi
+
+if [ $# -gt 0 ]
+then
+    echo >&2 "Excess arguments beginning with: $1"
+    exit 98
+fi
+
+case "$SENDTO" in
+    prepend)
+        if echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
+        then
+            echo "$P"
+        else
+            echo "${E}${P:+:${P}}"
+        fi
+        exit 0
+    ;;
+    append)
+        if echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
+        then
+            echo "$P"
+        else
+            echo "${P:+${P}:}${E}"
+        fi
+        exit 0
+    ;;
+    remove)
+        # "-e 'a\'" at the end appends a newline, which GNU sed 4.5
+        # doesn't automatically add, like BSD sed (on OSX anyway)
+        # does.
+        echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -v ":${E}:" | sed -e 's@:@@g' | tr "\n" : | sed -e 's@:$@@' -e 'a\'
+        exit 0
+    ;;
+    *)
+    ;;
+esac
+
+echo "$P" | tr : "\n" | $SENDTO
