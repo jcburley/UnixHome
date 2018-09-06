@@ -44,25 +44,21 @@ if [ "$1" = "--prepend" -a -n "$2" ]
 then
     SENDTO=prepend
     E="$2"
-    shift
-    shift
+    shift 2
 elif [ "$1" = "--append" -a -n "$2" ]
 then
     SENDTO=append
     E="$2"
-    shift
-    shift
+    shift 2
 elif [ "$1" = "--remove" -a -n "$2" ]
 then
     SENDTO=remove
     E="$2"
-    shift
-    shift
+    shift 2
 elif [ "$1" = "--has" -a -n "$2" ]
 then
     SENDTO="grep -qxF $2"
-    shift
-    shift
+    shift 2
 else
     SENDTO=cat
 fi
