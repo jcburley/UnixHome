@@ -73,6 +73,10 @@ fi
 
 export GITBASE=git@github.com:jcburley
 
+export CDPATH=$(eval path \"\" --prepend .)
+CDPATH=$(eval path \"$CDPATH\" --append ~/github)
+CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
+
 # GoLang
 if [ -d /usr/local/go ]; then
     export GOROOT=/usr/local/go
@@ -81,6 +85,8 @@ fi
 if [ -d "$HOME/.go" ]; then
     export GOPATH=$HOME/.go
     PATH=$(path --append $GOPATH/bin)
+    CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com/jcburley)
+    CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com)
 fi
 
 # Pull in per-session profile, if any:
