@@ -1,0 +1,3 @@
+#!/bin/bash
+
+PATH=$(path -append /c/MinGw/bin)
