@@ -7,12 +7,13 @@ export BASH_PROFILE_HAS_RUN=true
 export UNIXHOME=~/.unixhome
 
 # Ensure 'path' utility is in $PATH.
-if ! which path >/dev/null; then
+if ! which path >/dev/null 2>&1; then
     for d in /usr/local/bin; do
         [ -x "$d/path" ] && PATH="${d}${PATH:+:${PATH}}"
     done
-    if ! which path >/dev/null; then
+    if ! which path >/dev/null 2>&1; then
         echo >&2 "$0: $UNIXHOME/etc/bash_profile: ERROR: 'path' utility not in \$PATH"
+        sleep 10  # So Windows shows the error before the window closes
         exit 99
     fi
 fi
