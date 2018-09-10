@@ -15,5 +15,5 @@ fi
 
 mkdir -p ~/.emacs.d
 for f in init.el; do
-    [ "$(readlink ~/.emacs.d/$f)" = "~/github/UnixHome/.emacs.d/$f" ] || $LN --backup=t -sv "~/github/UnixHome/.emacs.d/$f" "~/.emacs.d/$f"
+    [ "$(readlink ${HOME}/.emacs.d/$f)" = "${HOME}/github/UnixHome/.emacs.d/$f" ] || $LN --backup=t -sv "${HOME}/github/UnixHome/.emacs.d/$f" "${HOME}/.emacs.d/$f"
 done
