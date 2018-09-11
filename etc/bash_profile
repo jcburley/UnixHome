@@ -40,6 +40,9 @@ export PATH
 # begins with a colon, which means use the config.  Otherwise, ensure
 # it has certain canonical directories.
 
+# Per 'brew install bash-completion' on Mac OS X:
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
 if [ -r /etc/man.conf -o -r /etc/manpath.config ]; then
     MANPATH="$(eval path \"$MANPATH\" --prepend \"\")"
 else
