@@ -64,6 +64,14 @@ if [ -n "$PS1" ]; then
         export VISUAL=emacs
     fi
 
+    # Taken from /usr/share/bash-completion/bash_completion on my
+    # Ubuntu 16.04 system, substituting "pushd" for "cd":
+    if shopt -q cdable_vars; then
+        complete -v -F _cd -o nospace pushd
+    else
+        complete -F _cd -o nospace pushd
+    fi
+
     # Don't export CDPATH, and set it only for interactive sessions, per:
     #   https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
     CDPATH=$(eval path \"\" --prepend .)
