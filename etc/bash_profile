@@ -52,6 +52,8 @@ if [ -d /var/qmail/man ]; then
     MANPATH="$(eval path \"$MANPATH\" --append /var/qmail/man)"
 fi
 
+export GITBASE=git@github.com:jcburley
+
 export MANPATH
 
 if [ -n "$PS1" ]; then
@@ -61,6 +63,12 @@ if [ -n "$PS1" ]; then
         export GIT_EDITOR=emacs
         export VISUAL=emacs
     fi
+
+    # Don't export CDPATH, and set it only for interactive sessions, per:
+    #   https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
+    CDPATH=$(eval path \"\" --prepend .)
+    CDPATH=$(eval path \"$CDPATH\" --append ~/github)
+    CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
 
     # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
     # definitions including $SHLVL. NOTE: __git_ps1 rewrites $PS1!!
@@ -72,12 +80,6 @@ if [ -n "$PS1" ]; then
     export GIT_PS1_SHOWUPSTREAM="verbose"
 fi
 
-export GITBASE=git@github.com:jcburley
-
-export CDPATH=$(eval path \"\" --prepend .)
-CDPATH=$(eval path \"$CDPATH\" --append ~/github)
-CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
-
 # GoLang
 if [ -d /usr/local/go ]; then
     export GOROOT=/usr/local/go
@@ -85,10 +87,14 @@ if [ -d /usr/local/go ]; then
 fi
 if [ -d "$HOME/.go" ]; then
     export GOPATH=$HOME/.go
-    export GOBIN=$GOPATH/bin
+    export GOBIN="$GOPATH"/bin
     PATH=$(path --append $GOPATH/bin)
-    CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com/jcburley)
-    CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com)
+    if [ -n "$PS1" ]; then
+        for d in "$GOPATH"/src/github.com/*; do
+            CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
+        done
+        CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com)
+    fi
 fi
 
 # Pull in per-session profile, if any:
