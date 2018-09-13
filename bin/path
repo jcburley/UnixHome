@@ -71,18 +71,30 @@ fi
 
 case "$SENDTO" in
     prepend)
-        if echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
+        if [ -z "$E$P" ]
+        then
+            echo ":"  # Prepend empty element to empty path (e.g. /etc/manpath.config)
+        elif echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
         then
             echo "$P"
+        elif [[ "$P" =~ ^: ]]
+        then
+             echo "${E}${P}"
         else
             echo "${E}${P:+:${P}}"
         fi
         exit 0
     ;;
     append)
-        if echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
+        if [ -z "$P$E" ]
+        then
+            echo ":"  # Append empty element to empty path (e.g. /etc/manpath.config)
+        elif echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
         then
             echo "$P"
+        elif [[ "$P" =~ :$ ]]
+        then
+             echo "${P}${E}"
         else
             echo "${P:+${P}:}${E}"
         fi
