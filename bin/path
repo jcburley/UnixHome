@@ -77,7 +77,7 @@ case "$SENDTO" in
         elif echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
         then
             echo "$P"
-        elif [[ "$P" =~ ^: ]]
+        elif [ "$P" = ":" ]
         then
              echo "${E}${P}"
         else
@@ -92,7 +92,7 @@ case "$SENDTO" in
         elif echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
         then
             echo "$P"
-        elif [[ "$P" =~ :$ ]]
+        elif [ "$P" = ":" ]
         then
              echo "${P}${E}"
         else
