@@ -1,3 +1,6 @@
+(global-set-key (kbd "M-up") 'scroll-down-command)
+(global-set-key (kbd "M-down") 'scroll-up-command)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
