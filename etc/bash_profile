@@ -92,8 +92,11 @@ if [ -n "$PS1" ]; then
 fi
 
 # GoLang
-if [ -d /usr/local/go ]; then
-    export GOROOT=/usr/local/go
+if which go 2>/dev/null; then
+    export GOROOT=$(go env GOROOT)
+    PATH=$(path --append $GOROOT/bin)
+elif [ -d /usr/local/go ]; then
+    export GOROOT=$(/usr/local/go/bin/go env GOROOT)
     PATH=$(path --append $GOROOT/bin)
 fi
 if [ -d "$HOME/.go" ]; then
