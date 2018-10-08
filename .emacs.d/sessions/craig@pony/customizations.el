@@ -1,5 +1,7 @@
-(global-set-key (kbd "M-up") 'scroll-down-command)
-(global-set-key (kbd "M-down") 'scroll-up-command)
+(global-set-key (kbd "<M-up>") 'scroll-down-command)
+(global-set-key (kbd "<M-down>") 'scroll-up-command)
+(global-set-key (kbd "<s-up>") 'beginning-of-buffer)
+(global-set-key (kbd "<s-down>") 'end-of-buffer)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
