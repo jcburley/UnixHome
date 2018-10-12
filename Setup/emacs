@@ -27,9 +27,9 @@ mkdir -p ~/.emacs.d
 
 if [ -f ~/.init.el ]; then
     if ! grep -qi .unixhome/.emacs.d/init.el ~/.init.el; then
-	$TAIL -n +3 ${UNIXHOME}/.emacs.d/my-init.el >> ~/.init.el  # Skip package and subsequent lines.
-        echo "$0: appended my-init.el to ~/.init.el"
+	$TAIL -n +3 ~/.unixhome/.emacs.d/my-init.el >> ~/.emacs.d/init.el  # Skip package and subsequent lines.
+        echo "$0: appended my-init.el to ~/.emacs.d/init.el"
     fi
 else
-    $CP -v ${UNIXHOME}/.emacs.d/init.el ~/.init.el
+    $CP -v ~/.unixhome/etc/my-init.el ~/.emacs.d/init.el
 fi
