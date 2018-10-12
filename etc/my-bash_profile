@@ -1,0 +1,6 @@
+#!/bin/bash
+# The above and this line are excluded when appending this to an existing ~/.bash_profile.
+
+if [ -r ~/.unixhome/etc/bash_profile ]; then
+    . ~/.unixhome/etc/bash_profile
+fi

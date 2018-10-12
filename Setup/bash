@@ -2,32 +2,49 @@
 
 UNIXHOME=~/.unixhome
 
-if ln --help > /dev/null 2>&1; then
-    LN=ln
+if cp --help > /dev/null 2>&1; then
+    CP=cp
 else
-    LN=gln
-    if ! $LN --help > /dev/null 2>&1; then
-        echo >&2 "ERROR: please install GNU coreutils first, so 'gln' invokes GNU 'ln'."
+    CP=gcp
+    if ! $CP --help > /dev/null 2>&1; then
+        echo >&2 "ERROR: please install GNU coreutils first, so 'gcp' invokes GNU 'cp'."
         exit 99
     fi
 fi
 
-[ "$(readlink ${UNIXHOME})" = "$(dirname $(pwd))" ] || $LN --backup=t --no-target-directory -sfv "$(dirname $(pwd))" ${UNIXHOME}
+if tail --help > /dev/null 2>&1; then
+    TAIL=tail
+else
+    TAIL=gtail
+    if ! $TAIL --help > /dev/null 2>&1; then
+        echo >&2 "ERROR: please install GNU coreutils first, so 'tail' invokes GNU 'tail'."
+        exit 99
+    fi
+fi
 
 if [ -f ~/.bashrc ]; then
-    if ! grep -qi unixhome ~/.bashrc; then
-	cat ${UNIXHOME}/etc/my-bashrc >> ~/.bashrc
+    if ! grep -qi .unixhome/etc/bashrc ~/.bashrc; then
+	$TAIL -n +3 ${UNIXHOME}/etc/my-bashrc >> ~/.bashrc  # Skip hashbang and subsequent lines.
+        echo "$0: appended my-bashrc to ~/.bashrc"
     fi
 else
-    $LN -sv ${UNIXHOME}/etc/bashrc ~/.bashrc
+    $CP -v ${UNIXHOME}/etc/bashrc ~/.bashrc
+fi
+
+if [ -f ~/.bash_profile ]; then
+    if ! grep -qi .unixhome/etc/bash_profile ~/.bash_profile; then
+        $TAIL -n +3 ${UNIXHOME}/etc/my-bash_profile >> ~/.bash_profile  # Skip hashbang and subsequent lines.
+        echo "$0: appended my-bash_profile to ~/.bash_profile"
+    fi
+else
+    $CP -v ${UNIXHOME}/etc/bash_profile ~/.bash_profile
 fi
 
 if [ -f ~/.profile ]; then
-    if ! grep -qi unixhome ~/.profile; then
-        cat ${UNIXHOME}/etc/my-profile >> ~/.profile
+    if ! grep -qi .unixhome/etc/profile ~/.profile; then
+        $TAIL -n +3 ${UNIXHOME}/etc/my-profile >> ~/.profile  # Skip hashbang and subsequent lines.
+        echo "$0: appended my-profile to ~/.profile"
     fi
 else
-    $LN -sv ${UNIXHOME}/etc/profile ~/.profile
+    $CP -v ${UNIXHOME}/etc/profile ~/.profile
 fi
-
-cmp -s ${UNIXHOME}/etc/bash_profile ~/.bash_profile || $LN --backup=t -sv ${UNIXHOME}/etc/bash_profile ~/.bash_profile

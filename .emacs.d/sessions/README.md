@@ -1,4 +1,4 @@
-# UnixHome/.emacs.d/sessions/
+# ~/unixhome/.emacs.d/sessions/
 
 This directory has subdirectories with usernames, followed by '@',
 followed by names of ("pet", not "cattle") systems, in which things

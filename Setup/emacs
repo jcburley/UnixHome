@@ -13,7 +13,23 @@ else
     fi
 fi
 
+if cp --help > /dev/null 2>&1; then
+    CP=cp
+else
+    CP=gcp
+    if ! $CP --help > /dev/null 2>&1; then
+        echo >&2 "ERROR: please install GNU coreutils first, so 'gcp' invokes GNU 'cp'."
+        exit 99
+    fi
+fi
+
 mkdir -p ~/.emacs.d
-for f in init.el; do
-    [ "$(readlink ${HOME}/.emacs.d/$f)" = "${HOME}/github/UnixHome/.emacs.d/$f" ] || $LN --backup=t -sv "${HOME}/github/UnixHome/.emacs.d/$f" "${HOME}/.emacs.d/$f"
-done
+
+if [ -f ~/.init.el ]; then
+    if ! grep -qi .unixhome/.emacs.d/init.el ~/.init.el; then
+	$TAIL -n +3 ${UNIXHOME}/.emacs.d/my-init.el >> ~/.init.el  # Skip package and subsequent lines.
+        echo "$0: appended my-init.el to ~/.init.el"
+    fi
+else
+    $CP -v ${UNIXHOME}/.emacs.d/init.el ~/.init.el
+fi

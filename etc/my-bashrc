@@ -1,4 +1,6 @@
+#!/bin/bash
+# The above and this line are excluded when appending this to an existing ~/.bashrc.
 
-if [ -f ~/github/UnixHome/etc/bashrc ]; then
-    . ~/github/UnixHome/etc/bashrc
+if [ -r ~/.unixhome/etc/bashrc ]; then
+    . ~/.unixhome/etc/bashrc
 fi

@@ -65,7 +65,9 @@ fi
 
 if [ $# -gt 0 ]
 then
-    echo >&2 "Excess arguments beginning with: $1"
+    echo >&2 "$0: Excess arguments beginning with: $1"
+    echo >&2 "  Arguments are: $@"
+    echo "$P"  # Return what was passed in, unchanged, in case it's replacing e.g. PATH
     exit 98
 fi
 
