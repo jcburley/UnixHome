@@ -135,6 +135,9 @@ elif [ -d "$HOME/.go" ]; then
     GOPATH="$HOME/.go"
 fi
 if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
+    if which cygpath >/dev/null 2>&1; then
+        GOPATH="$(cygpath -u "$GOPATH")"
+    fi
     GOBIN="$GOPATH"/bin
     PATH=$(path --append $GOPATH/bin)
     if [ -n "$PS1" ]; then
