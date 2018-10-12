@@ -12,13 +12,13 @@ if ! which path >/dev/null 2>&1; then
         [ -x "$d/path" ] && PATH="${d}${PATH:+:${PATH}}"
     done
     if ! which path >/dev/null 2>&1; then
-        echo >&2 "$0: $UNIXHOME/etc/bash_profile: ERROR: 'path' utility not in \$PATH"
+        echo >&2 "$0: ${UNIXHOME}/etc/bash_profile: ERROR: 'path' utility not in \$PATH"
         sleep 10  # So Windows shows the error before the window closes
         exit 99
     fi
 fi
 
-[ -f "$UNIXHOME"/etc/functions ] && . "$UNIXHOME"/etc/functions
+[ -f ${UNIXHOME}/etc/functions ] && . ${UNIXHOME}/etc/functions
 
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
 [ -f ~/.profile ] && . ~/.profile
@@ -78,8 +78,8 @@ if [ -n "$PS1" ]; then
     # Don't export CDPATH, and set it only for interactive sessions, per:
     #   https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
     CDPATH=$(eval path \"\" --prepend .)
-    CDPATH=$(eval path \"$CDPATH\" --append ~/github)
-    CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
+    [ -d ~/github ] && CDPATH=$(eval path \"$CDPATH\" --append ~/github)
+    [ -d ~/gitdove ] && CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
 
     # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
     # definitions including $SHLVL. NOTE: __git_ps1 rewrites $PS1!!
@@ -91,17 +91,54 @@ if [ -n "$PS1" ]; then
     export GIT_PS1_SHOWUPSTREAM="verbose"
 fi
 
-# GoLang
-if which go >/dev/null 2>&1; then
-    export GOROOT=$(go env GOROOT)
-    PATH=$(path --append $GOROOT/bin)
-elif [ -d /usr/local/go ]; then
-    export GOROOT=$(/usr/local/go/bin/go env GOROOT)
-    PATH=$(path --append $GOROOT/bin)
+# Pull in per-session profile, if any.
+
+# NOTE: git bash 4.4.12(2)-release (x86_64-pc-msys) (git version
+# 2.16.0.windows.2) sets $USERNAME instead of $USER
+[ -z "$USER" ] && export USER="$USERNAME"
+
+export UNIX_PSP="${UNIXHOME}/etc/sessions/${USER}@$(hostname)"
+[ -f "$UNIX_PSP/profile" ] && . "$UNIX_PSP/profile"
+
+if [ -n "$PS1" ]; then
+    if [ -d "$UNIX_PSP/cdpath_dirs" ]; then
+        for DF in "$UNIX_PSP/cdpath_dirs"/*; do
+            if [ ! -r "$DF" ]; then
+                continue
+            fi
+            DIR=$(grep -v '^[[:space:]]*\(#.*\)\?$' "$DF" | head -1)
+            [ -d "$DIR" ] && CDPATH=$(eval path \"$CDPATH\" --append "$DIR")
+        done
+    fi
 fi
-if [ -d "$HOME/.go" ]; then
-    export GOPATH=$HOME/.go
-    export GOBIN="$GOPATH"/bin
+
+# GoLang
+if [ -n "$GOROOT" ]; then
+    :
+elif which go >/dev/null 2>&1; then
+    GOROOT=$(go env GOROOT)
+elif [ -d /usr/local/go ]; then
+    GOROOT=$(/usr/local/go/bin/go env GOROOT)
+fi
+if [ -n "$GOROOT" -a -d "$GOROOT" ]; then
+    if which cygpath >/dev/null 2>&1; then
+        GOROOT="$(cygpath -u "$GOROOT")"
+    fi
+    PATH=$(path --append "$GOROOT/bin")
+    export GOROOT
+fi
+if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
+    :
+elif [ -f "$UNIX_PSP/gopath" ]; then
+    GOPATH=$(grep -v '^[[:space:]]*\(#.*\)\?$' "$UNIX_PSP/gopath" | head -1)
+elif [ -d "$HOME/.go" ]; then
+    GOPATH="$HOME/.go"
+fi
+if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
+    if which cygpath >/dev/null 2>&1; then
+        GOPATH="$(cygpath -u "$GOPATH")"
+    fi
+    GOBIN="$GOPATH"/bin
     PATH=$(path --append $GOPATH/bin)
     if [ -n "$PS1" ]; then
         for d in "$GOPATH"/src/github.com/*; do
@@ -109,8 +146,5 @@ if [ -d "$HOME/.go" ]; then
         done
         CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com)
     fi
+    export GOPATH GOBIN
 fi
-
-# Pull in per-session profile, if any:
-PSP=~/.unixhome/etc/sessions/${USER}@$(hostname)
-[ -f $PSP/profile ] && . $PSP/profile

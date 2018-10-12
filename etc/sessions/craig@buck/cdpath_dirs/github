@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Putting large directories on buck's D: drive.
+
+/d/Users/craig/github

@@ -2,17 +2,17 @@
 
 [ -r ~/.debug-profiles ] && echo "$0: bashrc: running" && env
 
-# 'ssh craig@bear <command>' runs ~/.bashrc, not ~/.bash_profile, so
-# $UNIXHOME will not be defined. 'ssh craig@bear' (no <command>)
-# creates a login session, so ~/.bash_profile is read. (This was
-# tested from doe, in case that matters.)
+# 'ssh craig@bear <command>' runs ~/.bashrc, not ~/.bash_profile.
+# 'ssh craig@bear' (no <command>) creates a login session, so
+# ~/.bash_profile is read. (This was tested from doe, in case that
+# matters.)
 
 # Ubuntu 16.04 provides a .profile that (besides exiting immediately
-# if $PS1 is not defined, as that apparently indicates a
-# non-interactive shell) runs .bashrc, and .profile (if it exists) is
-# run by my .bash_profile, because MacPorts creates one (to set up
-# $PATH) that does not run .bashrc.  So, defend against being run
-# a second time by .bash_profile.
+# if $PS1 is not defined, as that indicates a non-interactive shell)
+# runs .bashrc, and .profile (if it exists) is run by my
+# .bash_profile, because MacPorts creates one (to set up $PATH) that
+# does not run .bashrc.  So, defend against being run a second time by
+# .bash_profile.
 
 export BASHRC_HAS_RUN=true
 
@@ -22,7 +22,7 @@ if [ -z "$BASH_PROFILE_HAS_RUN" -a -f $HOME/.bash_profile -a -n "$BASH_VERSION" 
     export BASH_PROFILE_HAS_RUN=true  # Just in case it isn't our .bash_profile.
 fi
 
-export UNIXHOME=~/.unixhome
+[ -n "${UNIXHOME}" ] || export UNIXHOME=~/.unixhome
 
 # Set up interactive capabilities.
 if [ -n "$PS1" ]; then
