@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Upgrade to the new Windows approach that avoids symlinks.
+
+cd ~
+for f in .unixhome .bash_profile .bashrc .profile .emacs.d/init.el; do
+    [ -L $f ] && rm -fv $f
+done
+
+mv -v ~/github/UnixHome ~/.unixhome
+
+cd ~/.unixhome/Setup/
+
+./bash
+./emacs
+
+cat <<EOF
+
+TODO: Check any appended files (see above) and get rid of old
+~/github/UnixHome/ stuff.
+
+EOF
