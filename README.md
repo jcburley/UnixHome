@@ -46,7 +46,7 @@ Make sure that `etc/bashrc` and `etc/bash_profile` get run by various methods of
 
 Start up GNU Emacs, and confirm:
 - Personal bindings (such as `C-c w` to compare windows) work
-- Finding a file (even if non-existent) such as `foo.clj` brings up Clojure and related modes (might have to `package-install` them)
+- Finding a file (even if non-existent) such as `foo.joke` brings up Clojure and related modes (might have to `package-install` them)
 
 # To Keep Installation Up To Date
 
