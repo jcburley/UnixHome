@@ -71,7 +71,7 @@
 
 (unless (or (not (getenv "UNIXHOME"))  ; Perhaps running under sudo?
             (< emacs-major-version 24))
-  (load (concat (getenv "UNIXHOME") "/.emacs.d/craig/packages.el")))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/packages.el")))
 
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
 ;; to load them.
@@ -89,8 +89,8 @@
 ;; Other stuff for use only when logged-in as 'craig' (or any account
 ;; that defines $UNIXHOME):
 (when (getenv "UNIXHOME")
-  (load (concat (getenv "UNIXHOME") "/.emacs.d/craig/clojure.el"))
-  (load (concat (getenv "UNIXHOME") "/.emacs.d/craig/git.el")))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/clojure.el"))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/git.el")))
 
 (load custom-file t)  ; No error if file doesn't exist.
 
