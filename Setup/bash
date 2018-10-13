@@ -21,28 +21,28 @@ else
 fi
 
 if [ -f ~/.bashrc ]; then
-    if ! grep -q .unixhome/etc/bashrc ~/.bashrc; then
-	$TAIL -n +3 ~/.unixhome/etc/my-bashrc >> ~/.bashrc  # Skip hashbang and subsequent lines.
+    if ! grep -F -q .unixhome/etc/bashrc ~/.bashrc; then
+	$TAIL -n +3 ~/.unixhome/templates/my-bashrc >> ~/.bashrc  # Skip hashbang and subsequent lines.
         echo "$0: appended my-bashrc to ~/.bashrc"
     fi
 else
-    $CP -v ~/.unixhome/etc/my-bashrc ~/.bashrc
+    $CP -v ~/.unixhome/templates/my-bashrc ~/.bashrc
 fi
 
 if [ -f ~/.bash_profile ]; then
-    if ! grep -q .unixhome/etc/bash_profile ~/.bash_profile; then
-        $TAIL -n +3 ~/.unixhome/etc/my-bash_profile >> ~/.bash_profile  # Skip hashbang and subsequent lines.
+    if ! grep -F -q .unixhome/etc/bash_profile ~/.bash_profile; then
+        $TAIL -n +3 ~/.unixhome/templates/my-bash_profile >> ~/.bash_profile  # Skip hashbang and subsequent lines.
         echo "$0: appended my-bash_profile to ~/.bash_profile"
     fi
 else
-    $CP -v ~/.unixhome/etc/my-bash_profile ~/.bash_profile
+    $CP -v ~/.unixhome/templates/my-bash_profile ~/.bash_profile
 fi
 
 if [ -f ~/.profile ]; then
-    if ! grep -q .unixhome/etc/sessions ~/.profile; then
-        $TAIL -n +3 ~/.unixhome/etc/my-profile >> ~/.profile  # Skip hashbang and subsequent lines.
+    if ! grep -F -q .unixhome/etc/sessions ~/.profile; then
+        $TAIL -n +3 ~/.unixhome/templates/my-profile >> ~/.profile  # Skip hashbang and subsequent lines.
         echo "$0: appended my-profile to ~/.profile"
     fi
 else
-    $CP -v ~/.unixhome/etc/my-profile ~/.profile
+    $CP -v ~/.unixhome/templates/my-profile ~/.profile
 fi

@@ -11,4 +11,4 @@
 ;; You may delete these explanatory comments.
 ;(package-initialize)
 
-(load-file "~/.unixhome/.emacs.d/init.el")
+(load-file "~/.unixhome/components/emacs/init.el")
