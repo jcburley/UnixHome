@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -r ~/.debug-profiles ] && echo "$0: bashrc: running" && env
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: bashrc: running" && env
 
 # 'ssh craig@bear <command>' runs ~/.bashrc, not ~/.bash_profile.
 # 'ssh craig@bear' (no <command>) creates a login session, so
@@ -14,10 +14,10 @@
 # does not run .bashrc.  So, defend against being run a second time by
 # .bash_profile.
 
-export BASHRC_HAS_RUN=true
+alias BASHRC_HAS_RUN=true
 
 # Set up environment variables, if not already done.
-if [ -z "$BASH_PROFILE_HAS_RUN" -a -f $HOME/.bash_profile -a -n "$BASH_VERSION" ]; then
+if [ -n "$PS1" -a -z "$BASH_PROFILE_HAS_RUN" -a -f $HOME/.bash_profile -a -n "$BASH_VERSION" ]; then
     . $HOME/.bash_profile
     export BASH_PROFILE_HAS_RUN=true  # Just in case it isn't our .bash_profile.
 fi
@@ -46,4 +46,7 @@ if [ -n "$PS1" ]; then
     # these two vars, so the "bash" shell doesn't display $SHLVL.
     export PS1='[${SHLVL}] [\u@\h \W$(__git_ps1 " (%s)")]\$ '
     export PROMPT_COMMAND='__git_ps1 "[\${SHLVL}] \u@\h:\w" "\\\$ "'
+else
+    CMDFILE=${UNIXHOME}/etc/commands
+    [ -r ${CMDFILE} ] && . ${CMDFILE}
 fi

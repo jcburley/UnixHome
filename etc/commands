@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Aliases and functions that are command-like, as if on $PATH, and so
+# are suitable for use in non-interactive shells.
+
+alias newaliases=". ${UNIXHOME}/etc/aliases"
+
+alias gitrem='git remote -v'
+alias gitbr='git branch -a'
+alias gitstat='git status -unormal'
+function gitnbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; git checkout -b "$1" HEAD; git push -u origin "$1"; }
+alias gitdiff='git diff'
+alias gitfo='git fetch origin'
+alias gitdown='git pull; git fetch -p'
+alias gitfu='git fetch upstream'
+alias gitsync='git pull upstream master; git fetch -p upstream'
+alias gitpend='git diff origin'
+alias gitup='git push'
+alias gitmast='git checkout master'
+function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; git branch -D "$1"; git push origin --delete "$1"; }
+alias gitmum='git merge upstream master'

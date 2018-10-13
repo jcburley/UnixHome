@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -r ~/.debug-profiles ] && echo "$0: bash_profile: running" && env
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: bash_profile: running" && env
 
 export BASH_PROFILE_HAS_RUN=true
 
@@ -24,8 +24,9 @@ fi
 [ -f ~/.profile ] && . ~/.profile
 
 # Get the aliases and functions.
-if [ -z "$BASHRC_HAS_RUN" ] && [ -f $HOME/.bashrc ]; then
+if ! alias BASHRC_HAS_RUN >/dev/null 2>&1 && [ -f $HOME/.bashrc ]; then
     source $HOME/.bashrc
+    alias BASHRC_HAS_RUN=true  # Just in case it isn't our .bashrc.
 fi
 
 PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"

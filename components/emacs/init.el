@@ -34,6 +34,11 @@
   (add-hook 'kill-emacs-query-functions
 	    'custom-prompt-customize-unsaved-options))
 
+;; I want M-! (shell-command) to pick up my aliases and so run .bashrc:
+(setq shell-file-name "bash-for-emacs.sh")  ; Does this: BASH_ENV="~/.bashrc" exec bash "$@"
+(setq shell-command-switch "-c")  ; GNU Emacs currently does not support multiple options.
+;; (setq shell-command-switch (or (getenv "SHELL") "/bin/bash"))  ; GNU Emacs currently does not support multiple options.
+
 ;; Even if no file-backed buffers have unsaved modifications, no
 ;; running shells exist, etc., prompt anyway, in case a 'git commit'
 ;; (or similar) is in progress, as these aren't necessarily

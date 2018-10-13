@@ -1,6 +1,6 @@
 #!/bin/sh
 
-[ -r ~/.debug-profiles ] && echo "$0: profile: running" && env
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: profile: running" && env
 
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
