@@ -1,13 +1,18 @@
 (require 'package)
 (add-to-list 'package-archives
              '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-             '("tromey" . "https://tromey.com/elpa/") t)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
        (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
   (add-to-list 'package-archives
                (cons "melpa" url) t))
+(add-to-list 'package-archives
+             '("tromey2" . "http://tromey.com/elpa/") t)
+;; Adding a final, unnecessary, instance of tromey, because GNU Emacs seems to have a bug
+;; that causes a 'Failed to download...' message to appear in *Messages* for the final
+;; library in the list. See: https://github.com/melpa/melpa/issues/5755
+(add-to-list 'package-archives
+             '("tromey" . "https://tromey.com/elpa/") t)
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
