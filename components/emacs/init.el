@@ -3,6 +3,7 @@
 ;;  2017-10-19 jcburley copied some stuff from github.com/vidjuheffex/dotemacs/
 ;;; Code:
 
+(if (equal (or (getenv "EMACS_DEBUG_ON_ERROR") "false") "true") (toggle-debug-on-error))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
