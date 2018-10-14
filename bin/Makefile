@@ -3,6 +3,7 @@ first: all
 all:
 
 TOOLS=\
+bash-for-emacs \
 path \
 
 install:

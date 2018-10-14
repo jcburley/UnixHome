@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#echo -e "\n\n$0: running with args: $@" | tee ~/play/bash/OUTPUT.txt
+
+BASH_ENV="~/.bashrc" exec bash "$@"
