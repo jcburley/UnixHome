@@ -1,5 +1,5 @@
 (require 'package)
-(toggle-debug-on-error)
+(if (equal (or (getenv "EMACS_DEBUG_ON_ERROR") "false") "true") (toggle-debug-on-error))
 (add-to-list 'package-archives
              '("marmalade" . "https://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
