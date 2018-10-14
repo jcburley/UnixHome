@@ -38,6 +38,8 @@
   (and (file-exists-p f)
        (string= s (read-file-contents f))))
 
+(message (concat load-file-name " about to call package-refresh-contents for: " package-stamp))
+
 ;; Download the ELPA archive description if needed.
 ;; This informs Emacs about the latest versions of all packages, and
 ;; makes them available for download.
@@ -46,7 +48,11 @@
   (package-refresh-contents)
   (write-file-contents package-stamp package-stamp-file))
 
+(message (concat load-file-name " about to call package-initialize!"))
+
 (package-initialize)
+
+(message (concat load-file-name " after call to package-initialize!"))
 
 (defvar my-packages
   '(;; makes handling lisp expressions much, much easier
