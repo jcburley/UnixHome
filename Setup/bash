@@ -25,6 +25,27 @@ if [ -f ~/.bashrc ]; then
 	$TAIL -n +3 ~/.unixhome/templates/my-bashrc >> ~/.bashrc  # Skip hashbang and subsequent lines.
         echo "$0: appended my-bashrc to ~/.bashrc"
     fi
+    if grep -q '^[^#]*\[ \+-z \+"$PS1" \+\] \+&& \+return' ~/.bashrc; then
+        cat >&2 <<EOF
+
+ACTION: Change this line in ~/.bashrc:
+
+  [ -z "\$PS1" ] && return
+
+To read:
+
+  # If not running interactively, just run custom bashrc and return
+  if [ -z "\$PS1" ]; then
+      [ -r ~/.unixhome/etc/bashrc ] && . ~/.unixhome/etc/bashrc
+      return
+  fi
+
+Otherwise, 'ESC-x shell-command' 'alias' (or any particular
+non-interactive alias or function, aka command, besides 'alias') will
+not work.
+
+EOF
+    fi
 else
     $CP -v ~/.unixhome/templates/my-bashrc ~/.bashrc
 fi
