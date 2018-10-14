@@ -38,7 +38,7 @@
   (and (file-exists-p f)
        (string= s (read-file-contents f))))
 
-(message (concat load-file-name " about to call package-refresh-contents for: " package-stamp))
+(message (concat load-file-name " might call package-refresh-contents for: " package-stamp))
 
 ;; Download the ELPA archive description if needed.
 ;; This informs Emacs about the latest versions of all packages, and
