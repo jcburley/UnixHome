@@ -6,13 +6,6 @@
                (cons "marmalade" (concat prefix "marmalade-repo.org/packages/")) t)
   (add-to-list 'package-archives
                (cons "melpa" (concat prefix "melpa.org/packages/")) t)
-  (add-to-list 'package-archives
-               (cons "tromey2" (concat prefix "tromey.com/elpa/")) t)
-  ;; Adding a final, unnecessary, instance of tromey, because GNU Emacs seems to have a bug
-  ;; that causes a 'Failed to download...' message to appear in *Messages* for the final
-  ;; library in the list. See: https://github.com/melpa/melpa/issues/5755
-  (add-to-list 'package-archives
-               (cons "tromey" (concat prefix "tromey.com/elpa/")) t)
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives
