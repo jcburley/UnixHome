@@ -22,7 +22,7 @@
 (make-directory session-specific-scratch-dir t)
 
 (defvar session-specific-init-dir
- (concat (getenv "UNIXHOME") "/.emacs.d/sessions/" username-at-systemname)
+ (concat (getenv "UNIXHOME") "/components/emacs/sessions/" username-at-systemname)
  "Session-specific customization and other files are stored here.")
 (make-directory session-specific-init-dir t)
 
