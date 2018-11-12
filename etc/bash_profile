@@ -6,7 +6,7 @@ export BASH_PROFILE_HAS_RUN=true
 
 export UNIXHOME=~/.unixhome
 
-(cd $UNIXHOME; git remote update)
+(cd $UNIXHOME; GRU=$(git remote update); if [ "$GRU" != "Fetching origin" ]; then printf "\nNOTE: ~/.unixhome/ has updates!:\n${GRU}\n"; fi)
 
 # Ensure 'path' utility is in $PATH.
 if ! which path >/dev/null 2>&1; then
