@@ -6,6 +6,8 @@ export BASH_PROFILE_HAS_RUN=true
 
 export UNIXHOME=~/.unixhome
 
+(cd $UNIXHOME; git fetch origin)
+
 # Ensure 'path' utility is in $PATH.
 if ! which path >/dev/null 2>&1; then
     for d in /usr/local/bin; do
