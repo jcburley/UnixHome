@@ -63,9 +63,14 @@ export MANPATH
 if [ -n "$PS1" ]; then
     # Use Emacs if installed. (Git bash which does not support -s.)
     if which emacs >/dev/null 2>&1; then
-        export EDITOR=emacs
-        export GIT_EDITOR=emacs
-        export VISUAL=emacs
+        if [ -n "$SSH_CLIENT" ]; then
+            EMACS="emacs -nw"
+        else
+            EMACS="emacs"
+        fi
+        export EDITOR="$EMACS"
+        export GIT_EDITOR="$EMACS"
+        export VISUAL="$EMACS"
     fi
 
     # Taken from /usr/share/bash-completion/bash_completion on my
