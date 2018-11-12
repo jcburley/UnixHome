@@ -7,7 +7,7 @@ export BASH_PROFILE_HAS_RUN=true
 export UNIXHOME=~/.unixhome
 
 # Alert if .unixhome has upstream updates:
-(cd $UNIXHOME; GRU=$(git remote update 2>&1); if [ "$GRU" != "Fetching origin" ]; then printf "\nNOTE: ~/.unixhome/ has updates!\n"; fi)
+(cd $UNIXHOME; GRU=$(git remote update 2>&1); if [ "$GRU" != "Fetching origin" ]; then printf "\nNOTE: ~/.unixhome/ has updates.\n"; fi)
 
 # Ensure 'path' utility is in $PATH.
 if ! which path >/dev/null 2>&1; then
