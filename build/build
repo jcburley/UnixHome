@@ -73,40 +73,6 @@ mkdir -p $BUILD_HOME/{what,where}
 
 XWD="$(echo $PWD | sed -e 's#/#:#g')"
 
-# Set default
-xd="$XWD"
-while true; do
-    if [ -f $BUILD_HOME/where/"$xd" ]; then
-        BUILD_COMMAND=$(head -1 $BUILD_HOME/where/"$xd")
-        why="$PWD:$BUILD_COMMAND"
-        cd "$(dirname $PWD)"
-        break
-    fi
-    for w in $BUILD_HOME/what/*; do
-        if [ ! -r "$w" ]; then
-            continue
-        fi
-        if [ -r "$(basename $w)" ]; then
-            BUILD_COMMAND="$(head -1 $w)"
-            why="$w:$BUILD_COMMAND"
-            break
-        fi
-    done
-    if [ -n "$BUILD_COMMAND" ]; then
-        cd "$(dirname $PWD)"
-        break
-    fi
-    nd="${xd%:*}"
-    if [ "$xd" = "$nd" ]; then
-        break
-    fi
-    xd="$nd"
-done
-
-if [ -z "$why" ]; then
-    why="(Nothing matches.)"
-fi
-
 EXIT=:
 BREAK=:
 while $BREAK; do
@@ -140,6 +106,17 @@ while $BREAK; do
             echo "Files:"
             list_whats "  "
             ;;
+        "--with")
+            shift
+            BREAK=break
+            if [[ "$1" =~ ^[^-] ]]; then
+                BUILD_COMMAND="$1"
+                shift
+            else
+                echo >&2 "$0: ERROR: Missing build command name and (optional) arguments after --with option."
+                exit 94
+            fi
+            ;;
         "--why")
             shift
             echo "$why"
@@ -147,8 +124,10 @@ while $BREAK; do
         "--remove")
             shift
             EXIT="exit 0"
-            if [[ "$1" != "." && "$1" =~ ^[^-] ]]; then
+            if [[ "$1" != "." && "$1" =~ ^[^-] && ! -d "$1" ]]; then
                 rm $BUILD_HOME/what/"$1"
+            elif [ -n "$1" ]; then
+                rm $BUILD_HOME/where/"$1"
             else
                 rm $BUILD_HOME/where/"$XWD"
             fi
@@ -186,9 +165,6 @@ while $BREAK; do
             exit 97
             ;;
         *)
-            if [ -n "$1" ]; then
-                BUILD_COMMAND="$BUILD_COMMAND $@"
-            fi
             BREAK=false
             ;;
     esac
@@ -196,10 +172,55 @@ done
 
 $EXIT
 
+wd="$PWD"
+if [ -z "$BUILD_COMMAND" ]; then
+    xd="$XWD"
+    while true; do
+        if [ -f $BUILD_HOME/where/"$xd" ]; then
+            BUILD_COMMAND=$(head -1 $BUILD_HOME/where/"$xd")
+            why="$wd:$BUILD_COMMAND"
+            break
+        fi
+        for w in $BUILD_HOME/what/*; do
+            if [ ! -r "$w" ]; then
+                continue
+            fi
+            if [ -r "$wd/$(basename $w)" ]; then
+                BUILD_COMMAND="$(head -1 $w)"
+                why="$w:$BUILD_COMMAND"
+                break
+            fi
+        done
+        if [ -n "$BUILD_COMMAND" ]; then
+            break
+        fi
+        nd="${xd%:*}"
+        if [ "$xd" = "$nd" ]; then
+            break
+        fi
+        xd="$nd"
+        wd="$(dirname $wd)"
+    done
+
+    if [ -z "$why" ]; then
+        why="(Nothing matches.)"
+    fi
+fi
+
+owd="$PWD"
 if [ -n "$BUILD_COMMAND" ]; then
-    $ECHO $BUILD_COMMAND
+    if [ "$wd" != "$owd" ]; then
+        echo "Entering directory \`$wd'"  # GNU Emacs 'compilation-directory-matcher' tracks these for 'next-error' et al.
+        cd "$wd"
+    fi
+    $ECHO $BUILD_COMMAND "$@"
+    if [ "$wd" != "$owd" ]; then
+        echo "Leaving directory \`$wd'"
+        cd "$owd"
+    fi
     exit $?
 fi
 
-echo >&2 "$0: ERROR: No build procedure (such as a Makefile) found to perform. Use the '--here [<command>]' option to establish one."
+echo >&2 "$0: ERROR: No build procedure (such as a Makefile) found in (or above) $PWD to perform."
+echo >&2 "        Use the '--here [<command>]' option to establish one."
 exit 99
