@@ -5,6 +5,9 @@
 # avoid problems when accidentally building in a subdirectory of a
 # project and thinking the entire project has been built.
 
+# See:
+#   https://stackoverflow.com/questions/10451242/how-to-adjust-the-path-that-emacs-compile-goto-error-gets-from-the-compilation
+
 BUILD_HOME=~/.build
 if mkdir $BUILD_HOME 2>/dev/null; then
     mkdir -p $BUILD_HOME && cat >> $BUILD_HOME/README.txt <<EOF
@@ -119,7 +122,7 @@ while $BREAK; do
             ;;
         "--why")
             shift
-            echo "$why"
+            WHY=:
             ;;
         "--remove")
             shift
@@ -205,6 +208,10 @@ if [ -z "$BUILD_COMMAND" ]; then
     if [ -z "$why" ]; then
         why="(Nothing matches.)"
     fi
+fi
+
+if [ -n "$WHY" ]; then
+    echo "$why"
 fi
 
 owd="$PWD"
