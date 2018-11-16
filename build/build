@@ -1,0 +1,204 @@
+#!/bin/bash
+
+# Generic build script. Intended to replace 'make -k' from the command
+# line and from GNU Emacs' 'compile-command' variable. Intended to
+# avoid problems when accidentally building in a subdirectory of a
+# project and thinking the entire project has been built.
+
+BUILD_HOME=~/.build
+if mkdir $BUILD_HOME 2>/dev/null; then
+    mkdir -p $BUILD_HOME && cat >> $BUILD_HOME/README.txt <<EOF
+This directory stores places for the 'build' tool to find and run
+specific build instructions. For more info, see:
+
+  https://github.com/jcburley/UnixHome.git
+
+EOF
+    echo "$0: Note: created $BUILD_HOME directory."
+fi
+
+usage() {
+    echo "$0: Use gently."
+}
+
+list_wheres() {
+    for d in $BUILD_HOME/where/*; do
+        if [ ! -r "$d" ]; then
+            continue
+        fi
+        bd=$(basename $d)
+        bd="$(echo $bd | sed -e 's#:#/#g')"
+        echo "$1$bd:$(head -1 $d)"
+    done
+}
+
+list_whats() {
+    for w in $BUILD_HOME/what/*; do
+        if [ ! -r "$w" ]; then
+            continue
+        fi
+        bw=$(basename $w)
+        echo "$1$bw:$(head -1 $w)"
+    done
+}
+
+ifthen() {
+    w="$1"
+    shift
+    if [[ "$1" =~ ^[^-] ]]; then
+        BUILD_COMMAND="$@"
+    fi
+    echo "${BUILD_COMMAND}" > $BUILD_HOME/what/"$w"  # want ${BUILD_COMMAND@Q}, require bash >= 4.4
+    echo "$0: Note: Added $w as a file (to test for) with the command: $BUILD_COMMAND"
+}
+
+init() {
+    case "$1" in
+        "gmake")
+            ifthen GNUmakefile make -k
+            init make
+            ;;
+        "make")
+            ifthen Makefile make -k
+            ifthen makefile make -k
+            ;;
+        *)
+            echo >&2 "$0: ERROR: Unsupported build type $1"
+            exit 95
+            ;;
+    esac
+}
+
+mkdir -p $BUILD_HOME/{what,where}
+
+XWD="$(echo $PWD | sed -e 's#/#:#g')"
+
+# Set default
+xd="$XWD"
+while true; do
+    if [ -f $BUILD_HOME/where/"$xd" ]; then
+        BUILD_COMMAND=$(head -1 $BUILD_HOME/where/"$xd")
+        why="$PWD:$BUILD_COMMAND"
+        break
+    fi
+    for w in $BUILD_HOME/what/*; do
+        if [ ! -r "$w" ]; then
+            continue
+        fi
+        if [ -r "$(basename $w)" ]; then
+            BUILD_COMMAND="$(head -1 $w)"
+            why="$w:$BUILD_COMMAND"
+            break
+        fi
+    done
+    if [ -n "$BUILD_COMMAND" ]; then
+        cd "$(dirname $PWD)"
+        break
+    fi
+    nd="${xd%:*}"
+    if [ "$xd" = "$nd" ]; then
+        break
+    fi
+    xd="$nd"
+done
+
+if [ -z "$why" ]; then
+    why="(Nothing matches.)"
+fi
+
+EXIT=:
+BREAK=:
+while $BREAK; do
+    case "$1" in
+        "--here")
+            shift
+            EXIT="exit 0"
+            if [[ "$1" =~ ^[^-] ]]; then
+                BUILD_COMMAND="$@"
+            fi
+            echo "${BUILD_COMMAND}" > $BUILD_HOME/where/"$XWD"  # want ${BUILD_COMMAND@Q}, require bash >= 4.4
+            echo "$0: Note: Added $PWD as a build directory with the command: $BUILD_COMMAND"
+            ;;
+        "--if")
+            shift
+            EXIT="exit 0"
+            if [[ "$1" =~ ^[^-] ]]; then
+                w="$1"
+                shift
+            else
+                echo >&2 "$0: ERROR: Missing filename and (optional) build commands after --if option."
+                exit 96
+            fi
+            ifthen "$w" "$@"
+            ;;
+        "--list")
+            shift
+            EXIT="exit 0"
+            echo "Directories:"
+            list_wheres "  "
+            echo "Files:"
+            list_whats "  "
+            ;;
+        "--why")
+            shift
+            echo "$why"
+            ;;
+        "--remove")
+            shift
+            EXIT="exit 0"
+            if [[ "$1" != "." && "$1" =~ ^[^-] ]]; then
+                rm $BUILD_HOME/what/"$1"
+            else
+                rm $BUILD_HOME/where/"$XWD"
+            fi
+            ;;
+        "--init")
+            shift
+            EXIT="exit 0"
+            if [[ "$1" =~ ^[^-] ]]; then
+                while true; do
+                    if [[ "$1" =~ ^[^-] ]]; then
+                        init "$1"
+                    else
+                        break
+                    fi
+                    shift
+                done
+            else
+                init gmake
+            fi
+            ;;
+        "--dry-run" | "-n")
+            shift
+            ECHO="echo"
+            ;;
+        "--help" | "-h")
+            shift
+            EXIT="exit 0"
+            usage
+            ;;
+        "--")
+            shift
+            ;;
+        -*)
+            echo >&2 "$0: ERROR: Unrecognized option $1"
+            exit 97
+            ;;
+        *)
+            if [ -n "$1" ]; then
+                BUILD_COMMAND="$BUILD_COMMAND $@"
+            fi
+            BREAK=false
+            ;;
+    esac
+done
+
+$EXIT
+
+if [ -n "$BUILD_COMMAND" ]; then
+    $ECHO $BUILD_COMMAND
+    exit $?
+fi
+
+echo >&2 "$0: ERROR: No build procedure (such as a Makefile) found to perform. Use the '--here [<command>]' option to establish one."
+exit 99
