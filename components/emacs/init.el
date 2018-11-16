@@ -69,6 +69,8 @@
 (global-set-key (kbd "C-c w") 'compare-windows)
 
 (global-set-key (kbd "C-M-x") 'compile)
+(setq compile-command "build ")  ; Requires my 'build' tool from github.com/jcburley/UnixHome.git be installed
+
 
 (global-set-key (kbd "C-x p") (lambda ()
 				(interactive)  ; previous window
