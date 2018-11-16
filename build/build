@@ -79,6 +79,7 @@ while true; do
     if [ -f $BUILD_HOME/where/"$xd" ]; then
         BUILD_COMMAND=$(head -1 $BUILD_HOME/where/"$xd")
         why="$PWD:$BUILD_COMMAND"
+        cd "$(dirname $PWD)"
         break
     fi
     for w in $BUILD_HOME/what/*; do
