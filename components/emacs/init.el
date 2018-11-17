@@ -70,7 +70,11 @@
 
 (global-set-key (kbd "C-M-x") 'compile)
 (setq compile-command "build ")  ; Requires my 'build' tool from github.com/jcburley/UnixHome.git be installed
-
+(defun compile-in-dir (dir command)
+  (interactive "DCompile in directory: \nsCommand: ")
+  (let ((default-directory dir))
+    (compile command)))
+(setenv "GO_EXEC_OUTPUT_STYLE" "gmake")  ; Tell (my fork of) the 'go generate' command to help next-error track source-file locations
 
 (global-set-key (kbd "C-x p") (lambda ()
 				(interactive)  ; previous window
