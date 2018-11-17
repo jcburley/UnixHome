@@ -124,6 +124,10 @@ while $BREAK; do
             shift
             WHY=:
             ;;
+        "--where")
+            shift
+            WHERE=:
+            ;;
         "--remove")
             shift
             EXIT="exit 0"
@@ -207,11 +211,18 @@ if [ -z "$BUILD_COMMAND" ]; then
 
     if [ -z "$why" ]; then
         why="(Nothing matches.)"
+        wd="$PWD"  # Go back to where it all started.
+        xd="$XWD"
     fi
 fi
 
 if [ -n "$WHY" ]; then
-    echo "$why"
+    echo >&2 "$why"
+fi
+
+if [ -n "$WHERE" ]; then
+    echo "$wd"
+    exit 0
 fi
 
 owd="$PWD"
