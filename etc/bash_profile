@@ -148,11 +148,14 @@ elif [ -d "$HOME/.go" ]; then
     GOPATH="$HOME/.go"
 fi
 if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
+    export GOLOCALBIN=~/github/golang/go/bin
     if which cygpath >/dev/null 2>&1; then
         GOPATH="$(cygpath -u "$GOPATH")"
+        GOLOCALBIN="$(cygpath -u "$GOLOCALBIN")"
     fi
     GOBIN="$GOPATH"/bin
-    PATH=$(path --append $GOPATH/bin)
+    PATH=$(path --append "$GOBIN")
+    PATH=$(path --prepend "$GOLOCALBIN")
     if [ -n "$PS1" ]; then
         for d in "$GOPATH"/src/github.com/*; do
             CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
