@@ -148,14 +148,18 @@ elif [ -d "$HOME/.go" ]; then
     GOPATH="$HOME/.go"
 fi
 if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
-    export GOLOCALBIN=~/github/golang/go/bin
+    export GOLOCALROOT=~/github/golang/go
+    export GOLOCALBIN=$GOLOCALROOT/bin
     if which cygpath >/dev/null 2>&1; then
         GOPATH="$(cygpath -u "$GOPATH")"
+        GOLOCALROOT="$(cygpath -u "$GOLOCALROOT")"
         GOLOCALBIN="$(cygpath -u "$GOLOCALBIN")"
     fi
     GOBIN="$GOPATH"/bin
     PATH=$(path --append "$GOBIN")
-    PATH=$(path --prepend "$GOLOCALBIN")
+    export GOORIGROOT="$GOROOT"
+    alias golocal='PATH=$(path --prepend "$GOLOCALBIN"); GOROOT="$GOLOCALROOT"'
+    alias goback='PATH=$(path --remove "$GOLOCALBIN"); GOROOT="$GOORIGROOT"'
     if [ -n "$PS1" ]; then
         for d in "$GOPATH"/src/github.com/*; do
             CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
