@@ -101,7 +101,7 @@ if [ -n "$PS1" ]; then
 
     export GIT_PS1_SHOWDIRTYSTATE=t
     export GIT_PS1_SHOWSTASHSTATE=t
-    export GIT_PS1_SHOWUPSTREAM="verbose"
+    export GIT_PS1_SHOWUPSTREAM="verbose name"
 fi
 
 # Pull in per-session profile, if any.
