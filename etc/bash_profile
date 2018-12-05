@@ -158,8 +158,6 @@ if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     GOBIN="$GOPATH"/bin
     PATH=$(path --append "$GOBIN")
     export GOORIGROOT="$GOROOT"
-    alias golocal='PATH=$(path --prepend "$GOLOCALBIN"); GOROOT="$GOLOCALROOT"'
-    alias goback='PATH=$(path --remove "$GOLOCALBIN"); GOROOT="$GOORIGROOT"'
     if [ -n "$PS1" ]; then
         for d in "$GOPATH"/src/github.com/*; do
             CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
