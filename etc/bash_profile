@@ -140,12 +140,16 @@ if [ -n "$GOROOT" -a -d "$GOROOT" ]; then
     PATH=$(path --append "$GOROOT/bin")
     export GOROOT
 fi
+if [ -d "$HOME/.go" -a ! -d "$HOME/go" ]; then
+    echo >&2 "NOTICE: Renaming $HOME/.go to $HOME/go"
+    mv -iv "$HOME/.go" "$HOME/go"
+fi
 if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     :
 elif [ -f "$UNIX_PSP/gopath" ]; then
     GOPATH=$(grep -v '^[[:space:]]*\(#.*\)\?$' "$UNIX_PSP/gopath" | head -1)
-elif [ -d "$HOME/.go" ]; then
-    GOPATH="$HOME/.go"
+elif [ -d "$HOME/go" ]; then
+    GOPATH="$HOME/go"
 fi
 if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     export GOLOCALROOT=~/github/golang/go
