@@ -10,6 +10,7 @@ alias gitbr='git branch -a'
 alias gitstat='git status -unormal'
 function gitnbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; git checkout -b "$1" HEAD; git push -u origin "$1"; }
 alias gitdiff='git diff'
+alias gitfd='git fetch dove'
 alias gitfo='git fetch origin'
 alias gitdown='git pull; git fetch -p'
 alias gitfu='git fetch upstream'
