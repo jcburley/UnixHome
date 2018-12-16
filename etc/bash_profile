@@ -92,6 +92,9 @@ if [ -n "$PS1" ]; then
     #   https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
     CDPATH=$(eval path \"\" --prepend .)
     [ -d ~/github ] && CDPATH=$(eval path \"$CDPATH\" --append ~/github)
+    for d in ~/github/*; do
+        CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
+    done
     [ -d ~/gitdove ] && CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
 
     # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
