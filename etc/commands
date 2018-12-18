@@ -3,7 +3,7 @@
 # Aliases and functions that are command-like, as if on $PATH, and so
 # are suitable for use in non-interactive shells.
 
-alias newaliases=". ${UNIXHOME}/etc/aliases"
+alias newcommands=". ${UNIXHOME}/etc/commands"
 
 alias gitrem='git remote -v'
 alias gitbr='git branch -vv'

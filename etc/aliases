@@ -2,6 +2,8 @@
 
 # Interactive-shell aliases and functions.
 
+alias newaliases=". ${UNIXHOME}/etc/aliases"
+
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
