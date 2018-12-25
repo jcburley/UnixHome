@@ -75,6 +75,7 @@
   (let ((default-directory dir))
     (compile command)))
 (setenv "GO_EXEC_OUTPUT_STYLE" "gmake")  ; Tell (my fork of) the 'go generate' command to help next-error track source-file locations
+(add-hook 'before-save-hook #'gofmt-before-save)
 
 (global-set-key (kbd "C-x p") (lambda ()
 				(interactive)  ; previous window
