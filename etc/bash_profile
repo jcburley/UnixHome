@@ -140,8 +140,10 @@ if [ -n "$GOROOT" -a -d "$GOROOT" ]; then
     if which cygpath >/dev/null 2>&1; then
         GOROOT="$(cygpath -u "$GOROOT")"
     fi
-    PATH=$(path --append "$GOROOT/bin")
-    export GOROOT
+    if ! which go >/dev/null 2>&1; then
+        PATH=$(path --append "$GOROOT/bin")
+        export GOROOT
+    fi
 fi
 if [ -d "$HOME/.go" -a ! -d "$HOME/go" ]; then
     echo >&2 "NOTICE: Renaming $HOME/.go to $HOME/go"
