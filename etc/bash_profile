@@ -132,9 +132,9 @@ fi
 if [ -n "$GOROOT" ]; then
     :
 elif which go >/dev/null 2>&1; then
-    GOROOT=$(go env GOROOT)
+    export GOROOT=$(go env GOROOT)
 elif [ -d /usr/local/go ]; then
-    GOROOT=$(/usr/local/go/bin/go env GOROOT)
+    export GOROOT=$(/usr/local/go/bin/go env GOROOT)
 fi
 if [ -n "$GOROOT" -a -d "$GOROOT" ]; then
     if which cygpath >/dev/null 2>&1; then
@@ -142,7 +142,6 @@ if [ -n "$GOROOT" -a -d "$GOROOT" ]; then
     fi
     if ! which go >/dev/null 2>&1; then
         PATH=$(path --append "$GOROOT/bin")
-        export GOROOT
     fi
 fi
 if [ -d "$HOME/.go" -a ! -d "$HOME/go" ]; then
