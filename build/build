@@ -232,11 +232,12 @@ if [ -n "$BUILD_COMMAND" ]; then
         cd "$wd"
     fi
     $ECHO $BUILD_COMMAND "$@"
+    rc=$?
     if [ "$wd" != "$owd" ]; then
         echo "Leaving directory \`$wd'"
         cd "$owd"
     fi
-    exit $?
+    exit $rc
 fi
 
 echo >&2 "$0: ERROR: No build procedure (such as a Makefile) found in (or above) $PWD to perform."
