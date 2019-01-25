@@ -3,6 +3,7 @@
 # Interactive-shell aliases and functions.
 
 alias newaliases=". ${UNIXHOME}/etc/aliases"
+alias newprofile=". ${UNIXHOME}/etc/bash_profile"
 
 alias rm='rm -i'
 alias cp='cp -i'
