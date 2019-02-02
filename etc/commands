@@ -27,3 +27,4 @@ alias gitdbr='git branch -d'
 function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; git branch -D "$1"; git push origin --delete "$1"; }
 alias gitfall='gitfd; gitfo; gitfu'
 alias gitdone='git branch --merged'
+function joker-update-docs() { rsync -e ssh -au docs/ www-data@llamail.com:/var/www/burleyarch/joker/docs/$(go env GOARCH)-$(go env GOOS)/; }
