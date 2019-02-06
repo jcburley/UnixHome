@@ -22,12 +22,12 @@ if [ -n "$PS1" -a -z "$BASH_PROFILE_HAS_RUN" -a -f $HOME/.bash_profile -a -n "$B
     export BASH_PROFILE_HAS_RUN=true  # Just in case it isn't our .bash_profile.
 fi
 
-[ -n "${UNIXHOME}" ] || export UNIXHOME=~/.unixhome
-
 # Set up interactive capabilities.
 if [ -n "$PS1" ]; then
     ALIASFILE=${UNIXHOME}/etc/aliases
     [ -r ${ALIASFILE} ] && . ${ALIASFILE}
+
+    [ -r "$UNIX_PSP/bashrc" ] && . "$UNIX_PSP/bashrc"
 
     # Load all autocompletions if any are installed
     AUTOCOMPDIR=${UNIXHOME}/etc/bash_completion.d/

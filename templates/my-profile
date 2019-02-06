@@ -7,5 +7,5 @@
 # 2.16.0.windows.2) sets $USERNAME instead of $USER
 [ -z "$USER" ] && export USER="$USERNAME"
 
-UNIX_PSP="~/.unixhome/etc/sessions/${USER}@$(hostname)"
+export UNIX_PSP="${HOME}/.unixhome/etc/sessions/${USER}@$(hostname)"
 [ -f "$UNIX_PSP/profile" ] && . "$UNIX_PSP/profile"
