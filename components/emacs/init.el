@@ -21,13 +21,19 @@
  "session-specific scratch, cache, and other temporary files are stored here.")
 (make-directory session-specific-scratch-dir t)
 
-(defvar session-specific-init-dir
- (concat (getenv "UNIXHOME") "/components/emacs/sessions/" username-at-systemname)
- "Session-specific customization and other files are stored here.")
-(make-directory session-specific-init-dir t)
+(setq unixhome-default "~/.unixhome")
+(when (and (not (getenv "UNIXHOME")) (file-exists-p unixhome-default))
+  (setenv "UNIXHOME" unixhome-default))
+
+(when (getenv "UNIXHOME")
+  (defvar session-specific-init-dir
+    (concat (getenv "UNIXHOME") "/components/emacs/sessions/" username-at-systemname)
+    "Session-specific customization and other files are stored here.")
+  (make-directory session-specific-init-dir t))
 
 ;; Put customizations in per-hostname files.
-(setq custom-file (concat session-specific-init-dir "/customizations.el"))
+(when (boundp 'session-specific-init-dir)
+  (setq custom-file (concat session-specific-init-dir "/customizations.el")))
 
 ;; Confirm whether it's okay to exit without saving customizations.
 ;; (If running a version of Emacs that does not support this, you
@@ -107,6 +113,7 @@
   (load (concat (getenv "UNIXHOME") "/components/emacs/craig/clojure.el"))
   (load (concat (getenv "UNIXHOME") "/components/emacs/craig/git.el")))
 
-(load custom-file t)  ; No error if file doesn't exist.
+(when (and (boundp 'custom-file) custom-file)
+  (load custom-file t))  ; No error if file doesn't exist.
 
 ;; End of my file.
