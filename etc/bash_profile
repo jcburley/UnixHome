@@ -129,11 +129,13 @@ if [ -n "$PS1" ]; then
 fi
 
 # GoLang
-echo "GOROOT=$GOROOT"
 if [ -n "$GOROOT" ]; then
     :
 elif which go >/dev/null 2>&1; then
     export GOROOT=$(go env GOROOT)
+    if [ "$GOROOT" = "/usr/local/go" ]; then
+        GOROOT=/usr/local/go
+    fi
 elif [ -d /usr/local/go ]; then
     export GOROOT=$(/usr/local/go/bin/go env GOROOT)
 fi
