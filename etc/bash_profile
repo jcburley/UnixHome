@@ -133,7 +133,7 @@ if [ -n "$GOROOT" ]; then
     :
 elif which go >/dev/null 2>&1; then
     export GOROOT=$(go env GOROOT)
-    if [ "$GOROOT" = "$(readink /usr/local/go)" ]; then
+    if [ "$GOROOT" = "$(readlink /usr/local/go)" ]; then
         GOROOT=/usr/local/go
     fi
 elif [ -d /usr/local/go ]; then
