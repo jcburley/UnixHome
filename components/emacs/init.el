@@ -16,6 +16,8 @@
   (concat (user-login-name) "@" (downcase (system-name)))
   "User login name and system name, separated by an atsign. E.g.: craig@doe")
 
+(setq-default frame-title-format '("" invocation-name "@" system-name ":%f"))
+
 (defvar session-specific-scratch-dir
  (concat "~/.emacs.d/sessions/" username-at-systemname)
  "session-specific scratch, cache, and other temporary files are stored here.")
