@@ -41,9 +41,15 @@ if ! alias BASHRC_HAS_RUN >/dev/null 2>&1 && [ -r $HOME/.bashrc ]; then
     alias BASHRC_HAS_RUN=true  # Just in case it isn't our .bashrc.
 fi
 
-PATHDIRS="$HOME/bin $HOME/googlesource/depot_tools"
+BEFOREPATHDIRS="$HOME/bin"
 
-for pd in $PATHDIRS; do
+for pd in $BEFOREPATHDIRS; do
+    [ -d "$pd" ] && PATH=$(path --prepend "$pd")
+done
+
+AFTERPATHDIRS="$HOME/googlesource/depot_tools"
+
+for pd in $AFTERPATHDIRS; do
     [ -d "$pd" ] && PATH=$(path --append "$pd")
 done
 
