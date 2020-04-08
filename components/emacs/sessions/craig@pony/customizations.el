@@ -9,6 +9,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(global-auto-revert-mode t)
+ '(mouse-wheel-progressive-speed nil)
+ '(mouse-wheel-scroll-amount (quote (1 ((shift) . 5) ((control)))))
  '(package-selected-packages
    (quote
     (markdown-mode ## go-mode use-package rainbow-delimiters paredit exec-path-from-shell company clojure-mode-extra-font-locking cider))))
