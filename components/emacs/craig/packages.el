@@ -2,8 +2,8 @@
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
        (prefix (concat (if no-ssl "http://" "https://"))))
-  (add-to-list 'package-archives
-               (cons "marmalade" (concat prefix "marmalade-repo.org/packages/")) t)
+  ;; (add-to-list 'package-archives
+  ;;              (cons "marmalade" (concat prefix "marmalade-repo.org/packages/")) t)
   (add-to-list 'package-archives
                (cons "melpa" (concat prefix "melpa.org/packages/")) t)
   (when (< emacs-major-version 24)
