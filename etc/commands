@@ -33,6 +33,7 @@ alias gitfallp='git fetch --prune --jobs=10 --all'
 alias gitdone='git branch --merged'
 alias jkdrop='./joker --exit-to-repl --error-to-repl --file'
 function joker-update-docs() { rsync -e ssh -au docs/ www-data@llamail.com:/var/www/burleyarch/joker/docs/$(go env GOARCH)-$(go env GOOS)/; }
-function joker-update-exes() { rsync -e ssh -au joker.{slow,fast} www-data@llamail.com:/var/www/burleyarch/joker/exe/$(go env GOARCH)-$(go env GOOS)/; }
-function joker-update-zeal() { pushd docs > /dev/null; ./dash.sh > /dev/null; rsync -e ssh -auv joker.{xml,tgz} www-data@llamail.com:/var/www/burleyarch/joker/docs/; popd > /dev/null; }
+if [ "$(uname -s)" = "Darwin" ]; then
+    function joker-update-zeal() { pushd docs > /dev/null; ./dash.sh > /dev/null; rsync -e ssh -auv joker.{xml,tgz} www-data@llamail.com:/var/www/burleyarch/joker/docs/; popd > /dev/null; }
+fi
 alias proxy='while true; do sh -c "ssh -gND 8989 root@dove -p 2992 2>/dev/null"; sleep 1; done'
