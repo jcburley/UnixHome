@@ -46,11 +46,9 @@
   (package-refresh-contents)
   (write-file-contents package-stamp package-stamp-file))
 
-(message (concat load-file-name " about to call package-initialize!"))
-
-(package-initialize)
-
-(message (concat load-file-name " after call to package-initialize!"))
+;; (message (concat load-file-name " about to call package-initialize!"))
+;; (package-initialize)
+;; (message (concat load-file-name " after call to package-initialize!"))
 
 (defvar my-packages
   '(;; makes handling lisp expressions much, much easier
