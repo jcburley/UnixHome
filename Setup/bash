@@ -67,3 +67,5 @@ if [ -f ~/.profile ]; then
 else
     $CP -v ~/.unixhome/templates/my-profile ~/.profile
 fi
+
+./inputrc

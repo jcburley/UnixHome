@@ -1,0 +1,9 @@
+if [ ! -r ~/.inputrc ] || ! grep -F -q /etc/inputrc; then
+    echo '$include /etc/inputrc' >> ~/.inputrc
+    echo "$0: appended '$include /etc/inputrc' to ~/.inputrc'"
+fi
+
+if [ ! -r ~/.inputrc ] || ! grep -F -q .unixhome/etc/inputrc ~/.inputrc; then
+    echo '$include ~/.unixhome/etc/inputrc' >> ~/.inputrc
+    echo "$0: appended '$include ~/.unixhome/etc/inputrc' to ~/.inputrc"
+fi

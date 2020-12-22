@@ -1,0 +1,16 @@
+# Begin .unixhome/etc/inputrc
+# Set up useful keyboard shortcuts
+
+# Ctrl-G changes to the parent directory
+"\C-g": "cd ..\n"
+
+set keymap emacs
+"\C-x\C-r": re-read-init-file
+
+set keymap vi-command
+"\C-x\C-r": re-read-init-file
+
+set keymap vi-insert
+"\C-x\C-r": re-read-init-file
+
+# End .unixhome/etc/inputrc

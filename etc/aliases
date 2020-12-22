@@ -24,6 +24,9 @@ alias l1ad='ls -1Ad'
 alias golocal='PATH=$(path --prepend "$GOLOCALBIN"); GOROOT="$GOLOCALROOT"'
 alias goback='PATH=$(path --remove "$GOLOCALBIN"); GOROOT="$GOORIGROOT"'
 
+alias bracketed-paste-on='printf "\e[?2004h"'
+alias bracketed-paste-off='printf "\e[?2004l"'
+
 if [ -n "$SSH_CLIENT" ]; then
     # Use terminal mode when ssh'ing in, since I don't usually set up X remoting.
     alias emacs='emacs -nw'
