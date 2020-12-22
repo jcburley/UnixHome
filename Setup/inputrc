@@ -1,4 +1,4 @@
-if [ ! -r ~/.inputrc ] || ! grep -F -q /etc/inputrc; then
+if [ ! -r ~/.inputrc ] || ! grep -F -q /etc/inputrc ~/.inputrc; then
     echo '$include /etc/inputrc' >> ~/.inputrc
     echo "$0: appended '$include /etc/inputrc' to ~/.inputrc'"
 fi
