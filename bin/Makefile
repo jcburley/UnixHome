@@ -5,6 +5,7 @@ all:
 TOOLS=\
 bash-for-emacs \
 path \
+settitle \
 
 install:
 # Installing useful tools into /usr/local/bin, instead of ~/bin,
