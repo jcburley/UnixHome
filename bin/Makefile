@@ -5,6 +5,7 @@ all:
 TOOLS=\
 bash-for-emacs \
 path \
+rssh \
 settitle \
 
 install:

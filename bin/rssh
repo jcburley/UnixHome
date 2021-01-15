@@ -1,0 +1,14 @@
+#!/bin/bash
+
+MYPORT=~/my_ssh_port
+
+if [ ! -f "$MYPORT" ]; then
+    echo >&2 "No $MYPORT file."
+    exit
+fi
+
+read myport ign < "$MYPORT"
+
+echo HOSTNAME=$HOSTNAME is reachable from dove via myport=$myport
+
+while true; do ssh -N -R *:$myport:localhost:22 craig@dove; sleep 1; done
