@@ -83,8 +83,6 @@
   (interactive "DCompile in directory: \nsCommand: ")
   (let ((default-directory dir))
     (compile command)))
-(setenv "GO_EXEC_OUTPUT_STYLE" "gmake")  ; Tell (my fork of) the 'go generate' command to help next-error track source-file locations
-(add-hook 'before-save-hook #'gofmt-before-save)
 
 (global-set-key (kbd "C-x p") (lambda ()
 				(interactive)  ; previous window
@@ -115,11 +113,13 @@
 ;; that defines $UNIXHOME):
 (when (getenv "UNIXHOME")
   (load (concat (getenv "UNIXHOME") "/components/emacs/craig/clojure.el"))
-  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/git.el")))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/git.el"))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/go.el")))
 
 (when (and (boundp 'custom-file) custom-file)
   (load custom-file t))  ; No error if file doesn't exist.
 
+;;; Automatically update buffers to reflect latest file contents.
 (global-auto-revert-mode t)
 
-;; End of my file.
+;;; End of my file.
