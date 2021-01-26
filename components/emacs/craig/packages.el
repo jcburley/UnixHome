@@ -71,6 +71,13 @@
 
     ;; company-mode
     company
+
+    ;; disable-mouse-mode
+    disable-mouse
+
+    ;;; NOTE: When adding to (or changing) the above, delete the
+    ;;; 'package-refresh.STAMP' file, if any, for the current
+    ;;; user@system in ~/.emacs.d/sessions/.
     ))
 
 ;; On OS X, an Emacs instance started from the graphical user
@@ -92,7 +99,7 @@
            (memq window-system '(mac ns x)))
   (exec-path-from-shell-initialize))
 
-                                        ; Bring in use-package:
+;; Bring in use-package:
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
