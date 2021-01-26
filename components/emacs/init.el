@@ -94,7 +94,9 @@
 
 (unless (or (not (getenv "UNIXHOME"))  ; Perhaps running under sudo?
             (< emacs-major-version 24))
-  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/packages.el")))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/packages.el"))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/disable-trackpad-while-typing.el"))
+  (jogo3000/disable-touchpad-mode))
 
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
 ;; to load them.
@@ -117,5 +119,7 @@
 
 (when (and (boundp 'custom-file) custom-file)
   (load custom-file t))  ; No error if file doesn't exist.
+
+(global-auto-revert-mode t)
 
 ;; End of my file.
