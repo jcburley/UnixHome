@@ -134,6 +134,12 @@ if [ -n "$PS1" ]; then
     fi
 fi
 
+if [ -d "/home/linuxbrew" ]; then
+    PATH="$(path --append "/home/linuxbrew/.linuxbrew/bin:$PATH")"
+    MANPATH="$(path "$MANPATH" --append "/home/linuxbrew/.linuxbrew/share/man:$MANPATH")"
+    INFOPATH="$(path "$INFOPATH" --append "/home/linuxbrew/.linuxbrew/share/info:$INFOPATH")"
+fi
+
 # GoLang
 if [ -n "$GOROOT" ]; then
     :
