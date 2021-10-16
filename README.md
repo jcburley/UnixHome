@@ -36,7 +36,7 @@ $ ./bash
 $ ./emacs
 $ cd ../bin
 $ sudo make install
-$
+$ cd ../build; sudo make install  # OPTIONAL, if the build command is desired
 ```
 
 # Sanity-check
