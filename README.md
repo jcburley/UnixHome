@@ -10,7 +10,7 @@ My $HOME directory for Unixy OSes
 - Install GitHub Desktop and login
 - Install homebrew ("brew")
 - Install GNU stuff via:
-    `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep emacs`
+    `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep emacs` (remove `emacs` if you're installing e.g. `emacs-app` via MacPorts)
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
 - Edit `~/.profile` to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs (see $UNIXHOME/etc/sessions/craig@pony for an example)
@@ -53,6 +53,6 @@ Start up GNU Emacs, and confirm:
 ## Per-OS Maintenance
 ### Mac OS X
 ```
-$ port selfupdate
+$ sudo port selfupdate
 ```
 
