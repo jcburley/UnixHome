@@ -5,16 +5,22 @@ My $HOME directory for Unixy OSes
 
 ## Per-OS Preparation
 ### Mac OS X
+- Establish your login shell; these instructions assume Bash, so (if necessary) `chsh -s /bin/bash` and login a new shell to use going forward.
 - Install MacPorts via: www.macports.org/install.php
-  - This will create `~/.profile`
+  - This will create `~/.profile`, `~/.zprofile`, etc.
+  - If the current or a new shell don't find the `port` command, this might work (if `~/.profile` invokes `/usr/libexec/path_helper -s`):
+```shell
+$ sudo sh -c 'echo /opt/local/bin > /etc/paths.d/opt-bin'
+$ sudo sh -c 'echo /opt/local/sbin > /etc/paths.d/opt-sbin'
+```
 - Install GitHub Desktop and login
 - Install homebrew ("brew")
 - Install GNU stuff via:
     `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep emacs` (remove `emacs` if you're installing e.g. `emacs-app` via MacPorts)
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
-- Edit `~/.profile` to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs (see $UNIXHOME/etc/sessions/craig@pony for an example)
-- Make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
+- Edit `~/.profile` to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs (see `$UNIXHOME/etc/sessions/craig@pony` for an example), or add that path to `/etc/paths.d/gnubin` as shown above
+- If the system is under your control, make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
   - `sudo scutil --set HostName xxx`
   - `sudo scutil --set LocalHostName xxx`
   - `sudo scutil --set ComputerName xxx`
