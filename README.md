@@ -16,7 +16,7 @@ $ sudo sh -c 'echo /opt/local/sbin > /etc/paths.d/opt-sbin'
 - Install GitHub Desktop and login
 - Install homebrew ("brew")
 - Install GNU stuff via:
-    `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep emacs` (remove `emacs` if you're installing e.g. `emacs-app` via MacPorts)
+    `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep bash-completion zsh-completion emacs` (remove `emacs` if you're installing e.g. `emacs-app` via MacPorts)
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
 - Edit `~/.profile` to specify `/opt/local/libexec/gnubin` before `$PATH`, per MacPorts docs (see `$UNIXHOME/etc/sessions/craig@pony` for an example), or add that path to `/etc/paths.d/gnubin` as shown above
