@@ -8,6 +8,7 @@ alias newprofile=". ${UNIXHOME}/etc/bash_profile"
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias l='less'
 alias lt='ls -lt'
 alias ltd='ls -ltd'
 alias ll='ls -l'
