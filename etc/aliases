@@ -21,6 +21,8 @@ alias l1='ls -1'
 alias l1d='ls -1d'
 alias l1a='ls -1A'
 alias l1ad='ls -1Ad'
+alias e=earthly
+alias m=make
 
 alias golocal='PATH=$(path --prepend "$GOLOCALBIN"); GOROOT="$GOLOCALROOT"'
 alias goback='PATH=$(path --remove "$GOLOCALBIN"); GOROOT="$GOORIGROOT"'
