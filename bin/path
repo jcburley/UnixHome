@@ -1,116 +1,254 @@
 #!/bin/bash
 
-if [ "$1" = "--help" -o "$1" = "-h" ]
-then
+version () {
+    echo "path v1.0.0"
+    exit 0
+}
+
+usage () {
     cat <<EOF
-Usage: path [<pathlist>] [<directive>]
-  Where <pathlist> is e.g. \$MANPATH (default is \$PATH), and
-  <directive> is one of:
+USAGE:
 
-    --has <element>
-      return success only if <element> appears in <pathlist>
+  path [<path>] [<directive>...]
 
-    --prepend <element>
-      prints <pathlist> with <element> prepended, if it's not
-      already there; otherwise prints it unmodified
+Where <path> is a colon-delimited list of Unix paths that serves as
+the initial pathlist (the default is \$PATH), and <directive> is a
+sequence of the following:
 
-    --append <element>
-      prints <pathlist> with <element> appended, if it's not
-      already there; otherwise prints it unmodified
+  -a,--append <element>...
 
-    --remove <element>
-      prints <pathlist> with <element> removed, if it's there;
-      otherwise prints it unmodified
+    append each element (if not already present) to the current
+    pathlist
 
-  The default is to print all elements, one per line.
+  -p,--prepend <element>...
 
-  Sample usage, to ensure ~/bin is at the front of \$PATH
-  without duplicating it:
+    prepend each element (in order, so multiple elements will appear
+    in LIFO order) to the current pathlist, removing subsesquent
+    appearances of the element
 
-   export PATH=\$(path \$(path --remove ~/bin) --prepend ~/bin)
+  -r,--remove <element>...
+
+    remove each <element> (if present) from the current pathlist
+
+  -h,--has <element>...
+
+    return success only if each <element> appears in the current
+    pathlist (but continue processing directives), else exit with code
+    1; makes '--no-result' the default
+
+  -P,--print
+
+    print the current pathlist, one element per line; this is the
+    default if no directives are specified, and its presence makes
+    --no-result the default
+
+  -R,--[no-]result
+
+    (do not) print the current pathlist, delimited with colons;
+    '--result' is the default final directive unless it, '--print', or
+    '--has' was specified, in which case '--no-result' is the default
+
+  -V,--version
+
+    print version info and exit immediately
+
+  -H,--help
+
+    print this usage information and exit immediately
+
+If no directives are specified, '--print' is the default; else,
+'--result' is implied as a final directive unless '--has', '--print',
+'--result', or '--no-result' is specified. That is, without
+directives, "pretty-printing" the (de-duplicated) result is the
+default; with only path-manipulating directives, printing the
+colon-delimited result is the default; otherwise there's no default
+final action.
+
+Duplicate elements are removed from the initial pathlist before
+processing begins, and the resulting pathlist will have no duplicate
+elements.
+
+EXAMPLES:
+
+Print current \$PATH:
+
+  $ path
+
+Remove duplicates from \$PATH:
+
+  $ PATH="\$(path --result)"
+
+Ensure ~/bin is at the front of \$PATH without duplicating it:
+
+  $ PATH="\$(path -p ~/bin)"
+
+Append (unless already present) a few paths to \$MANPATH:
+
+  $ export MANPATH="\$(path "\$MANPATH" --append ~/man ~/myapp/man)"
+
+(Note that 'export' is used here, in case \$MANPATH is not already
+defined. \$PATH is always defined and exported, so there's no need to
+'export' it when changing it.)
+
 EOF
     exit 99
-fi
+}
 
-if [[ $# -eq 0 || "$1" = -* ]]
-then
+# An associative array would be much better than repeatedly searching
+# the PA array, but Bash v4 is not yet widespread.
+
+elementInPathArray () {
+    local el find="$1"
+    for el in "${PA[@]}"; do
+        [ "$el" == "$find" ] && return 0
+    done
+    return 1
+}
+
+append () {
+    if ! elementInPathArray "$1"; then
+        PA+=("$1")
+    fi
+}
+
+remove () {
+    local el new="$1"
+    for ix in "${!PA[@]}"; do
+        [ "${PA[ix]}" == "$new" ] && unset PA[$ix]
+    done
+}
+
+prepend () {
+    remove "$1"
+    PA=("$1" "${PA[@]}")
+}
+
+has () {
+    if [ $RC -eq 0 ] && ! elementInPathArray "$1"; then
+        RC=1
+    fi
+}
+
+print_path_with_newlines () {
+    for el in "${PA[@]}"; do
+        echo "$el"
+    done
+}
+
+print_path_with_colons () {
+    local first=true
+    for ix in "${!PA[@]}"; do
+        if [ $ix -ne 0 ]; then
+            echo -n ':'
+        fi
+        echo -n "${PA[ix]}"
+    done
+    echo ''
+}
+
+ensure_arg () {
+    if [ -z "$FN" ] || ! $NEED_ARG; then
+        return
+    fi
+    echo >&2 "Need at least one argument for $FN_ORIG"
+    exit 5
+}
+
+if [[ $# -eq 0 || "$1" = -* ]]; then
     P="$PATH"
 else
     P="$1"
     shift
 fi
 
-if [ "$1" = "--prepend" -a $# -ge 2 ]
-then
-    SENDTO=prepend
-    E="$2"
-    shift 2
-elif [ "$1" = "--append" -a $# -ge 2 ]
-then
-    SENDTO=append
-    E="$2"
-    shift 2
-elif [ "$1" = "--remove" -a $# -ge 2 ]
-then
-    SENDTO=remove
-    E="$2"
-    shift 2
-elif [ "$1" = "--has" -a $# -ge 2 ]
-then
-    SENDTO="grep -qxF $2"
-    shift 2
-else
-    SENDTO=cat
+if [ $(echo -n "$P" | wc -l) -ne 0 ]; then
+    echo >&2 "Input path must not contain any newlines: $P"
+    exit 2
 fi
 
-if [ $# -gt 0 ]
-then
-    echo >&2 "$0: Excess arguments beginning with: $1"
-    echo >&2 "  Arguments are: $@"
-    echo "$P"  # Return what was passed in, unchanged, in case it's replacing e.g. PATH
-    exit 98
+RC=0
+declare -a PA  # current pathlist as array
+FINAL_DIRECTIVE=print_path_with_newlines
+
+while read; do
+    if ! elementInPathArray "$REPLY"; then
+        PA+=("$REPLY")
+    fi
+done <<< "$(echo "$P" | sed 's@:@\n@g')"
+
+for arg; do
+    case "$arg" in
+        "-a" | "--append")
+            ensure_arg
+            FN_ORIG="$arg"
+            FN=append
+            FINAL_DIRECTIVE=print_path_with_colons
+            NEED_ARG=true
+            ;;
+        "-p" | "--prepend")
+            ensure_arg
+            FN_ORIG="$arg"
+            FN=prepend
+            FINAL_DIRECTIVE=print_path_with_colons
+            NEED_ARG=true
+            ;;
+        "-r" | "--remove")
+            ensure_arg
+            FN_ORIG="$arg"
+            FN=remove
+            FINAL_DIRECTIVE=print_path_with_colons
+            NEED_ARG=true
+            ;;
+        "-h" | "--has")
+            ensure_arg
+            FN_ORIG="$arg"
+            FN=has
+            FINAL_DIRECTIVE=
+            NEED_ARG=true
+            ;;
+        "-P" | "--print")
+            ensure_arg
+            print_path_with_newlines
+            unset FINAL_DIRECTIVE
+            unset FN
+            ;;
+        "-R" | "--result")
+            ensure_arg
+            print_path_with_colons
+            unset FINAL_DIRECTIVE
+            unset FN
+            ;;
+        "--no-result")
+            ensure_arg
+            unset FINAL_DIRECTIVE
+            ;;
+        "-V" | "--version")
+            ensure_arg
+            version
+            ;;
+        "-H" | "--help")
+            ensure_arg
+            usage
+            ;;
+        -*)
+            echo >&2 "Invalid option: $arg"
+            exit 3
+            ;;
+        *)
+            if [ -z "$FN" ]; then
+                echo >&2 "Unexpected argument: $arg"
+                exit 4
+            fi
+            $FN "$arg"
+            NEED_ARG=false
+            ;;
+    esac
+done
+
+ensure_arg
+
+if [ -n $FINAL_DIRECTIVE ]; then
+    $FINAL_DIRECTIVE
 fi
 
-case "$SENDTO" in
-    prepend)
-        if [ -z "$E$P" ]
-        then
-            echo ":"  # Prepend empty element to empty path (e.g. /etc/manpath.config)
-        elif echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
-        then
-            echo "$P"
-        elif [ "$P" = ":" ]
-        then
-             echo "${E}${P}"
-        else
-            echo "${E}${P:+:${P}}"
-        fi
-        exit 0
-    ;;
-    append)
-        if [ -z "$P$E" ]
-        then
-            echo ":"  # Append empty element to empty path (e.g. /etc/manpath.config)
-        elif echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -q ":${E}:"
-        then
-            echo "$P"
-        elif [ "$P" = ":" ]
-        then
-             echo "${P}${E}"
-        else
-            echo "${P:+${P}:}${E}"
-        fi
-        exit 0
-    ;;
-    remove)
-        # "-e 'G'" at the end appends a newline, which GNU sed 4.5
-        # doesn't automatically add, like BSD sed (on OSX anyway)
-        # does.
-        echo "$P" | tr : "\n" | sed -e 's@^\(.*\)$@:\1:@g' | fgrep -v ":${E}:" | sed -e 's@:@@g' | tr "\n" : | sed -e 's@:$@@g' -e 'G'
-        exit 0
-    ;;
-    *)
-    ;;
-esac
-
-echo "$P" | tr : "\n" | $SENDTO
+exit $RC
