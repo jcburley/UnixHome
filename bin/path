@@ -64,9 +64,9 @@ default; with only path-manipulating directives, printing the
 colon-delimited result is the default; otherwise there's no default
 final action.
 
-Duplicate elements are removed from the initial pathlist before
-processing begins, and the resulting pathlist will have no duplicate
-elements.
+Duplicate elements are removed (following the first appearance of
+each) from the initial pathlist before processing begins, and the
+resulting pathlist will have no duplicate elements.
 
 EXAMPLES:
 
@@ -138,9 +138,10 @@ print_path_with_newlines () {
 print_path_with_colons () {
     local first=true
     for ix in "${!PA[@]}"; do
-        if [ $ix -ne 0 ]; then
+        if ! $first; then
             echo -n ':'
         fi
+        first=false
         echo -n "${PA[ix]}"
     done
     echo ''
