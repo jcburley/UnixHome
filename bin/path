@@ -1,7 +1,7 @@
 #!/bin/bash
 
 version () {
-    echo "path v1.0.1"
+    echo "path v1.1.0"
     exit 0
 }
 
@@ -17,44 +17,57 @@ sequence of the following:
 
   -a,--append <element>...
 
-    append each element (if not already present) to the current
-    pathlist
+    Append each element (if not already present) to the current
+    pathlist.
 
   -p,--prepend <element>...
 
-    prepend each element (in order, so multiple elements will appear
+    Prepend each element (in order, so multiple elements will appear
     in LIFO order) to the current pathlist, removing subsesquent
-    appearances of the element
+    appearances of the element.
 
   -r,--remove <element>...
 
-    remove each <element> (if present) from the current pathlist
+    Remove each <element> (if present) from the current pathlist.
+
+  -d,--delete <N>...
+
+    Remove element #<N> from the (0-based) array (vector) comprising
+    the pathlist. Negative numbers are added to the length of the
+    array to determine the actual index to be deleted (so -1 refers to
+    the final element, -2 to the penultimate element, and so on). The
+    pathlist's indices are recomputed after each element's deletion,
+    so '-d 0 0', not '-d 0 1', deletes its first two elements (the
+    latter would delete its first and third, as the third would become
+    the second after that first deletion). Out-of-range deletions are
+    ignored.
 
   -h,--has <element>...
 
-    return success only if each <element> appears in the current
-    pathlist (but continue processing directives), else exit with code
-    1; makes '--no-result' the default
+    Exit with success (code 0) only if each <element> appears in the
+    current pathlist, else exit with code 1; regardless, continue
+    processing directives until it's time to exit. Makes '--no-result'
+    the default.
 
   -P,--print
 
-    print the current pathlist, one element per line; this is the
+    Print the current pathlist, one element per line; this is the
     default if no directives are specified, and its presence makes
-    --no-result the default
+    --no-result the default.
 
   -R,--[no-]result
 
-    (do not) print the current pathlist, delimited with colons;
+    (Do not) Print the current pathlist, delimited with colons;
     '--result' is the default final directive unless it, '--print', or
-    '--has' was specified, in which case '--no-result' is the default
+    '--has' was specified, in which case '--no-result' is the default.
 
   -V,--version
 
-    print version info and exit immediately
+    Print version info and exit immediately.
 
   -H,--help
 
-    print this usage information and exit immediately
+    Print this usage information and exit immediately.
 
 If no directives are specified, '--print' is the default; else,
 '--result' is implied as a final directive unless '--has', '--print',
@@ -90,12 +103,21 @@ Append (unless already present) a few paths to \$MANPATH:
 defined. \$PATH is always defined and exported, so there's no need to
 'export' it when changing it.)
 
+Delete the first two elements from \$PATH:
+
+  $ PATH="\$(path -d 0 0)"
+
+Delete the final element from \$PATH:
+
+  $ PATH="\$(path -d -1)"
+
 EOF
     exit 99
 }
 
-# An associative array would be much better than repeatedly searching
-# the PA array, but Bash v4 is not yet widespread.
+# An associative array (maintained, as a set, alongside the PA array)
+# would probably be faster than repeatedly searching the PA array, but
+# Bash v4 is not yet widespread.
 
 elementInPathArray () {
     local el find="$1"
@@ -111,16 +133,31 @@ append () {
     fi
 }
 
+# Squeeze out unset elements.
+squeeze () {
+    PA=("${PA[@]}")
+}
+
 remove () {
     local el new="$1"
     for ix in "${!PA[@]}"; do
         [ "${PA[ix]}" == "$new" ] && unset PA[$ix]
     done
+    squeeze
 }
 
 prepend () {
     remove "$1"
     PA=("$1" "${PA[@]}")
+}
+
+delete () {
+    if [ $1 -lt 0 ]; then
+        unset PA[$(($1 + ${#PA[@]}))]
+    else
+        unset PA[$1]
+    fi
+    squeeze
 }
 
 has () {
@@ -200,6 +237,13 @@ for arg; do
             FINAL_DIRECTIVE=print_path_with_colons
             NEED_ARG=true
             ;;
+        "-d" | "--delete")
+            ensure_arg
+            FN_ORIG="$arg"
+            FN=delete
+            FINAL_DIRECTIVE=print_path_with_colons
+            NEED_ARG=true
+            ;;
         "-h" | "--has")
             ensure_arg
             FN_ORIG="$arg"
@@ -222,6 +266,7 @@ for arg; do
         "--no-result")
             ensure_arg
             unset FINAL_DIRECTIVE
+            unset FN
             ;;
         "-V" | "--version")
             ensure_arg
@@ -231,7 +276,7 @@ for arg; do
             ensure_arg
             usage
             ;;
-        -*)
+        -*[!0-9]*)
             echo >&2 "Invalid option: $arg"
             exit 3
             ;;
