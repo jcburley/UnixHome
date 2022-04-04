@@ -144,19 +144,19 @@ fi
 if [ -n "$GOROOT" ]; then
     :
 elif which go >/dev/null 2>&1; then
-    export GOROOT=$(go env GOROOT)
-    if [ "$GOROOT" = "$(readlink /usr/local/go)" ]; then
-        GOROOT=/usr/local/go
+    goroot=$(go env GOROOT)
+    if [ "$goroot" = "$(readlink /usr/local/go)" ]; then
+        goroot=/usr/local/go
     fi
 elif [ -d /usr/local/go ]; then
-    export GOROOT=$(/usr/local/go/bin/go env GOROOT)
+    goroot=$(/usr/local/go/bin/go env GOROOT)
 fi
-if [ -n "$GOROOT" -a -d "$GOROOT" ]; then
+if [ -n "$goroot" -a -d "$goroot" ]; then
     if which cygpath >/dev/null 2>&1; then
-        GOROOT="$(cygpath -u "$GOROOT")"
+        goroot="$(cygpath -u "$goroot")"
     fi
     if ! which go >/dev/null 2>&1; then
-        PATH=$(path --prepend "$GOROOT/bin")
+        PATH=$(path --prepend "$goroot/bin")
     fi
 fi
 if [ -d "$HOME/.go" -a ! -d "$HOME/go" ]; then
@@ -180,7 +180,7 @@ if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     fi
     GOBIN="$GOPATH"/bin
     PATH=$(path --prepend "$GOBIN")
-    export GOORIGROOT="$GOROOT"
+    export GOORIGROOT="$goroot"
     if [ -n "$PS1" ]; then
         for d in "$GOPATH"/src/github.com/*; do
             CDPATH=$(eval path \"$CDPATH\" --prepend \"$d\")
@@ -189,3 +189,4 @@ if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     fi
     export GOPATH GOBIN
 fi
+unset goroot
