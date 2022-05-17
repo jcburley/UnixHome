@@ -101,11 +101,12 @@ if [ -n "$PS1" ]; then
 
     # Don't export CDPATH, and set it only for interactive sessions, per:
     #   https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
-    CDPATH=$(eval path \"\" --prepend .)
-    [ -d ~/github ] && CDPATH=$(eval path \"$CDPATH\" --append ~/github)
-    for d in ~/github/*; do
-        CDPATH=$(eval path \"$CDPATH\" --prepend \"$d\")
-    done
+    if [ -d ~/github ]; then
+        for d in ~/github/*; do
+            CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
+        done
+        CDPATH=$(eval path \"$CDPATH\" --append ~/github)
+    fi
     [ -d ~/gitdove ] && CDPATH=$(eval path \"$CDPATH\" --append ~/gitdove)
 
     # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
@@ -183,10 +184,13 @@ if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     export GOORIGROOT="$goroot"
     if [ -n "$PS1" ]; then
         for d in "$GOPATH"/src/github.com/*; do
-            CDPATH=$(eval path \"$CDPATH\" --prepend \"$d\")
+            CDPATH=$(eval path \"$CDPATH\" --append \"$d\")
         done
         CDPATH=$(eval path \"$CDPATH\" --append \"$GOPATH\"/src/github.com)
     fi
     export GOPATH GOBIN
 fi
 unset goroot
+
+# Always start looking in the local directory.
+CDPATH=$(eval path \"$CDPATH\" --prepend .)
