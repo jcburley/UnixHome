@@ -13,7 +13,7 @@ My $HOME directory for Unixy OSes
 $ sudo sh -c 'echo /opt/local/bin > /etc/paths.d/opt-bin'
 $ sudo sh -c 'echo /opt/local/sbin > /etc/paths.d/opt-sbin'
 ```
-- Install GitHub Desktop and login
+- Install GitHub Desktop via https://desktop.github.com/ and login
 - Install homebrew ("brew")
 - Install GNU stuff via:
     `sudo port install coreutils findutils gnutar gsed gnutls gindent getopt gawk grep bash-completion zsh-completion emacs` (remove `emacs` if you're installing e.g. `emacs-app` via MacPorts)
