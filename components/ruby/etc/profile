@@ -1,0 +1,14 @@
+RUBYDIR=~/ruby
+
+if [ ! -d $RUBYDIR/github.com ]; then
+    exit
+fi
+
+echo "PS1=$PS1"
+
+if [ -n "$PS1" ]; then
+    for d in $RUBYDIR/github.com/*; do
+        CDPATH=$(eval path \"$CDPATH\" --prepend \"$d\")
+    done
+    CDPATH=$(eval path \"$CDPATH\" --append $RUBYDIR/github.com)
+fi

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if ! grep -F -qi .unixhome/components/ruby/etc/profile ~/.profile; then
+    cat >> ~/.profile <<EOF
+
+# Install ruby stuff.
+. ~/.unixhome/components/ruby/etc/profile
+EOF
+fi
