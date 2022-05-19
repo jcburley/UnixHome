@@ -26,6 +26,7 @@ alias gitfall='git fetch --jobs=10 --all' # Was: alias gitfall='gitfd; gitfo; gi
 alias gitfallp='git fetch --prune --jobs=10 --all'
 alias gitdone='git branch --merged'
 alias gitprune='git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'
+alias gitpr='gitmast && gitfallp && gitdn && gitprune'
 alias goroot='export GOROOT="$(go env GOROOT)"'
 alias jkdrop='./joker --exit-to-repl --error-to-repl --file'
 function joker-rsync-docs() { rsync -e ssh -au docs/ www-data@llamail.com:/var/www/burleyarch/joker/docs/$(go env GOARCH)-$(go env GOOS)/; }
