@@ -9,7 +9,7 @@
 
 (defun jogo3000/enable-mouse ()
   "Enable mouse."
-  (global-disable-mouse-mode t)
+  (global-disable-mouse-mode -1)
   (setq jogo3000/mouse-disabled nil))
 
 (defun jogo3000/temporarily-disable-mouse ()
