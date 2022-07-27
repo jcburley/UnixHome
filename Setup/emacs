@@ -35,6 +35,10 @@ fi
 
 mkdir -p ~/.emacs.d
 
+if [ ! -L ~/.emacs.d/vendor ]; then
+    $LN -sv ~/.unixhome/components/emacs/vendor ~/.emacs.d/vendor
+fi
+
 if [ -f ~/.emacs.d/init.el ]; then
     if ! grep -F -qi .unixhome/components/emacs/init.el ~/.emacs.d/init.el; then
 	$TAIL -n +3 ~/.unixhome/templates/my-init.el >> ~/.emacs.d/init.el  # Skip package and subsequent lines.
