@@ -72,6 +72,7 @@
 
 (setq-default indent-tabs-mode nil)
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
 (global-set-key (kbd "C-c w") 'compare-windows)
@@ -88,14 +89,6 @@
 				(interactive)  ; previous window
 				(other-window -1)))
 
-; Try a buncha stuff from https://github.com/flyingmachine/emacs-for-clojure/blob/master/init.el:
-
-(unless (or (not (getenv "UNIXHOME"))  ; Perhaps running under sudo?
-            (< emacs-major-version 24))
-  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/packages.el"))
-  (load (concat (getenv "UNIXHOME") "/components/emacs/disable-trackpad-while-typing.el"))
-  (jogo3000/disable-touchpad-mode))
-
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
 ;; to load them.
 ;;
@@ -109,6 +102,14 @@
 ;; a .yml file
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
+; Try a buncha stuff from https://github.com/flyingmachine/emacs-for-clojure/blob/master/init.el:
+
+(unless (or (not (getenv "UNIXHOME"))  ; Perhaps running under sudo?
+            (< emacs-major-version 24))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/craig/packages.el"))
+  (load (concat (getenv "UNIXHOME") "/components/emacs/vendor/disable-trackpad-while-typing.el"))
+  (jogo3000/disable-touchpad-mode))
+
 ;; Other stuff for use only when logged-in as 'craig' (or any account
 ;; that defines $UNIXHOME):
 (when (getenv "UNIXHOME")
@@ -121,5 +122,11 @@
 
 ;;; Automatically update buffers to reflect latest file contents.
 (global-auto-revert-mode t)
+
+;;; Keep clean files clean of trailing whitespace:
+(use-package trimspace-mode
+  :hook
+  (prog-mode . trimspace-mode-unless-trailing-whitespace)
+  (text-mode . trimspace-mode-unless-trailing-whitespace))
 
 ;;; End of my file.
