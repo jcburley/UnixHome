@@ -26,6 +26,8 @@ alias gitfall='git fetch --jobs=10 --all' # Was: alias gitfall='gitfd; gitfo; gi
 alias gitfallp='git fetch --prune --jobs=10 --all'
 alias gitdone='git branch --merged'
 alias gitprune='git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'
+# Convenient git tag generator for Spinnaker
+alias gtag='git log | head -1 | cut -b 8-14'
 
 # "This PR got merged":
 alias gitpr='gitmast && gitfallp && gitdn && gitprune'
@@ -41,6 +43,6 @@ if [ "$(uname -s)" = "Darwin" ]; then
 fi
 alias proxy='while true; do sh -c "ssh -gND 8989 root@dove -p 2992 2>/dev/null"; sleep 1; done'
 
-# Ruby/-on-Rails
-alias nuke_and_migrate='RAILS_ENV=test bundle exec rake db:drop db:create db:schema:load db:migrate'
-alias gtag='git log | head -1 | cut -b 8-14'
+# Ruby/-on-Rails: prefer db:structure:load to db:schema:load if older RoR version that
+# doesn't support, say, UUID as primary index.
+alias nuke_and_migrate='RAILS_ENV=test bundle exec rake db:drop db:create db:structure:load db:migrate'
