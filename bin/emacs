@@ -1,0 +1,33 @@
+#!/bin/sh
+
+if [ -n "$EMACS" ]; then
+    "/Applications/$EMACS.app/Contents/MacOS/Emacs" "$@"
+    exit $?
+fi
+
+BASE="$(basename "$PWD")"
+NEWBASE="$BASE"
+
+while true; do
+    EMACS="/Applications/$NEWBASE.app"
+
+    if [ ! -e "$EMACS" ]; then
+        break
+    fi
+
+    if [ -z $COUNT ]; then
+        COUNT=1
+    else
+        COUNT=$((COUNT + 1))
+    fi
+
+    NEWBASE="($COUNT) $BASE"
+done
+
+ln -sv '/Applications/Emacs.app' "$EMACS"
+
+echo "Starting: $EMACS"
+
+"$EMACS/Contents/MacOS/Emacs" "$@"
+
+rm -f "$EMACS"
