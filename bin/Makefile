@@ -4,6 +4,7 @@ all:
 
 TOOLS=\
 bash-for-emacs \
+emacs \
 path \
 rssh \
 settitle \
