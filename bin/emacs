@@ -9,7 +9,7 @@ if [ ! -d "$MAC_EMACS" ]; then
     PATH_COMMAND="$(which path)"
     MYPATH="$(dirname "$0")"
     TMP_PATH="$("$PATH_COMMAND" --remove "$MYPATH")"
-    PATH="$TMP_PATH" "$PATH_COMMAND" # emacs "$@"
+    PATH="$TMP_PATH" emacs "$@"
     exit $?
 fi
 
