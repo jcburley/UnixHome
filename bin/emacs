@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -x /snap/bin/emacs ]; then
+    /snap/bin/emacs "$@"
+    exit $?
+fi
+
 if [ -n "$EMACS" ]; then
     "/Applications/$EMACS.app/Contents/MacOS/Emacs" "$@"
     exit $?
