@@ -1,10 +1,15 @@
 #!/bin/sh
 
-MAC_EMACS='/Applications/Emacs.app'
+if [ -z "$MAC_EMACS" ]; then
+    MAC_EMACS='/Applications/Emacs.app'
+fi
 
 # If no Mac OS X version installed, just invoke whatever is on $PATH.
 if [ ! -d "$MAC_EMACS" ]; then
-    emacs "$@"
+    PATH_COMMAND="$(which path)"
+    MYPATH="$(dirname "$0")"
+    TMP_PATH="$("$PATH_COMMAND" --remove "$MYPATH")"
+    PATH="$TMP_PATH" "$PATH_COMMAND" # emacs "$@"
     exit $?
 fi
 
