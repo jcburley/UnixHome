@@ -1,12 +1,17 @@
 #!/bin/sh
 
-if [ -x /snap/bin/emacs ]; then
-    /snap/bin/emacs "$@"
+MAC_EMACS='/Applications/Emacs.app'
+
+# If no Mac OS X version installed, just invoke whatever is on $PATH.
+if [ ! -d "$MAC_EMACS" ]; then
+    emacs "$@"
     exit $?
 fi
 
+EMACS_EXE='Contents/MacOS/Emacs'
+
 if [ -n "$EMACS" ]; then
-    "/Applications/$EMACS.app/Contents/MacOS/Emacs" "$@"
+    "/Applications/$EMACS.app/${EMACS_EXE}" "$@"
     exit $?
 fi
 
@@ -29,10 +34,10 @@ while true; do
     NEWBASE="($COUNT) $BASE"
 done
 
-ln -sv '/Applications/Emacs.app' "$EMACS"
+ln -sv "$MAC_EMACS" "$EMACS"
 
 echo "Starting: $EMACS"
 
-"$EMACS/Contents/MacOS/Emacs" "$@"
+"$EMACS/${EMACS_EXE}" "$@"
 
 rm -f "$EMACS"
