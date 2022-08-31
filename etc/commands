@@ -14,8 +14,8 @@ alias gitcor='git checkout --track'  # "git checkout remote"
 alias gitdown='git fetch -p; git pull'
 alias gitdn='git pull'
 alias gitup='git push'
-alias gitupf='git push --force-with-lease'  # After rebase
-alias gitupfi='git push --force-with-lease --force-if-includes'  # Better after rebase (Git >= 2.30)
+alias gitupf='git push --force-with-lease --force-if-includes'  # Better after rebase (Git >= 2.30)
+alias gitupff='git push --force-with-lease'  # After rebase
 alias gitmast='git checkout master'
 alias gitmum='git merge upstream/master'
 alias gitrum='git rebase upstream/master'
@@ -35,8 +35,8 @@ alias gtag='git log | head -1 | cut -b 8-14'
 # "This PR got merged":
 alias gitpr='gitmast && gitfallp && gitdn && gitprune'
 
-# "Some other PR got merged":
-alias gitopr='git fetch origin master:master && gitprune && git merge master'   # Merge
+# "Some other PR(s) got merged":
+alias gitoprm='git fetch origin master:master && gitprune && git merge master'  # Merge
 alias gitoprr='git fetch origin master:master && gitprune && git rebase master' # Rebase
 
 alias goroot='export GOROOT="$(go env GOROOT)"'
