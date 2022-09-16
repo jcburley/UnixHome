@@ -16,12 +16,6 @@
 
 alias BASHRC_HAS_RUN=true
 
-# Set up environment variables, if not already done.
-if [ -n "$PS1" -a -z "$BASH_PROFILE_HAS_RUN" -a -f $HOME/.bash_profile -a -n "$BASH_VERSION" ]; then
-    . $HOME/.bash_profile
-    export BASH_PROFILE_HAS_RUN=true  # Just in case it isn't our .bash_profile.
-fi
-
 # Set up interactive capabilities.
 if [ -n "$PS1" ]; then
     ALIASFILE=${UNIXHOME}/etc/aliases
