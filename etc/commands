@@ -1,9 +1,8 @@
 #!/bin/sh
 
 # Aliases and functions that are command-like, as if on $PATH, and so
-# are suitable for use in non-interactive shells.
-
-alias newcommands=". ${UNIXHOME}/etc/commands"
+# are suitable for use in non-interactive shells. However, not all
+# sshd configurations read ~/.bashrc by default.
 
 alias gitrem='git remote -v'
 alias gitbr='git branch -vv'
@@ -17,11 +16,6 @@ alias gitup='git push'
 alias gitupf='git push --force-with-lease --force-if-includes'  # Better after rebase (Git >= 2.30)
 alias gitupff='git push --force-with-lease'  # After rebase
 alias gitmast='git checkout master'
-alias gitmum='git merge upstream/master'
-alias gitrum='git rebase upstream/master'
-alias gitcpx='git cherry-pick -x'
-alias gitcpa='git cherry-pick --abort'
-alias gitcpc='git cherry-pick --continue'
 alias gitDbr='git branch -D'
 alias gitdbr='git branch -d'
 function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; O="$(git config branch.$1.remote)"; git branch -D "$1"; git push "$O" --delete "$1"; }
@@ -31,21 +25,6 @@ alias gitdone='git branch --merged'
 alias gitprune='git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'
 # Convenient git tag generator for Spinnaker
 alias gtag='git log | head -1 | cut -b 8-14'
-
-# "This PR got merged":
-alias gitpr='gitmast && gitfallp && gitdn && gitprune'
-
-# "Some other PR(s) got merged":
-alias gitoprm='git fetch origin master:master && gitprune && git merge master'  # Merge
-alias gitoprr='git fetch origin master:master && gitprune && git rebase master' # Rebase
-
-alias goroot='export GOROOT="$(go env GOROOT)"'
-alias jkdrop='./joker --exit-to-repl --error-to-repl --file'
-function joker-rsync-docs() { rsync -e ssh -au docs/ www-data@llamail.com:/var/www/burleyarch/joker/docs/$(go env GOARCH)-$(go env GOOS)/; }
-if [ "$(uname -s)" = "Darwin" ]; then
-    function joker-gen-zeal() { pushd docs > /dev/null; ./dash.sh > /dev/null; rsync -e ssh -auv joker.{xml,tgz} www-data@llamail.com:/var/www/burleyarch/joker/docs/; popd > /dev/null; }
-fi
-alias proxy='while true; do sh -c "ssh -gND 8989 root@dove -p 2992 2>/dev/null"; sleep 1; done'
 
 # Ruby/-on-Rails: prefer db:structure:load to db:schema:load if older RoR version that
 # doesn't support, say, UUID as primary index.

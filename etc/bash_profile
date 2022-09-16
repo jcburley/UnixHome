@@ -30,16 +30,8 @@ if ! which path >/dev/null 2>&1; then
     fi
 fi
 
-[ -r ${UNIXHOME}/etc/functions ] && . ${UNIXHOME}/etc/functions
-
 # Pull in .profile, which e.g. MacPorts creates to prepend to $PATH.
 [ -r ~/.profile ] && . ~/.profile
-
-# Get the aliases and functions.
-if ! alias BASHRC_HAS_RUN >/dev/null 2>&1 && [ -r $HOME/.bashrc ]; then
-    source $HOME/.bashrc
-    alias BASHRC_HAS_RUN=true  # Just in case it isn't our .bashrc.
-fi
 
 BEFOREPATHDIRS="$HOME/bin $HOME/.local/bin"
 
@@ -190,3 +182,9 @@ if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
     export GOPATH GOBIN
 fi
 unset goroot
+
+# Get the aliases and functions.
+if ! alias BASHRC_HAS_RUN >/dev/null 2>&1 && [ -r $HOME/.bashrc ]; then
+    source $HOME/.bashrc
+    alias BASHRC_HAS_RUN=true  # Just in case it isn't our .bashrc.
+fi

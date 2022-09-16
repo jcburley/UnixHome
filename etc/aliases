@@ -1,8 +1,10 @@
 #!/bin/sh
 
-# Interactive-shell aliases and functions.
+# Interactive-shell aliases and functions. (For non-interactive shells
+# see the commands file, pulled in at the bottom of this file.)
 
 alias newaliases=". ${UNIXHOME}/etc/aliases"
+alias newcommands=". ${UNIXHOME}/etc/commands"
 alias newprofile=". ${UNIXHOME}/etc/bash_profile"
 
 alias rm='rm -i'
@@ -29,6 +31,24 @@ alias goback='PATH=$(path --remove "$GOLOCALBIN"); GOROOT="$GOORIGROOT"'
 
 alias bracketed-paste-on='printf "\e[?2004h"'
 alias bracketed-paste-off='printf "\e[?2004l"'
+
+alias gitmum='git merge upstream/master'
+alias gitrum='git rebase upstream/master'
+alias gitcpx='git cherry-pick -x'
+alias gitcpa='git cherry-pick --abort'
+alias gitcpc='git cherry-pick --continue'
+# "This PR got merged":
+alias gitpr='gitmast && gitfallp && gitdn && gitprune'
+# "Some other PR(s) got merged":
+alias gitoprm='git fetch origin master:master && gitprune && git merge master'  # Merge
+alias gitoprr='git fetch origin master:master && gitprune && git rebase master' # Rebase
+
+alias goroot='export GOROOT="$(go env GOROOT)"'
+alias jkdrop='./joker --exit-to-repl --error-to-repl --file'
+function joker-rsync-docs() { rsync -e ssh -au docs/ www-data@llamail.com:/var/www/burleyarch/joker/docs/$(go env GOARCH)-$(go env GOOS)/; }
+if [ "$(uname -s)" = "Darwin" ]; then
+    function joker-gen-zeal() { pushd docs > /dev/null; ./dash.sh > /dev/null; rsync -e ssh -auv joker.{xml,tgz} www-data@llamail.com:/var/www/burleyarch/joker/docs/; popd > /dev/null; }
+fi
 
 alias settitlePwd='settitle $(basename `pwd`)'
 

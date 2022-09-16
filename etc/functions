@@ -1,3 +1,0 @@
-# Functions that are not needed from e.g. 'ssh user@machine
-# <function>' can go here.  Otherwise they need to go in
-# /usr/local/bin or whatever is in $PATH for sshd on <machine>.
