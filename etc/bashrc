@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -r ~/.debug-profiles ] && echo -e "\n\n$0: bashrc: running" && env
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.unixhome/etc/bashrc: running" && env
 
 # 'ssh craig@bear <command>' runs ~/.bashrc, not ~/.bash_profile.
 # 'ssh craig@bear' (no <command>) creates a login session, so
