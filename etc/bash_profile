@@ -41,7 +41,7 @@ if ! alias BASHRC_HAS_RUN >/dev/null 2>&1 && [ -r $HOME/.bashrc ]; then
     alias BASHRC_HAS_RUN=true  # Just in case it isn't our .bashrc.
 fi
 
-BEFOREPATHDIRS="$HOME/bin"
+BEFOREPATHDIRS="$HOME/bin $HOME/.local/bin"
 
 for pd in $BEFOREPATHDIRS; do
     [ -d "$pd" ] && PATH=$(path --prepend "$pd")
