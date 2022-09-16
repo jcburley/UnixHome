@@ -6,10 +6,12 @@ fi
 
 # If no Mac OS X version installed, just invoke whatever is on $PATH.
 if [ ! -d "$MAC_EMACS" ]; then
-    PATH_COMMAND="$(which path)"
-    MYPATH="$(dirname "$0")"
-    TMP_PATH="$("$PATH_COMMAND" --remove "$MYPATH")"
-    PATH="$TMP_PATH" emacs "$@"
+    EMACS_EXE="$(which -a emacs | tail +2)" || exit $?
+    if [ -z "$EMACS_EXE" ]; then
+        echo >&2 'There appears to be no underlying installation of GNU Emacs on $PATH.'
+        exit 99
+    fi
+    "$EMACS_EXE" "$@"
     exit $?
 fi
 
