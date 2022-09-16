@@ -1,6 +1,12 @@
 #!/bin/bash
 # The above and this line are excluded when appending this to an existing ~/.bash_profile.
 
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.bash_profile: running" && env && set -x
+
+# Unless already run, pull in .profile, which various 3rd-party tools
+# modify, mainly to change $PATH.
+[ -z "$PROFILE_HAS_RUN" ] && [ -r ~/.profile ] && PROFILE_HAS_RUN=true && . ~/.profile
+
 if [ -r ~/.unixhome/etc/bash_profile ]; then
     . ~/.unixhome/etc/bash_profile
 fi

@@ -5,7 +5,7 @@
 
 alias newaliases=". ${UNIXHOME}/etc/aliases"
 alias newcommands=". ${UNIXHOME}/etc/commands"
-alias newprofile=". ${UNIXHOME}/etc/bash_profile"
+alias newprofile="unset PROFILE_HAS_RUN; unset BASH_PROFILE_HAS_RUN; . ~/.profile"
 
 alias rm='rm -i'
 alias cp='cp -i'
