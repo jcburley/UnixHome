@@ -101,6 +101,7 @@
 ;; Adding this code will make Emacs enter yaml mode whenever you open
 ;; a .yml file
 (add-to-list 'load-path "~/.emacs.d/vendor")
+(add-to-list 'load-path (concat (getenv "UNIXHOME") "/components/emacs/vendor"))
 
 ; Try a buncha stuff from https://github.com/flyingmachine/emacs-for-clojure/blob/master/init.el:
 
