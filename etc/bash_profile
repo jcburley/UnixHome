@@ -136,6 +136,7 @@ if [ -d "/home/linuxbrew" ]; then
 fi
 
 # GoLang
+windows_go_root="/c/Program Files/Go"
 if [ -n "$GOROOT" ]; then
     :
 elif which go >/dev/null 2>&1; then
@@ -145,6 +146,8 @@ elif which go >/dev/null 2>&1; then
     fi
 elif [ -d /usr/local/go ]; then
     goroot=$(/usr/local/go/bin/go env GOROOT)
+elif [ -d "$windows_go_root" ]; then
+    goroot="$windows_go_root/bin/go env GOROOT"
 fi
 if [ -n "$goroot" -a -d "$goroot" ]; then
     if which cygpath >/dev/null 2>&1; then
