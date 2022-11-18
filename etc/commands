@@ -25,6 +25,7 @@ alias gitdone='git branch --merged'
 alias gitprune='git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'
 # Convenient git tag generator for Spinnaker
 alias gtag='git log | head -1 | cut -b 8-14'
+alias gitlog1="git log --format=format:'%Cred%H%Creset %Cgreen(%an)%Creset %s'"
 
 # Ruby/-on-Rails: prefer db:structure:load to db:schema:load if older RoR version that
 # doesn't support, say, UUID as primary index.
