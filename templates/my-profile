@@ -24,3 +24,5 @@ fi
 
 export UNIX_PSP="${HOME}/.unixhome/etc/sessions/${USER}@$(hostname)"
 [ -f "$UNIX_PSP/profile" ] && . "$UNIX_PSP/profile"
+
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.profile: exiting"

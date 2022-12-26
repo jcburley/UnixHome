@@ -6,3 +6,5 @@
 if [ -r ~/.unixhome/etc/bashrc ]; then
     . ~/.unixhome/etc/bashrc
 fi
+
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.bashrc: exiting"
