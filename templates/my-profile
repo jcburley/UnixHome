@@ -5,8 +5,9 @@
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
+    unset BASH_PROFILE_HAS_RUN  # Could be set by (non-interactive) window manager during startup.
     # include .bash_profile if it exists
-    if [ -f "$HOME/.bash_profile" ]; then
+    if [ -z "$BASH_PROFILE_IS_RUNNING" -a -f "$HOME/.bash_profile" ]; then
         # This file should source .bashrc:
 	. "$HOME/.bash_profile"
     elif [ -f "$HOME/.bashrc" ]; then
