@@ -12,7 +12,7 @@ My $HOME directory for Unixy OSes
     `brew install coreutils findutils gnu-tar gsed gnutls gindent getopt gawk grep bash-completion zsh-completion emacs`
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
   - Maybe try `$ hash -r` first, or log in a new terminal and try it there
-- To get GNU tar, instead of BSD tar, edit `~/.profile` to specify `PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"`
+- Per the output of `brew`, to have the `tar` command (not only `gtar`) run GNU tar (instead of BSD tar), edit `~/.profile` to specify `PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"`
 - If the system is under your control, make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
   - `sudo scutil --set HostName xxx`
   - `sudo scutil --set LocalHostName xxx`
