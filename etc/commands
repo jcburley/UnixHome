@@ -12,9 +12,10 @@ alias gitdiff='git diff'
 alias gitcor='gitfallp && git checkout --track'  # "git checkout remote"
 alias gitdown='git fetch -p; git pull'
 alias gitdn='git pull'
+alias gitdnf='git pull -s recursive -X theirs'  # prefer upstream's changes
 alias gitup='git push'
-alias gitupf='git push --force-with-lease --force-if-includes'  # Better after rebase (Git >= 2.30)
-alias gitupff='git push --force-with-lease'  # After rebase
+alias gitupff='git push --force-with-lease --force-if-includes'  # Better after rebase (Git >= 2.30)
+alias gitupfwl='git push --force-with-lease'  # After rebase
 alias gitDbr='git branch -D'
 alias gitdbr='git branch -d'
 
