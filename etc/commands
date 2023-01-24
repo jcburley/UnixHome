@@ -15,7 +15,7 @@ alias gitdn='git pull'
 alias gitup='git push'
 alias gitupf='git push --force-with-lease --force-if-includes'  # Better after rebase (Git >= 2.30)
 alias gitupff='git push --force-with-lease'  # After rebase
-alias gitmast='git checkout master'
+alias gitmast='git checkout $(basename $(git symbolic-ref refs/remotes/origin/HEAD))'
 alias gitDbr='git branch -D'
 alias gitdbr='git branch -d'
 function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; O="$(git config branch.$1.remote)"; git branch -D "$1"; git push "$O" --delete "$1"; }
