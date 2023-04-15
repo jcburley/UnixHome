@@ -19,7 +19,7 @@ alias gitupfwl='git push --force-with-lease'  # After rebase
 alias gitDbr='git branch -D'
 alias gitdbr='git branch -d'
 
-function gitmbr() { basename $(git symbolic-ref refs/remotes/origin/HEAD) || echo 'Try gitsethead and re-run this.'; }
+function gitmbr() { head="$(git symbolic-ref refs/remotes/origin/HEAD)"; if [ $? -eq 0 ]; then echo "$(basename $head)"; else echo >&2 'Try gitsethead and re-run this.'; echo 'master'; fi; }
 alias gitsethead='git remote set-head origin --auto'
 alias gitmast='git checkout $(gitmbr)'
 alias gitmum='git merge upstream/$(gitmbr)'
