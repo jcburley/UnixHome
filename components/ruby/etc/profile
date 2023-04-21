@@ -10,3 +10,5 @@ if [ -n "$PS1" ]; then
     done
     CDPATH=$(eval path \"$CDPATH\" --append $RUBYDIR/github.com)
 fi
+
+eval "$(rbenv init - bash)"
