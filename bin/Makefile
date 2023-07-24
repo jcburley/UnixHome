@@ -2,18 +2,19 @@ first: all
 
 all:
 
-MYTOOLS=\
-emacs \
-
 TOOLS=\
 bash-for-emacs \
+emacs \
 path \
 rssh \
 settitle \
 
-install:
-	install -p $(MYTOOLS) ~/bin
-	(cd ~/bin; chmod u-w $(MYTOOLS))
+~/bin:
+	mkdir -p ~/bin
+
+install: ~/install
+	bin -p $(TOOLS) ~/bin
+	(cd ~/bin; chmod u-w $(TOOLS))
 
 sys-install:
 # Installing useful tools into /usr/local/bin, instead of ~/bin,
