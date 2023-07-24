@@ -61,6 +61,11 @@ while true; do
     esac
 done
 
+if ! which go > /dev/null 2>/dev/null; then
+    $ECHO_OR_SUDO $GLN -sfTv /usr/local/go/bin/go usr/local/bin/go
+fi
+
+
 if [[ "$1" =~ [.]tar[.]gz$ ]]; then
     mkdir -p ~/Downloads && cd ~/Downloads || exit $?
 
