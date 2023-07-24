@@ -13,7 +13,7 @@ settitle \
 ~/bin:
 	mkdir -p ~/bin
 
-install: ~/install
+install: ~/bin
 	bin -p $(TOOLS) ~/bin
 	(cd ~/bin; chmod u-w $(TOOLS))
 
