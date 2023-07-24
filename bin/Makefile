@@ -5,6 +5,7 @@ all:
 TOOLS=\
 bash-for-emacs \
 emacs \
+install-go.sh \
 path \
 rssh \
 settitle \
