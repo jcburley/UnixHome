@@ -5,6 +5,7 @@ all:
 TOOLS=\
 bash-for-emacs \
 emacs \
+install-go.sh \
 path \
 rssh \
 settitle \
@@ -12,8 +13,8 @@ settitle \
 ~/bin:
 	mkdir -p ~/bin
 
-install: ~/install
-	bin -p $(TOOLS) ~/bin
+install: ~/bin
+	install -p $(TOOLS) ~/bin
 	(cd ~/bin; chmod u-w $(TOOLS))
 
 sys-install:
