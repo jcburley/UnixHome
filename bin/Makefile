@@ -14,7 +14,7 @@ settitle \
 	mkdir -p ~/bin
 
 install: ~/bin
-	bin -p $(TOOLS) ~/bin
+	install -p $(TOOLS) ~/bin
 	(cd ~/bin; chmod u-w $(TOOLS))
 
 sys-install:
