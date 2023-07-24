@@ -62,7 +62,7 @@ while true; do
 done
 
 if [[ "$1" =~ [.]tar[.]gz$ ]]; then
-    cd ~/Downloads || exit $?
+    mkdir -p ~/Downloads && cd ~/Downloads || exit $?
 
     PKG="$(basename $1)"
     VER="${PKG%.*-*.tar.gz}"
