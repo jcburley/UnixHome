@@ -30,7 +30,7 @@ sys-install:
 # definitions in ~/.ssh/rc, etc., seemed to have any effect on the
 # environment for <toolname>, despite it having various effects on the
 # output if <toolname> was something like 'env'.)
-	install -p $(TOOLS) /usr/local/bin
+	install -p $(SYS_TOOLS) /usr/local/bin
 	(cd /usr/local/bin; chmod u-w $(TOOLS))
 
 .PHONY: first all install sys-install
