@@ -11,8 +11,7 @@ if [ ! -d "$MAC_EMACS" ]; then
         echo >&2 'There appears to be no underlying installation of GNU Emacs on $PATH.'
         exit 99
     fi
-    "$EMACS_EXE" "$@"
-    exit $?
+    exec "$EMACS_EXE" "$@"
 fi
 
 EMACS_EXE='Contents/MacOS/Emacs'
