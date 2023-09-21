@@ -5,6 +5,9 @@
 
 (if (equal (or (getenv "EMACS_DEBUG_ON_ERROR") "false") "true") (toggle-debug-on-error))
 
+;; Workaround for OS X Ventura (?) bug supposedly fixed in Emacs 29.
+(setq image-types (cons 'svg image-types))
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
