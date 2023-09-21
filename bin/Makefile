@@ -2,18 +2,20 @@ first: all
 
 all:
 
-MYTOOLS=\
-emacs \
-
 TOOLS=\
 bash-for-emacs \
+emacs \
+install-go.sh \
 path \
 rssh \
 settitle \
 
-install:
-	install -p $(MYTOOLS) ~/bin
-	(cd ~/bin; chmod u-w $(MYTOOLS))
+~/bin:
+	mkdir -p ~/bin
+
+install: ~/bin
+	install -p $(TOOLS) ~/bin
+	(cd ~/bin; chmod u-w $(TOOLS))
 
 sys-install:
 # Installing useful tools into /usr/local/bin, instead of ~/bin,
@@ -28,7 +30,7 @@ sys-install:
 # definitions in ~/.ssh/rc, etc., seemed to have any effect on the
 # environment for <toolname>, despite it having various effects on the
 # output if <toolname> was something like 'env'.)
-	install -p $(TOOLS) /usr/local/bin
+	install -p $(SYS_TOOLS) /usr/local/bin
 	(cd /usr/local/bin; chmod u-w $(TOOLS))
 
 .PHONY: first all install sys-install

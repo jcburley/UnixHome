@@ -34,8 +34,9 @@ $ ./git
 $ ./bash
 $ ./emacs
 $ cd ../bin
-$ sudo make install
-$ cd ../build; sudo make install  # OPTIONAL, if the build command is desired
+$ make install  # Installs: bash-for-emacs emacs path rssh settitle
+$ sudo make sys-install  # Optional, instead of 'make install'
+$ cd ../build; make install  # OPTIONAL, if the build command is desired
 ```
 
 # Sanity-check

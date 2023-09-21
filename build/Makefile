@@ -5,7 +5,14 @@ all:
 TOOLS=\
 build
 
-install:
+~/bin:
+	mkdir -p ~/bin
+
+install: ~/bin
+	install -p $(TOOLS) ~/bin
+	(cd ~/bin; chmod u-w $(TOOLS))
+
+sys-install:
 # Installing useful tools into /usr/local/bin, instead of ~/bin,
 # simplifies access via e.g. 'ssh user@system <toolname>'. E.g. on my
 # Ubuntu 16.04 system ("doe"), I can't figure out how to add ~/bin to
@@ -21,4 +28,4 @@ install:
 	install -p $(TOOLS) /usr/local/bin
 	(cd /usr/local/bin; chmod u-w $(TOOLS))
 
-.PHONY: first all install
+.PHONY: first all install sys-install
