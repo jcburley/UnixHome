@@ -5,6 +5,9 @@
 
 (if (equal (or (getenv "EMACS_DEBUG_ON_ERROR") "false") "true") (toggle-debug-on-error))
 
+;; Should have no effect in non-windowing situations.
+(x-focus-frame nil)
+
 ;; Workaround for OS X Ventura (?) bug supposedly fixed in Emacs 29.
 (setq image-types (cons 'svg image-types))
 
