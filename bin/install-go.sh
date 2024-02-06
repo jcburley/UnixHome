@@ -85,11 +85,17 @@ if [[ "$1" =~ [.]tar[.]gz$ ]]; then
     case "$FTYPE" in
         *gzip*) ;;
         *HTML*)
+            if grep -F '<title>Error' "$PKG"; then
+                exit 17
+            fi
             NEWURL=$(gethref "$PKG")
             rm -f "$PKG"
             curl -O "$NEWURL" || exit 15
             FTYPE="$(file --brief "$PKG")"
             if [[ ! "$FTYPE" =~ gzip ]]; then
+                if grep -F '<title>Error' "$PKG"; then
+                    exit 20
+                fi
                 echo >&2 "URL's href yields file type \"$FTYPE\": $NEWURL"
                 exit 16
             fi
