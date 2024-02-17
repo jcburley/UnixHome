@@ -46,3 +46,4 @@ alias gitlog1="git log --format=format:'%Cred%H%Creset %Cgreen(%an)%Creset %s'"
 # Ruby/-on-Rails: prefer db:structure:load to db:schema:load if older RoR version that
 # doesn't support, say, UUID as primary index.
 alias nuke_and_migrate='RAILS_ENV=test bundle exec rake db:drop db:create db:structure:load db:migrate'
+alias gsur='git submodule update --remote'
