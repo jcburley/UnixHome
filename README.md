@@ -36,7 +36,7 @@ $ ./emacs
 $ cd ../bin
 $ ./install.sh  # Installs to ~/bin: bash-for-emacs emacs install-go.sh path rssh settitle
 $ sudo ./install.sh --system # Optional, instead of './install.sh', to install to /usr/local/bin
-$ cd ../build; make install  # OPTIONAL, if the build command is desired
+$ cd ../build; ./install.sh  # OPTIONAL, if the 'build' command is desired
 ```
 
 ## Why Install to /usr/local/bin?
