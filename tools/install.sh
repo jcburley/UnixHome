@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 DIR="${HOME}/bin"
 
 if [ $# -gt 1 -a \( "$1" = "-t" -o "$1" = "--to" \) ]; then
@@ -19,4 +21,4 @@ if [ $# -gt 0 -o -z "${TOOLS}" ]; then
 fi
 
 mkdir -p ${DIR}
-install -m a=rx -p -S ${TOOLS} ${DIR}
+install -m a=rx -p ${TOOLS} ${DIR}
