@@ -32,6 +32,7 @@ alias gitpr='gitmast && gitfallp && gitdn'
 # "Some other PR(s) got merged":
 alias gitoprm='git fetch origin $(gitmbr):$(gitmbr) && gitprune && git merge $(gitmbr)'  # Merge
 alias gitoprr='git fetch origin $(gitmbr):$(gitmbr) && gitprune && git rebase $(gitmbr)' # Rebase
+alias gitoprrours='git fetch origin $(gitmbr):$(gitmbr) && gitprune && git rebase -Xours $(gitmbr)'
 
 function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; O="$(git config branch.$1.remote)"; git branch -D "$1"; git push "$O" --delete "$1"; }
 
