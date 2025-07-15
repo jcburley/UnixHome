@@ -30,16 +30,19 @@ alias gitrom='git rebase origin/$(gitmbr)'
 # "This PR got merged":
 alias gitpr='gitmast && gitfallp && gitdn'
 # "Some other PR(s) got merged":
-alias gitoprm='git fetch origin $(gitmbr):$(gitmbr) && gitprune && git merge $(gitmbr)'  # Merge
-alias gitoprr='git fetch origin $(gitmbr):$(gitmbr) && gitprune && git rebase $(gitmbr)' # Rebase
-alias gitoprrours='git fetch origin $(gitmbr):$(gitmbr) && gitprune && git rebase -Xours $(gitmbr)'
+alias gitoprm='git fetch origin $(gitmbr):$(gitmbr) && git merge $(gitmbr)'  # Merge
+alias gitoprmours='git fetch origin $(gitmbr):$(gitmbr) && git merge -Xours $(gitmbr)'  # Merge, favoring local
+alias gitoprmtheirs='git fetch origin $(gitmbr):$(gitmbr) && git merge -Xtheirs $(gitmbr)'  # Merge, favoring upstream (origin)
+alias gitoprr='git fetch origin $(gitmbr):$(gitmbr) && git rebase $(gitmbr)' # Rebase
+alias gitoprrtheirs='git fetch origin $(gitmbr):$(gitmbr) && git rebase -Xtheirs $(gitmbr)' # Rebase, favoring local
+alias gitoprrours='git fetch origin $(gitmbr):$(gitmbr) && git rebase -Xours $(gitmbr)'  # Rebase, favoring upstream (origin)
 
 function gitrmbr() { if [ $# -ne 1 ]; then echo >&2 "Need branch name."; return 99; fi; O="$(git config branch.$1.remote)"; git branch -D "$1"; git push "$O" --delete "$1"; }
 
 alias gitfall='git fetch --jobs=10 --all'
 alias gitfallp='git fetch --prune --jobs=10 --all'
 alias gitdone='git branch --merged'
-alias gitprune='git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'
+alias gitprune='git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'  # Prune local branches after git fetch --prune
 
 alias gtag='git log | head -1 | cut -b 8-14'
 alias gitlog1="git log --format=format:'%Cred%H%Creset %Cgreen(%an)%Creset %s'"
