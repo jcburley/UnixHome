@@ -16,7 +16,7 @@ export UNIX_PSP="${UNIXHOME}/etc/sessions/${USER}@$(hostname)"
 
 # Alert if .unixhome has upstream updates:
 (cd $UNIXHOME
- GRU=$(git remote update 2>&1)
+ GRU="$(git remote update 2>&1)"
  if [ -n "$GRU" -a "$GRU" != "Fetching origin" ]; then
      printf "\nNOTE: ${UNIXHOME} has updates:\n${GRU}\n\n"
  fi)
