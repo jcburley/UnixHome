@@ -26,6 +26,8 @@ alias l1ad='ls -1Ad'
 alias e=earthly
 alias m=make
 
+alias myipaddr='curl -s http://myipaddr.llamail.com | sed -e "s:.*<body>\\([0-9.]*\\)</body>.*:\\1:"; echo'
+
 alias golocal='PATH=$(path --prepend "$GOLOCALBIN"); GOROOT="$GOLOCALROOT"'
 alias goback='PATH=$(path --remove "$GOLOCALBIN"); GOROOT="$GOORIGROOT"'
 
