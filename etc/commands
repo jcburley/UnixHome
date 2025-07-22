@@ -26,6 +26,7 @@ alias gitmum='git merge upstream/$(gitmbr)'
 alias gitrum='git rebase upstream/$(gitmbr)'
 alias gitmom='git merge origin/$(gitmbr)'
 alias gitrom='git rebase origin/$(gitmbr)'
+alias gitfomm='git fetch origin $(gitmbr):$(gitmbr)'
 
 # "This PR got merged":
 alias gitpr='gitmast && gitfallp && gitdn'
