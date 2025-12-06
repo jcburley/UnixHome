@@ -11,7 +11,7 @@ My $HOME directory for Unixy OSes
 - Install GNU stuff via:
     `brew install coreutils findutils gnu-tar gsed gnutls gnu-indent gnu-getopt gawk grep bash-completion zsh-completion emacs`
   - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
-  - Maybe try `$ hash -r` first, or log in a new terminal and try it there
+  - Maybe try `hash -r` first, or log in a new terminal and try it there
 - Per the output of `brew`, to have various commands such as `tar` (not only when prefixed with `g`, e.g. `gtar`) run GNU version (instead of BSD tar), edit `~/.profile` to specify e.g. `PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"`
 - If the system is under your control, make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
   - `sudo scutil --set HostName xxx`
@@ -31,21 +31,24 @@ Add local account's public RSA key (on Linux, this will be in `~/.ssh/id_rsa.pub
 Install, if not already present, GNU Emacs from a trusted source, such as: https://www.gnu.org/software/emacs/download.html
 
 # Clone Me
-Do either of these:
-- `$ cd ~; git clone git@github.com:jcburley/UnixHome.git .unixhome`
-- Use GitHub Desktop
+Do either this:
+```
+cd ~; git clone git@github.com:jcburley/UnixHome.git .unixhome
+```
+
+Or, use GitHub Desktop
   - Change the desired target directory to specify `~/.unixhome` (e.g. remove intermediate components, lowercase capitalized "UnixHome", etc.)
 
 # After Cloning Me
 ```
-$ cd ~/.unixhome/Setup
-$ ./git
-$ ./bash
-$ ./emacs
-$ cd ../bin
-$ ./install.sh  # Installs to ~/bin: bash-for-emacs emacs install-go.sh path rssh settitle
-$ sudo ./install.sh --system # Optional, instead of './install.sh', to install to /usr/local/bin
-$ cd ../build; ./install.sh  # OPTIONAL, if the 'build' command is desired
+cd ~/.unixhome/Setup
+./git
+./bash
+./emacs
+cd ../bin
+./install.sh  # Installs to ~/bin: bash-for-emacs emacs install-go.sh path rssh settitle
+# sudo ./install.sh --system # Optional, instead of './install.sh', to install to /usr/local/bin
+# cd ../build; ./install.sh  # OPTIONAL, if the 'build' command is desired
 ```
 
 ## GNU Emacs on Windows
