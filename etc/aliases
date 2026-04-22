@@ -26,6 +26,11 @@ alias l1ad='ls -1Ad'
 alias e=earthly
 alias m=make
 
+# Using reftable in Git fixes some issues, but not everything supports it.
+# Simple workaround: temporarily disable git in a repo, do things, reenable it.
+alias git-off='mv -iv .git .git.old; mv -iv .gitattributes .gitattributes.old; mv -iv .github .github.old'
+alias git-on='mv -iv .git.old .git; mv -iv .gitattributes.old .gitattributes; mv -iv .github.old .github'
+
 alias myipaddr='curl -s http://myipaddr.llamail.com | sed -e "s:.*<body>\\([0-9.]*\\)</body>.*:\\1:"; echo'
 
 alias golocal='PATH=$(path --prepend "$GOLOCALBIN"); GOROOT="$GOLOCALROOT"'
