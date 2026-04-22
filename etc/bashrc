@@ -19,23 +19,17 @@ alias BASHRC_HAS_RUN=true
 
 # Set up interactive capabilities.
 if [ -n "$PS1" ]; then
-    ALIASFILE=${UNIXHOME}/etc/aliases
-    [ -r ${ALIASFILE} ] && . ${ALIASFILE}
-
-    [ -r "$UNIX_PSP/bashrc" ] && . "$UNIX_PSP/bashrc"
+    for file in "${UNIXHOME}/etc/aliases" "${HOME}/.bash_aliases" "${UNIX_PSP}/bashrc" "${UNIXHOME}/etc/git-prompt.sh"; do
+        [ -r "$file" ] && . "$file"
+    done
 
     # Load all autocompletions if any are installed
     AUTOCOMPDIR=${UNIXHOME}/etc/bash_completion.d/
     if [ -d "${AUTOCOMPDIR}" ]; then
         for F in "${AUTOCOMPDIR}"*; do
-            if [ -f "${F}" ]; then
-                . "${F}"
-            fi
+            [ -r "${F}" ] && . "${F}"
         done
     fi
-
-    # Get git goodness in prompts by first defining __git_ps1.
-    [ -f ${UNIXHOME}/etc/git-prompt.sh ] && . ${UNIXHOME}/etc/git-prompt.sh
 
     # If .bash_profile is calling this script, it'll afterwards overwrite
     # these two vars, so the "bash" shell doesn't display $SHLVL.
