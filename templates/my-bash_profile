@@ -1,7 +1,7 @@
 #!/bin/bash
 # The above and this line are excluded when appending this to an existing ~/.bash_profile.
 
-[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.bash_profile: running" && env && set -x
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.bash_profile: running" && [ -x ~/.debug-profiles ] && env && set -x
 
 BASH_PROFILE_IS_RUNNING=true
 
