@@ -9,7 +9,7 @@
 (x-focus-frame nil)
 
 ;; Workaround for OS X Ventura (?) bug supposedly fixed in Emacs 29.
-(setq image-types (cons 'svg image-types))
+;; (setq image-types (cons 'svg image-types))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
