@@ -1,7 +1,7 @@
 #!/bin/bash
 # The above and this line are excluded when appending this to an existing ~/.bashrc.
 
-[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.bashrc: running" && env && set -x
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.bashrc: running" && [ -x ~/.debug-profiles ] && env && set -x
 
 if [ -r ~/.unixhome/etc/bashrc ]; then
     . ~/.unixhome/etc/bashrc

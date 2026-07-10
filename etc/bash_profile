@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.unixhome/etc/bash_profile: running" && env
+[ -r ~/.debug-profiles ] && echo -e "\n\n$0: ~/.unixhome/etc/bash_profile: running" && [ -x ~/.debug-profiles ] && env && set -x
 
 if [ -n "$BASH_PROFILE_HAS_RUN" ]; then
     return 0
