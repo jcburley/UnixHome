@@ -10,3 +10,5 @@
 	unskip = update-index --no-skip-worktree
 	sweep = "!git fetch -p && for b in $(git for-each-ref --format='%(refname:short) %(upstream)' refs/heads/ | awk '$1 != \"main\" && $2 == \"\" {print $1}'); do git branch -d \"$b\"; done"
 	purge = "!git fetch -p && for b in $(git for-each-ref --format='%(refname:short) %(upstream)' refs/heads/ | awk '$1 != \"main\" && $2 == \"\" {print $1}'); do git branch -D \"$b\"; done"
+	rmbr = "!f() { git branch -D \"$1\" && git push origin --delete \"$1\"; }; f"
+	rmbr2 = "!sh -c 'git branch -D \"$1\" && git push origin --delete \"$1\"' -"
