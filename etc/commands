@@ -42,7 +42,7 @@ alias gitrmbr='git rmbr'
 alias gitfall='git fetch --jobs=10 --all'
 alias gitfallp='git fetch --prune --jobs=10 --all'
 alias gitdone='git branch --merged'
-alias gitprune='git sweep'
+alias gitprune='git sweep; git branch -vv|grep ^\ .\*\\[[^]]\*:\ gone\\]|awk "{print \$1}"|xargs -I{} git branch -D {}'
 
 alias gtag='git log | head -1 | cut -b 8-14'
 alias gitlog1="git log --format=format:'%Cred%H%Creset %Cgreen(%an)%Creset %s'"
