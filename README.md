@@ -4,33 +4,85 @@ My $HOME directory for Unixy OSes
 # Before Cloning Me
 
 ## Per-OS Preparation
+
 ### Mac OS X
-- Establish your login shell; these instructions assume Bash, so (if necessary) `chsh -s /bin/bash` and login a new shell to use going forward.
-- Install GitHub Desktop via https://desktop.github.com/ and login
-- Install homebrew ("brew")
-- Install GNU stuff via:
-    `brew install coreutils findutils gnu-tar gsed gnutls gnu-indent gnu-getopt gawk grep bash-completion zsh-completion emacs`
-  - NOTE: This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`)
-  - Maybe try `hash -r` first, or log in a new terminal and try it there
-- Per the output of `brew`, to have various commands such as `tar` (not only when prefixed with `g`, e.g. `gtar`) run GNU version (instead of BSD tar), edit `~/.profile` to specify e.g. `PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"`
-- If the system is under your control, make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
+
+#### Establish your login shell
+
+These instructions tend to assume Bash, so (if necessary) `chsh -s /bin/bash` and login a new shell to use going forward.
+
+#### Consider GitHub Desktop
+
+Optionally, install GitHub Desktop via https://desktop.github.com/ and login.
+
+#### Install Homebrew
+
+Install Homebrew ("brew") from the latest release at https://github.com/Homebrew/brew/releases (for a `.pkg` file) or https://brew.sh (the official installation script).
+
+**Crucial:** Do not manually symlink the `brew` binary to other locations (like `/usr/local/bin/brew` on Apple Silicon).
+Homebrew uses path-based architecture detection; invoking it via a symlink tricks it into assuming the wrong prefix and platform environment.
+
+Once the installation completes, you must add Homebrew to your shell environment so your terminal can locate it naturally without symlinks.
+
+1. **Configure your profile:** Run the configuration tool built directly into Homebrew to append the native environment variables to your login profile:
+   
+   ```bash
+   # For Bash users:
+   echo 'eval "\$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bash_profile
+
+   # For Zsh users (macOS default):
+   echo 'eval "\$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+   ```
+
+2. **Apply the changes immediately:** Load the environment into your active terminal session without needing to restart it:
+   
+   ```bash
+   # For Bash users:
+   source ~/.bash_profile
+
+   # For Zsh users:
+   source ~/.zprofile
+   ```
+
+3. **Verify the installation:** Confirm that your shell correctly targets the native ARM64 prefix path:
+   
+   ```bash
+   which brew
+   # Expected output: /opt/homebrew/bin/brew
+   ```
+
+#### Install GNU stuff
+
+```sh
+brew install coreutils findutils gnu-tar gsed gnutls gnu-indent gnu-getopt gawk grep bash-completion zsh-completion emacs
+```
+
+**NOTE:** This seems to take awhile before the new Emacs is actually invoked (try `emacs --version`). Maybe try `hash -r` first, or log in a new terminal and try it there.
+
+Per the output of `brew`, to have various commands such as `tar` (not only when prefixed with `g`, e.g. `gtar`) run GNU versions instead of native ones, edit `~/.profile` to specify e.g. `PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"`.
+
+#### Name Your Mac
+
+If the system is under your control, make sure system name (as returned by `hostname`) is as desired for `.emacs.d/systems/`:
   - `sudo scutil --set HostName xxx`
   - `sudo scutil --set LocalHostName xxx`
   - `sudo scutil --set ComputerName xxx`
-
-## Windows
+ 
+### Windows
 
 - Install Git from e.g.: https://git-scm.com/downloads/win
   - This might be the best way to get a working Bash (Git Bash)
   - It also offers a Git UI that is not necessary for the present purpose
-  - Configure it as "Unix-like" as you feel comfortable; the less Unix-like, the more likely aliases, functions, and scripts herein might misbehave; the more Unix-like, the more likely Windows scripts might
+  - Configure it as "Unix-like" as you feel comfortable; the less Unix-like, the more likely aliases, functions, and scripts herein might misbehave; the more Unix-like, the more likely Windows scripts might.
 
 ## All OSes
-Add local account's public RSA key (on Linux, this will be in `~/.ssh/id_rsa.pub`, or do `ssh-keygen -t rsa` to create it) as an SSH key to https://github.com account, currently via https://github.com/settings/keys. (This might not be necessary if one uses GitHub Desktop.)
+
+Add local account's public ED25519 key (on Linux, this will be in `~/.ssh/id_ed25519.pub`, or do `ssh-keygen -t ed25519` to create it) as an SSH key to your https://github.com account, currently via https://github.com/settings/keys. (This might not be necessary, or might be differently handled, if one uses GitHub Desktop.)
 
 Install, if not already present, GNU Emacs from a trusted source, such as: https://www.gnu.org/software/emacs/download.html
 
 # Clone Me
+
 Do either this:
 ```
 cd ~; git clone git@github.com:jcburley/UnixHome.git .unixhome
@@ -40,6 +92,7 @@ Or, use GitHub Desktop
   - Change the desired target directory to specify `~/.unixhome` (e.g. remove intermediate components, lowercase capitalized "UnixHome", etc.)
 
 # After Cloning Me
+
 ```
 cd ~/.unixhome/Setup
 ./git
@@ -94,7 +147,7 @@ Start up GNU Emacs, and confirm:
 ## Per-OS Maintenance
 ### Mac OS X
 ```
-brew upgrade
+brew upgrade -y
 ```
 
 ### Windows
