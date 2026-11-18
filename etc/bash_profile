@@ -21,28 +21,20 @@ export UNIX_PSP="${UNIXHOME}/etc/sessions/${USER}@$(hostname)"
      printf "\nNOTE: ${UNIXHOME} has updates:\n${GRU}\n\n"
  fi)
 
-# Ensure 'path' utility is in $PATH.
-if ! which path >/dev/null 2>&1; then
-    for d in /usr/local/bin; do
-        [ -x "$d/path" ] && PATH="${d}${PATH:+:${PATH}}"
-    done
-    if ! which path >/dev/null 2>&1; then
-        echo >&2 "$0: ${UNIXHOME}/etc/bash_profile: ERROR: 'path' utility not in \$PATH"
-        sleep 10  # So Windows shows the error before the window closes
-        exit 99
-    fi
-fi
+# Temporarily define $PATHCMD to point to known location of scipt.
+PATHCMD=~/.unixhome/bin/path
+[ -x "$PATHCMD" ] || { echo "Cannot find/run $PATHCMD utility"; sleep 10; exit 99; }
 
 BEFOREPATHDIRS="$HOME/bin $HOME/.local/bin"
 
 for pd in $BEFOREPATHDIRS; do
-    [ -d "$pd" ] && PATH=$(path --prepend "$pd")
+    [ -d "$pd" ] && PATH=$($PATHCMD --prepend "$pd")
 done
 
 AFTERPATHDIRS="$HOME/googlesource/depot_tools"
 
 for pd in $AFTERPATHDIRS; do
-    [ -d "$pd" ] && PATH=$(path --append "$pd")
+    [ -d "$pd" ] && PATH=$($PATHCMD --append "$pd")
 done
 
 export PATH
@@ -55,7 +47,7 @@ export PATH
 # it has certain canonical directories.
 
 if [ -r /etc/man.conf -o -r /etc/manpath.config ]; then
-    MANPATH="$(eval path \"$MANPATH\" --prepend \"\")"
+    MANPATH="$(eval $PATHCMD \"$MANPATH\" --prepend \"\")"
 else
     for d in /usr/man /usr/local/man /usr/share/man /usr/local/share/man /usr/X11/man /usr/X11R6/man /opt/man; do
         [ -d "$d" ] && MANPATH="$(eval path \"$MANPATH\" --append \"$d\")"
@@ -63,7 +55,7 @@ else
 fi
 
 if [ -d /var/qmail/man ]; then
-    MANPATH="$(eval path \"$MANPATH\" --append /var/qmail/man)"
+    MANPATH="$(eval $PATHCMD \"$MANPATH\" --append /var/qmail/man)"
 fi
 
 export GITBASE=git@github.com:jcburley
@@ -92,7 +84,7 @@ if [ -n "$PS1" ]; then
     fi
 
     # Always start looking in the local directory.
-    CDPATH=$(eval path \"\" --prepend .)
+    CDPATH=$(eval $PATHCMD \"\" --prepend .)
 
     # Don't export CDPATH, and set it only for interactive sessions, per:
     #   https://bosker.wordpress.com/2012/02/12/bash-scripters-beware-of-the-cdpath/
@@ -100,7 +92,7 @@ if [ -n "$PS1" ]; then
         if [ ! -d "$d" ]; then
             continue
         fi
-        CDPATH=$(eval path \"$CDPATH\" --append "$d"/* "$d")
+        CDPATH=$(eval $PATHCMD \"$CDPATH\" --append "$d"/* "$d")
     done
 
     # Get git goodness in prompts. See bashrc for PS1 and PROMPT_COMMAND
@@ -124,15 +116,15 @@ if [ -n "$PS1" ]; then
                 continue
             fi
             DIR=$(grep -v '^[[:space:]]*\(#.*\)\?$' "$DF" | head -1)
-            [ -d "$DIR" ] && CDPATH=$(eval path \"$CDPATH\" --append "$DIR")
+            [ -d "$DIR" ] && CDPATH=$(eval $PATHCMD \"$CDPATH\" --append "$DIR")
         done
     fi
 fi
 
 if [ -d "/home/linuxbrew" ]; then
-    PATH="$(path --append "/home/linuxbrew/.linuxbrew/bin:$PATH")"
-    MANPATH="$(path "$MANPATH" --append "/home/linuxbrew/.linuxbrew/share/man:$MANPATH")"
-    INFOPATH="$(path "$INFOPATH" --append "/home/linuxbrew/.linuxbrew/share/info:$INFOPATH")"
+    PATH="$($PATHCMD --append "/home/linuxbrew/.linuxbrew/bin:$PATH")"
+    MANPATH="$($PATHCMD "$MANPATH" --append "/home/linuxbrew/.linuxbrew/share/man:$MANPATH")"
+    INFOPATH="$($PATHCMD "$INFOPATH" --append "/home/linuxbrew/.linuxbrew/share/info:$INFOPATH")"
 fi
 
 # GoLang
@@ -154,7 +146,7 @@ if [ -n "$goroot" -a -d "$goroot" ]; then
         goroot="$(cygpath -u "$goroot")"
     fi
     if ! which go >/dev/null 2>&1; then
-        PATH=$(path --prepend "$goroot/bin")
+        PATH=$($PATHCMD --prepend "$goroot/bin")
     fi
 fi
 if [ -d "$HOME/.go" -a ! -d "$HOME/go" ]; then
@@ -177,10 +169,10 @@ if [ -n "$GOPATH" -a -d "$GOPATH" ]; then
         GOLOCALBIN="$(cygpath -u "$GOLOCALBIN")"
     fi
     GOBIN="$GOPATH"/bin
-    PATH=$(path --prepend "$GOBIN")
+    PATH=$($PATHCMD --prepend "$GOBIN")
     export GOORIGROOT="$goroot"
     if [ -n "$PS1" ]; then
-        CDPATH=$(eval path \"$CDPATH\" --append "$GOPATH"/src/github.com/* "$GOPATH"/src/github.com)
+        CDPATH=$(eval $PATHCMD \"$CDPATH\" --append "$GOPATH"/src/github.com/* "$GOPATH"/src/github.com)
     fi
     export GOPATH GOBIN
 fi
